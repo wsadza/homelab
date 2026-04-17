@@ -1,10 +1,10 @@
 applications:
       
-    - name: whoami 
+    - name: podinfo
       chartName: podinfo/podinfo
       #chartPath: ./deploy/chart/local-path-provisioner 
       chartValues: false
-      targetRevision: 6.9.1
+      targetRevision: 6.11.2
       repoURL: https://stefanprodan.github.io/podinfo
       #manifests: 
       #namespace: 
