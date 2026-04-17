@@ -3,7 +3,7 @@ applications:
     - name: whoami 
       chartName: podinfo/podinfo
       #chartPath: ./deploy/chart/local-path-provisioner 
-      chartValues: true
+      chartValues: false
       targetRevision: 6.9.1
       repoURL: https://stefanprodan.github.io/podinfo
       #manifests: 
