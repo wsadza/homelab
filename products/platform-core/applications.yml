@@ -11,7 +11,7 @@ applications:
     - name: envoy-gateway 
       #chartName: envoy-gateway
       chartPath: ./charts/gateway-helm/
-      targetRevision: v1.7.2
+      targetRevision: v1.7.1
       repoURL: https://github.com/envoyproxy/gateway
       manifests: true
       chartValues: true
