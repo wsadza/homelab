@@ -1,5 +1,9 @@
 # products list
 list:
-  - tests
+  - platform-core
+#  - platform-observability
+#  - platform-security
+#  - product-storage
+#  - tests
 #  - gpu
 #  - infrastructure

@@ -1,9 +1,17 @@
+# --
+# 
+# 
+# --
 applications:
-      
+   
+  # 
+  # PODINFO
+  #
+
     - name: podinfo
       chartName: podinfo
       #chartPath: ./deploy/chart/local-path-provisioner 
-      #chartValues: false
+      #chartValues: 
       targetRevision: 6.11.2
       repoURL: https://stefanprodan.github.io/podinfo
       #manifests: 
