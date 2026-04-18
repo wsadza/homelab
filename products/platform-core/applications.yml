@@ -10,9 +10,9 @@ applications:
 
     - name: envoy-gateway 
       chartName: envoy-gateway
-      #chartPath: 
-      targetRevision: v1.7.1
-      repoURL: oci://docker.io/envoyproxy/gateway-helm
+      chartPath: ./charts/gateway-helm
+      targetRevision: v1.7.2
+      repoURL: https://github.com/envoyproxy/gateway
       manifests: true
       chartValues: true
       namespace: envoy-gateway-system
