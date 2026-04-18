@@ -9,7 +9,7 @@ applications:
   #
 
     - name: envoy-gateway 
-      chartName: envoy-gateway
+      #chartName: envoy-gateway
       chartPath: ./charts/gateway-helm/
       targetRevision: v1.7.2
       repoURL: https://github.com/envoyproxy/gateway
