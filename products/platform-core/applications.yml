@@ -24,6 +24,6 @@ applications:
       targetRevision: v1.7.1
       repoURL: oci://docker.io/envoyproxy/gateway-crds-helm
       #manifests: true
-      #chartValues: true
+      chartValues: true
       namespace: envoy-gateway-system
       priority: -2

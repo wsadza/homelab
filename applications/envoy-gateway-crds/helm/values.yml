@@ -1,0 +1,11 @@
+# ===========================================================
+# Purpose:
+#
+# ===========================================================
+#
+crds:
+  gatewayAPI:
+    enabled: true
+    channel: standard
+  envoyGateway:
+    enabled: true
