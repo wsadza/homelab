@@ -11,3 +11,6 @@ config:
     logging:
       level:
         default: info
+
+topologyInjector:
+  enabled: false
