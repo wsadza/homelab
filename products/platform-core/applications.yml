@@ -14,6 +14,6 @@ applications:
       targetRevision: v1.7.1
       repoURL: https://github.com/envoyproxy/gateway
       manifests: true
-      chartValues: true
+      #chartValues: true
       namespace: envoy-gateway-system
       priority: -1
