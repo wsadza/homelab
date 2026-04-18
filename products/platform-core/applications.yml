@@ -26,4 +26,4 @@ applications:
       #manifests: true
       chartValues: true
       namespace: envoy-gateway-system
-      priority: -2
+      priority: -1
