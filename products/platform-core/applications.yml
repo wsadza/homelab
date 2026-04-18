@@ -1,22 +1,12 @@
-# --
+# ===============================
 # 
 # 
-# --
+# ===============================
 applications:
    
-  # 
-  # Envoy-Gateway 
-  #
-
-    - name: envoy-gateway 
-      chartName: envoy-gateway
-      #chartPath: 
-      targetRevision: v1.7.1
-      repoURL: oci://docker.io/envoyproxy/gateway-helm
-      manifests: true
-      chartValues: true
-      namespace: envoy-gateway-system
-      priority: -1
+  # ------------------
+  # Envoy-Gateway-CRD's (gateway-api)
+  # ------------------
 
     - name: envoy-gateway-crds
       chartName: envoy-gateway-crds
@@ -26,4 +16,19 @@ applications:
       #manifests: true
       chartValues: true
       namespace: envoy-gateway-system
-      priority: -1
+      priority: -10
+
+  # ------------------
+  # Envoy-Gateway 
+  # ------------------
+  
+    - name: envoy-gateway 
+      chartName: envoy-gateway
+      #chartPath: 
+      targetRevision: v1.7.1
+      repoURL: oci://docker.io/envoyproxy/gateway-helm
+      manifests: true
+      chartValues: true
+      namespace: envoy-gateway-system
+      priority: -5
+
