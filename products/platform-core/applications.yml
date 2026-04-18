@@ -9,11 +9,21 @@ applications:
   #
 
     - name: envoy-gateway 
-      #chartName: envoy-gateway
-      chartPath: ./charts/gateway-helm/
+      chartName: envoy-gateway
+      #chartPath: 
       targetRevision: v1.7.1
-      repoURL: https://github.com/envoyproxy/gateway
+      repoURL: oci://docker.io/envoyproxy/gateway-helm
       manifests: true
-      #chartValues: true
+      chartValues: true
+      namespace: envoy-gateway-system
+      priority: -1
+
+    - name: envoy-gateway-crds
+      chartName: envoy-gateway-crds
+      #chartPath: 
+      targetRevision: v1.7.1
+      repoURL: oci://docker.io/envoyproxy/gateway-crds-helm
+      manifests: true
+      chartValues: true
       namespace: envoy-gateway-system
       priority: -1
