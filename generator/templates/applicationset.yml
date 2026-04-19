@@ -28,6 +28,8 @@ spec:
       syncPolicy:
         automated:
           enabled: false
+        syncOptions:
+          - CreateNamespace=true
 
       #syncPolicy:
       #  automated:
