@@ -39,7 +39,7 @@ applications:
     - name: cert-manager
       chartName: cert-manager
       #chartPath: 
-      targetRevision: 1.16.3
+      targetRevision: 1.20.3
       repoURL: https://charts.jetstack.io
       manifests: true
       chartValues: true
