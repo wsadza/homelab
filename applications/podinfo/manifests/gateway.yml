@@ -13,7 +13,7 @@ spec:
   gatewayClassName: envoy
   listeners:
 
-    - name: podinfo-http 
+    - name: podinfo
       protocol: HTTP
       port: 80
       hostname: podinfo.anykey.pl
