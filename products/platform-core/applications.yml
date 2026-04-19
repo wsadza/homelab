@@ -36,15 +36,15 @@ applications:
   # Cert-Manager 
   # ------------------
 
-    - name: cert-manager
-      chartName: cert-manager
-      #chartPath: 
-      targetRevision: 1.16.3
-      repoURL: https://charts.jetstack.io
-      manifests: true
-      chartValues: true
-      namespace: cert-manager 
-      priority: -5
+      #  - name: cert-manager
+      #    chartName: cert-manager
+      #    #chartPath: 
+      #    targetRevision: 1.16.3
+      #    repoURL: https://charts.jetstack.io
+      #    manifests: true
+      #    chartValues: true
+      #    namespace: cert-manager 
+      #    priority: -5
 
   # ------------------
   # Podinfo
