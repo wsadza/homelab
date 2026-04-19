@@ -21,18 +21,6 @@ spec:
       destination:
         server: 'https://kubernetes.default.svc'
         namespace: 'default' 
-
-        #syncPolicy:
-        #  syncOptions:
-        #    - CreateNamespace=true
-        #    - ServerSideApply=true
-
-          #syncPolicy:
-          #  automated:
-          #    prune: true
-          #    selfHeal: true
-          #syncOptions:
-          #  - CreateNamespace=true
   templatePatch: |
     spec:
       sources:
