@@ -24,21 +24,17 @@ spec:
 
       syncPolicy:
         automated:
-          enabled: false
+          prune: true
+          selfHeal: true
+
+      #syncPolicy:
+      #  automated:
+      #    enabled: false
+
         syncOptions:
           - CreateNamespace=true
+          - ServerSideApply=true
 
-        #syncPolicy:
-        #  syncOptions:
-        #    - CreateNamespace=true
-        #    - ServerSideApply=true
-
-          #syncPolicy:
-          #  automated:
-          #    prune: true
-          #    selfHeal: true
-          #syncOptions:
-          #  - CreateNamespace=true
   templatePatch: |
     spec:
       sources:
