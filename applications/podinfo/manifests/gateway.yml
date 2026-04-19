@@ -1,11 +1,6 @@
 # ===========================================================
 # Purpose:  
-#           - Expose HTTP(S) traffic for workloads in the 'grafana' namespace via Envoy Gateway.
-#           - Terminate TLS on the Gateway using a shared certificate Secret from the 'ingress' namespace.
-#           - Bind to the 'envoy' GatewayClass managed by Envoy Gateway.
-#           - Allow consuming this definition across whole cluster (nginx-type)
 # Notes:
-#           - (!) This manifests are living inside envoy-system, we are defining 
 # ===========================================================
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
@@ -24,11 +19,6 @@ spec:
     - name: podinfo
       protocol: HTTPS
       port: 443
-      hostname: podinfo.anykey.pl
-
-    - name: podinfo
-      protocol: HTTP
-      port: 80
       hostname: podinfo.anykey.pl
 
     # Here we are defingin TLS configuration
