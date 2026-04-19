@@ -10,7 +10,7 @@ metadata:
 spec:
   parentRefs:
     - name: gateway-podinfo
-      namespace: podinfo
+      namespace: envoy-gateway-system
       sectionName: podinfo
   hostnames:
     - podinfo.anykey.pl

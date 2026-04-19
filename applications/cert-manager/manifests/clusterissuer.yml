@@ -12,6 +12,6 @@ spec:
       - http01:
           gatewayHTTPRoute:
             parentRefs:
-              - name: public
+              - name: acme-public
                 namespace: envoy-gateway-system
                 kind: Gateway
