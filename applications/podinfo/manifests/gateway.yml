@@ -24,23 +24,23 @@ spec:
     # -- Entry ------------
     # This definition needs to be unique
     # This will be merged at gatway-backend
-    - name: podinfo-https
-      protocol: HTTPS
-      port: 443
-      hostname: podinfo.anykey.pl
+    #- name: podinfo-https
+    #  protocol: HTTPS
+    #  port: 443
+    #  hostname: podinfo.anykey.pl
 
-    # Here we are defingin TLS configuration
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: podinfo-tls-certificate 
-            namespace: podinfo
+    ## Here we are defingin TLS configuration
+    #  tls:
+    #    mode: Terminate
+    #    certificateRefs:
+    #      - name: podinfo-tls-certificate 
+    #        namespace: podinfo
 
-      # Allow consuming this definition across whole cluster
-      allowedRoutes:
-        namespaces:
-          from: Selector
-          selector:
-            matchLabels:
-              kubernetes.io/metadata.name: podinfo
+    #  # Allow consuming this definition across whole cluster
+    #  allowedRoutes:
+    #    namespaces:
+    #      from: Selector
+    #      selector:
+    #        matchLabels:
+    #          kubernetes.io/metadata.name: podinfo
 ---
