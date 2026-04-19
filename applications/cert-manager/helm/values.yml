@@ -1,0 +1,24 @@
+############################################################
+# Copyright (c) wsadza 
+# Released under the MIT license
+# ----------------------------------------------------------
+#
+# File:
+#   ./defaults.yml
+#
+# Purpose:
+#   Component specyfic configuration
+#
+############################################################
+
+crds:
+  enabled: true
+
+# good defaults for small labs; you can omit if you want full defaults
+replicaCount: 1
+
+webhook:
+  replicaCount: 1
+
+cainjector:
+  replicaCount: 1

@@ -32,3 +32,30 @@ applications:
       namespace: envoy-gateway-system
       priority: -5
 
+  # ------------------
+  # Cert-Manager 
+  # ------------------
+
+    - name: cert-manager
+      chartName: jetstack/cert-manager
+      #chartPath: 
+      targetRevision: 1.16.3
+      repoURL: https://charts.jetstack.io
+      manifests: true
+      chartValues: true
+      namespace: cert-manager 
+      priority: -5
+
+  # ------------------
+  # Podinfo
+  # ------------------
+
+    - name: podinfo
+      chartName: podinfo
+      #chartPath: 
+      targetRevision: 6.9.1
+      repoURL: https://stefanprodan.github.io/podinfo
+      manifests: true
+      chartValues: true
+      namespace: podinfo 
+      priority: 0
