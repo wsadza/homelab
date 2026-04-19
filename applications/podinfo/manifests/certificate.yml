@@ -1,0 +1,16 @@
+# ===========================================================
+# Purpose:  
+# Notes:
+# ===========================================================
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: podinfo-tls
+  namespace: podinfo
+spec:
+  secretName: podinfo-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  dnsNames:
+    - podinfo.anykey.pl
