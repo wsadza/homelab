@@ -22,10 +22,10 @@ spec:
         server: 'https://kubernetes.default.svc'
         namespace: 'default' 
 
-      syncPolicy:
-        syncOptions:
-          - CreateNamespace=true
-          - ServerSideApply=true
+        #syncPolicy:
+        #  syncOptions:
+        #    - CreateNamespace=true
+        #    - ServerSideApply=true
 
           #syncPolicy:
           #  automated:
