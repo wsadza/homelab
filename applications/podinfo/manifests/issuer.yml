@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: letsencrypt-staging
-  namespace: podinfo
+  namespace: envoy-gateway-system
 spec:
   acme:
     email: staging@anykey.pl
