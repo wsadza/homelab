@@ -71,7 +71,7 @@ spec:
           {{ `{{- if hasKey . "chartValues" }}` }}
           helm:
             valueFiles:
-              - $values/applications/{{ `{{ .name }}` }}/helm/values.yml
+              - $values/applications/{{ $.Values.name }}/{{ `{{ .name }}` }}/helm/values.yml
           {{ `{{- end -}}` }}
 
         {{ `{{- if hasKey . "chartValues" }}` }}
@@ -83,6 +83,6 @@ spec:
         {{ `{{- if hasKey . "manifests" }}` }}
         - repoURL: 'https://github.com/wsadza/homelab'
           targetRevision: HEAD
-          path: applications/{{ `{{ .name }}` }}/manifests/
+          path: applications/{{ $.Values.name }}/{{ `{{ .name }}` }}/manifests/
         {{ `{{- end -}}` }}  
 ...
