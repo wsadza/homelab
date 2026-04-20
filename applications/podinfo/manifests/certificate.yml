@@ -10,7 +10,9 @@ metadata:
 spec:
   secretName: podinfo-tls-certificate
   issuerRef:
-    name: letsencrypt-staging
+    name: issuer-podinfo
     kind: Issuer
+    group: cert-manager.io
   dnsNames:
     - podinfo.anykey.pl
+---

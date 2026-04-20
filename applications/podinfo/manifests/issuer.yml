@@ -1,14 +1,14 @@
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: letsencrypt-staging
+  name: issuer-podinfo
   namespace: envoy-gateway-system
 spec:
   acme:
-    email: staging@anykey.pl
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: podinfo@anykey.pl
+    server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: letsencrypt-staging-account-key
+      name: letsencrypt-account-key
     solvers:
       - http01:
           gatewayHTTPRoute:
@@ -17,3 +17,4 @@ spec:
                 kind: Gateway
                 name: gateway-podinfo
                 namespace: envoy-gateway-system
+---
