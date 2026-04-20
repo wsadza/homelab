@@ -41,10 +41,10 @@ spec:
         {{ range .list }}
         - repoUrl: 'https://github.com/wsadza/homelab.git'
           targetRevision: HEAD
-          path: generator/ 
+          path: platform-bootstrap/charts/applicationset-generator/ 
           helm:
             values: |
-              file: "products/{{ . }}/applications.yml"
+              file: "products/{{ . }}/product.yml"
               name: "{{ . }}" 
         {{ end }}
 ...

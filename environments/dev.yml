@@ -1,5 +1,5 @@
-# products list
-list:
+name: dev
+products:
   - platform-core
 
 #  - platform-observability
