@@ -1,23 +1,8 @@
 # ===============================
-# Public key: age1v2jdckfv9x77zdv7pynrnw9rxlrzgvlymft0qv879dgf2rtwy3lqg4mxp6
 # 
 # ===============================
 applications:
    
-  # ------------------
-  # SOPS 
-  # ------------------
-
-    - name: sealed-secrets
-      chartName: sealed-secrets
-      #chartPath: 
-      targetRevision: 2.16.1 
-      repoURL: oci://docker.io/envoyproxy/gateway-crds-helm
-      #manifests: true
-      chartValues: true
-      namespace: sealed-secrets 
-      priority: -15
-
   # ------------------
   # Envoy-Gateway-CRD's (gateway-api)
   # ------------------

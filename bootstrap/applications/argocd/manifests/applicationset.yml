@@ -12,7 +12,7 @@ spec:
         repoURL: "https://github.com/wsadza/homelab.git"
         revision: HEAD
         files:
-          - path: "products/products-list.yml"
+          - path: "environments/dev.yml"
   template:
     metadata:
       name: 'products'
@@ -38,10 +38,10 @@ spec:
   templatePatch: |
     spec:
       sources:
-        {{ range .list }}
+        {{ range .products }}
         - repoUrl: 'https://github.com/wsadza/homelab.git'
           targetRevision: HEAD
-          path: platform-bootstrap/charts/applicationset-generator/ 
+          path: bootstrap/charts/applicationset-generator/ 
           helm:
             values: |
               file: "products/{{ . }}/product.yml"
