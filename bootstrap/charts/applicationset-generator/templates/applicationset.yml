@@ -40,7 +40,7 @@ spec:
           - ServerSideApply=true
 
   templatePatch: |
-    {{ `{{- if (and (hasKey . "enabled") (eq true .enabled)) }}` }}
+    {{ `{{- if (or (not (hasKey . "enabled")) .enabled) }}` }}
     metadata:
       annotations:
         {{ `{{- if hasKey . "priority" }}` }}
