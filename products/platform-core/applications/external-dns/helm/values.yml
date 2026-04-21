@@ -2,7 +2,6 @@ provider: ovh
 
 sources:
   - service
-  - ingress
   - gateway-httproute
 
 policy: sync
