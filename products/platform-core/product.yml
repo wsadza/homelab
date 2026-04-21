@@ -58,17 +58,3 @@ applications:
       chartValues: true
       namespace: external-dns
       priority: 0
-
-  # ------------------
-  # Podinfo
-  # ------------------
-
-    - name: podinfo
-      chartName: podinfo
-      #chartPath: 
-      targetRevision: 6.9.1
-      repoURL: https://stefanprodan.github.io/podinfo
-      manifests: true
-      chartValues: true
-      namespace: podinfo 
-      priority: 0
