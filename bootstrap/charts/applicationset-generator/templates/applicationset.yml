@@ -23,9 +23,9 @@ spec:
              elementsYaml: |
                {{ `{{- $enabledApps := list }}` }}
                {{ `{{- range .applications }}` }}
-                 {{ `{{- if (and (hasKey . "enabled") (dig "enabled" true .)) }}` }}
-                   {{ `{{- $enabledApps = append $enabledApps . }}` }}
-                 {{ `{{- end }}` }}
+               {{ `{{- if (dig "enabled" true .) }}` }}
+               {{ `{{- $enabledApps = append $enabledApps . }}` }}
+               {{ `{{- end }}` }}
                {{ `{{- end }}` }}
                {{ `{{ $enabledApps | toYaml }}` }}
   template:
