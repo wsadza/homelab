@@ -5,7 +5,7 @@
 applications:
 
     - name: podinfo
-      enabled: true
+      enabled: false
       chartName: podinfo
       #chartPath: ./deploy/chart/local-path-provisioner 
       #chartValues: 
