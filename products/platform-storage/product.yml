@@ -1,16 +1,19 @@
-# --
+# ===============================
 # 
-# 
-# --
+# ===============================
 applications:
 
-    - name: podinfo
-      enabled: false
-      chartName: podinfo
-      #chartPath: ./deploy/chart/local-path-provisioner 
-      #chartValues: 
-      targetRevision: 6.11.2
-      repoURL: https://stefanprodan.github.io/podinfo
+  # ------------------
+  # Local Path Provisoner 
+  # ------------------
+
+    - name: local-path-provisioner
+      enabled: true 
+      chartName: local-path-provisioner
+      chartPath: ./deploy/chart/local-path-provisioner 
+      chartValues: true
+      targetRevision: v0.0.35
+      repoURL: https://github.com/rancher/local-path-provisioner
       #manifests: 
       #namespace: 
       #priority:

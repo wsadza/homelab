@@ -2,9 +2,9 @@ name: dev
 products:
   - platform-core
   - workload-tests
+  - product-storage
 
 #  - platform-observability
 #  - platform-security
-#  - product-storage
 #  - gpu
 #  - infrastructure
