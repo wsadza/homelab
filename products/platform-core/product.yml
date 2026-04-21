@@ -8,6 +8,7 @@ applications:
   # ------------------
 
     - name: envoy-gateway-crds
+      enabled: true
       chartName: envoy-gateway-crds
       #chartPath: 
       targetRevision: v1.7.1
@@ -22,6 +23,7 @@ applications:
   # ------------------
   
     - name: envoy-gateway 
+      enabled: true
       chartName: envoy-gateway
       #chartPath: 
       targetRevision: v1.7.1
@@ -36,6 +38,7 @@ applications:
   # ------------------
 
     - name: cert-manager
+      enabled: true
       chartName: cert-manager
       #chartPath: 
       targetRevision: 1.20.2
@@ -50,6 +53,7 @@ applications:
   # ------------------
   
     - name: external-dns
+      enabled: true
       chartName: external-dns
       #chartPath: 
       targetRevision: 1.20.0
