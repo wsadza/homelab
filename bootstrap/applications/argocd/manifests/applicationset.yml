@@ -45,6 +45,6 @@ spec:
             values: |
               file: "products/{{ . }}/product.yml"
               name: "{{ . }}" 
-              environment: "{{ .name }}"
+              environment: "{{ $.name }}"
         {{ end }}
 ...
