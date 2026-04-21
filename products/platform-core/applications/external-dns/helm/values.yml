@@ -14,12 +14,12 @@ txtPrefix: external-dns-
 interval: 1m
 
 domainFilters:
-  - example.com
+  - anykey.pl 
 
 extraArgs:
-  - --ovh-endpoint=ovh-eu
-  - --ovh-consumer-key=$(OVH_CONSUMER_KEY)
-  - --exclude-domains=internal.example.com
+  - --source=service # ingress is also possible
+  - --domain-filter=anykey.pl # (optional) limit to only example.com domains; change to match the zone created above.
+  - --provider=ovh
 
 env:
   - name: OVH_APPLICATION_KEY
