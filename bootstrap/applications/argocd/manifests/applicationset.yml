@@ -38,7 +38,7 @@ spec:
     spec:
       sources:
         {{ range .products }}
-        - repoURL: 'https://github.com/wsadza/homelab.git'
+        - repoUrl: 'https://github.com/wsadza/homelab.git'
           targetRevision: HEAD
           path: bootstrap/charts/applicationset-generator/ 
           helm:

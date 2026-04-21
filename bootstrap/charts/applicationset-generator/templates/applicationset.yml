@@ -64,7 +64,7 @@ spec:
         namespace: {{ `{{ .name }}` }} 
         {{ `{{- end }}` }}
       sources:
-        - repoURL: {{ `{{ .repoURL }}` }} 
+        - repoUrl: {{ `{{ .repoURL }}` }} 
           targetRevision: {{ `{{ .targetRevision }}` }} 
 
           {{ `{{- if hasKey . "chartPath" }}` }}
