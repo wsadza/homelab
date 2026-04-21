@@ -8,7 +8,6 @@ applications:
   # ------------------
 
     - name: podinfo
-      enabled: true
       chartName: podinfo
       #chartPath: 
       targetRevision: 6.9.1
