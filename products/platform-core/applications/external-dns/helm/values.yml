@@ -16,10 +16,9 @@ interval: 1m
 domainFilters:
   - anykey.pl 
 
-extraArgs:
-  - --source=service # ingress is also possible
-  - --domain-filter=anykey.pl # (optional) limit to only example.com domains; change to match the zone created above.
-  - --provider=ovh
+  #extraArgs:
+  #  - --source=service # ingress is also possible
+  #  - --domain-filter=anykey.pl # (optional) limit to only example.com domains; change to match the zone created above.
 
 env:
   - name: OVH_APPLICATION_KEY
