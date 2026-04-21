@@ -7,6 +7,10 @@ metadata:
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
+
+  syncPolicy:
+    applicationsSync: create-delete
+
   generators:
   - matrix:
       generators:
