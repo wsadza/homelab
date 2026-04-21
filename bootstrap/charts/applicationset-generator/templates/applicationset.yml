@@ -40,12 +40,11 @@ spec:
       #syncPolicy:
       #  automated:
       #    enabled: false
+
       syncPolicy:
-        applicationsSync: sync
-      #syncPolicy:
-      #  automated:
-      #    prune: true
-      #    selfHeal: true
+        automated:
+          prune: true
+          selfHeal: true
 
         syncOptions:
           - CreateNamespace=true
