@@ -7,8 +7,6 @@ kind: HTTPRoute
 metadata:
   name: podinfo-host
   namespace: podinfo
-  annotations:
-    external-dns.alpha.kubernetes.io/target: anykey.pl
 spec:
   parentRefs:
     - name: gateway-podinfo
