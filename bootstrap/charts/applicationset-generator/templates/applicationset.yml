@@ -40,6 +40,7 @@ spec:
           - ServerSideApply=true
 
   templatePatch: |
+    {{ `{{- if (and (hasKey . "enabled") (eq true .enabled)) }}` }}
     metadata:
       annotations:
         {{ `{{- if hasKey . "priority" }}` }}
@@ -53,7 +54,7 @@ spec:
         namespace: {{ `{{ .name }}` }} 
         {{ `{{- end }}` }}
       sources:
-        - repoUrl: {{ `{{ .repoURL }}` }} 
+        - repoURL: {{ `{{ .repoURL }}` }} 
           targetRevision: {{ `{{ .targetRevision }}` }} 
 
           {{ `{{- if hasKey . "chartPath" }}` }}
@@ -85,4 +86,5 @@ spec:
           targetRevision: HEAD
           path: products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/manifests/
         {{ `{{- end -}}` }}  
+    {{ `{{- end -}}` }}  
 ...
