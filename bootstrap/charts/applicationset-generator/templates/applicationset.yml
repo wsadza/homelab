@@ -23,7 +23,7 @@ spec:
              elementsYaml: |
                {{ `{{- $enabledApps := list }}` }}
                {{ `{{- range .applications }}` }}
-                 {{ `{{- if (and (hasKey . "enabled") (eq true .enabled)) }}` }}
+                 {{ `{{- if (and (hasKey . "enabled") (dig "enabled" true .)) }}` }}
                    {{ `{{- $enabledApps = append $enabledApps . }}` }}
                  {{ `{{- end }}` }}
                {{ `{{- end }}` }}
