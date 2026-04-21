@@ -16,7 +16,14 @@ spec:
              files:
                - path: {{ $.Values.file }}
          - list:
-             elementsYaml: '{{ `{{ .applications | toYaml }}` }}'
+             elementsYaml: |
+               {{ `{{- $enabledApps := list }}` }}
+               {{ `{{- range .applications }}` }}
+               {{ `{{- if (or (not (hasKey . "enabled")) .enabled) }}` }}
+               {{ `{{- $enabledApps = append $enabledApps . }}` }}
+               {{ `{{- end }}` }}
+               {{ `{{- end }}` }}
+               {{ `{{ $enabledApps | toYaml }}` }}
   template:
     metadata:
       name: '{{ `{{ .name }}` }}'
@@ -40,7 +47,6 @@ spec:
           - ServerSideApply=true
 
   templatePatch: |
-    {{ `{{- if (or (not (hasKey . "enabled")) .enabled) }}` }}
     metadata:
       annotations:
         {{ `{{- if hasKey . "priority" }}` }}
@@ -86,5 +92,4 @@ spec:
           targetRevision: HEAD
           path: products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/manifests/
         {{ `{{- end -}}` }}  
-    {{ `{{- end -}}` }}  
 ...
