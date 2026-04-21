@@ -1,0 +1,50 @@
+provider: ovh
+
+sources:
+  - service
+  - ingress
+  - gateway-httproute
+
+policy: sync
+
+registry: txt
+txtOwnerId: homelab-dev
+txtPrefix: external-dns-
+
+interval: 1m
+
+domainFilters:
+  - example.com
+
+extraArgs:
+  - --ovh-endpoint=ovh-eu
+  - --ovh-consumer-key=$(OVH_CONSUMER_KEY)
+  - --exclude-domains=internal.example.com
+
+env:
+  - name: OVH_APPLICATION_KEY
+    valueFrom:
+      secretKeyRef:
+        name: external-dns-ovh
+        key: applicationKey
+  - name: OVH_APPLICATION_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: external-dns-ovh
+        key: applicationSecret
+  - name: OVH_CONSUMER_KEY
+    valueFrom:
+      secretKeyRef:
+        name: external-dns-ovh
+        key: consumerKey
+
+serviceAccount:
+  create: true
+  name: external-dns
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    memory: 128Mi

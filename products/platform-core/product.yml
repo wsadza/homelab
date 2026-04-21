@@ -46,6 +46,20 @@ applications:
       priority: -5
 
   # ------------------
+  # Exteranl-DNS 
+  # ------------------
+
+    - name: external-dns
+      chartName: external-dns
+      #chartPath: 
+      targetRevision: 6.9.1
+      repoURL: https://stefanprodan.github.io/podinfo
+      manifests: true
+      chartValues: true
+      namespace: external-dns
+      priority: 0
+
+  # ------------------
   # Podinfo
   # ------------------
 
