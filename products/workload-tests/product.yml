@@ -9,7 +9,7 @@ applications:
 
     - name: podinfo
       chartName: podinfo
-      #enabled: false
+      enabled: false
       #chartPath: 
       targetRevision: 6.9.1
       repoURL: https://stefanprodan.github.io/podinfo
