@@ -7,14 +7,14 @@ metadata:
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
+  syncPolicy:
+    preserveResourcesOnDeletion: true
   generators:
     - git:
         repoURL: "https://github.com/wsadza/homelab.git"
         revision: HEAD
         files:
           - path: "environments/dev.yml"
-  syncPolicy:
-    preserveResourcesOnDeletion: true
   template:
     metadata:
       name: 'products'
