@@ -38,7 +38,7 @@ applications:
   # ------------------
 
     - name: cert-manager
-      enabled: true
+      enabled: false
       chartName: cert-manager
       #chartPath: 
       targetRevision: 1.20.2
@@ -53,7 +53,7 @@ applications:
   # ------------------
   
     - name: external-dns
-      enabled: true
+      enabled: false
       chartName: external-dns
       #chartPath: 
       targetRevision: 1.20.0
