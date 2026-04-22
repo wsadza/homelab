@@ -8,7 +8,7 @@ applications:
   # ------------------
 
     - name: local-path-provisioner
-      chartName: local-path-provisioner
+      chartName: local-path-storage
       enabled: true 
       chartPath: ./deploy/chart/local-path-provisioner 
       targetRevision: v0.0.35
