@@ -17,15 +17,15 @@ spec:
              revision: HEAD 
              files:
                - path: {{ $.Values.file }}
-           - list:
-               elementsYaml: |
-                 {{ `{{- $enabledApps := list }}` }}
-                 {{ `{{- range .applications }}` }}
-                 {{ `{{- if (dig "enabled" true .) }}` }}
-                 {{ `{{- $enabledApps = append $enabledApps . }}` }}
-                 {{ `{{- end }}` }}
-                 {{ `{{- end }}` }}
-                 {{ `{{ $enabledApps | toYaml }}` }}
+         - list:
+             elementsYaml: |
+               {{ `{{- $enabledApps := list }}` }}
+               {{ `{{- range .applications }}` }}
+               {{ `{{- if (dig "enabled" true .) }}` }}
+               {{ `{{- $enabledApps = append $enabledApps . }}` }}
+               {{ `{{- end }}` }}
+               {{ `{{- end }}` }}
+               {{ `{{ $enabledApps | toYaml }}` }}
   template:
     metadata:
       name: '{{ `{{ .name }}` }}'
