@@ -11,8 +11,9 @@ spec:
     - git:
         repoURL: "https://github.com/wsadza/homelab.git"
         revision: HEAD
+        requeueAfterSeconds: 60
         files:
-          - path: "environments/dev.yml"
+          - path: "./environments/dev.yml"
   template:
     metadata:
       name: 'products'
@@ -38,7 +39,7 @@ spec:
     spec:
       sources:
         {{ range .products }}
-        - repoUrl: 'https://github.com/wsadza/homelab.git'
+        - repoURL: 'https://github.com/wsadza/homelab.git'
           targetRevision: HEAD
           path: bootstrap/charts/applicationset-generator/ 
           helm:
