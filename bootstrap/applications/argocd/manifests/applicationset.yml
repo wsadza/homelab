@@ -9,7 +9,7 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
     - git:
-        repoURL: "https://github.com/utilizable/charts.git"
+        repoURL: "https://github.com/wsadza/homelab.git"
         revision: HEAD
         files:
           - path: "environments/dev.yml"
@@ -31,12 +31,12 @@ spec:
     spec:
       sources:
         {{ range .list }}
-        - repoUrl: 'https://github.com/wsadza/charts.git'
+        - repoUrl: 'https://github.com/wsadza/homelab.git'
           targetRevision: HEAD
-          path: generator/ 
+          path: bootstrap/charts/applicationset-generator
           helm:
             values: |
-              file: "products/{{ . }}/produc.yml"
+              file: "products/{{ . }}/product.yml"
               name: "{{ . }}" 
         {{ end }}
 ...
