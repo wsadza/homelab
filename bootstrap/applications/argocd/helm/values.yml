@@ -1,7 +1,14 @@
 # -- Argo Instance Extra Configuration
 configs:
   cm:
+
     kustomize.buildOptions: "--enable-alpha-plugins --enable-exec"
+
+    # -- Timeout to discover if a new manifests version got published to the repository
+    timeout.reconciliation: 30s
+
+    # -- Maximum jitter added to the reconciliation timeout to spread out refreshes and reduce repo-server load
+    timeout.reconciliation.jitter: 0s
 
   # -- Create the argocd-secret
   secret:
