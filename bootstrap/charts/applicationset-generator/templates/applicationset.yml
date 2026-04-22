@@ -11,7 +11,7 @@ spec:
   - matrix:
       generators:
          - git:
-             repoURL: 'https://github.com/utilizable/charts'
+             repoURL: 'https://github.com/wsadza/homelab'
              revision: HEAD 
              files:
                - path: {{ $.Values.file }}
@@ -67,13 +67,13 @@ spec:
           {{ `{{- end -}}` }}
 
         {{ `{{- if hasKey . "chartValues" }}` }}
-        - repoURL: 'https://github.com/utilizable/charts'
+        - repoURL: 'https://github.com/wsadza/homelab'
           targetRevision: HEAD
           ref: values
         {{ `{{- end -}}` }}
 
         {{ `{{- if hasKey . "manifests" }}` }}
-        - repoURL: 'https://github.com/utilizable/charts'
+        - repoURL: 'https://github.com/wsadza/homelab'
           targetRevision: HEAD
           path: applications/{{ `{{ .name }}` }}/manifests/
         {{ `{{- end -}}` }}  

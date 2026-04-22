@@ -12,7 +12,7 @@ spec:
         repoURL: "https://github.com/utilizable/charts.git"
         revision: HEAD
         files:
-          - path: "products/products-list.yml"
+          - path: "environments/dev.yml"
   template:
     metadata:
       name: 'products'
@@ -31,12 +31,12 @@ spec:
     spec:
       sources:
         {{ range .list }}
-        - repoUrl: 'https://github.com/utilizable/charts.git'
+        - repoUrl: 'https://github.com/wsadza/charts.git'
           targetRevision: HEAD
           path: generator/ 
           helm:
             values: |
-              file: "products/{{ . }}/applications.yml"
+              file: "products/{{ . }}/produc.yml"
               name: "{{ . }}" 
         {{ end }}
 ...
