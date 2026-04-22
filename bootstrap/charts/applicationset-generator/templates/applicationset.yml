@@ -7,6 +7,8 @@ metadata:
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
+  syncPolicy:
+    preserveResourcesOnDeletion: true
   generators:
   - matrix:
       generators:
@@ -26,7 +28,6 @@ spec:
         server: 'https://kubernetes.default.svc'
         namespace: 'default'
       syncPolicy:
-        preserveResourcesOnDeletion: true
         automated:
           prune: true
           selfHeal: true
