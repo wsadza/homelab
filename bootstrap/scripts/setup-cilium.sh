@@ -8,6 +8,7 @@ helm upgrade \
   --install cilium cilium/cilium \
   --namespace kube-system \
   --create-namespace \
-  --values ../applications/cilium/helm/values.yml
+  --values ../applications/cilium/helm/values.yml \
+  --force-conflicts
 
-kubectl apply -f ../applications/cilium/manifests/ || true
+#kubectl apply -f ../applications/cilium/manifests/ || true

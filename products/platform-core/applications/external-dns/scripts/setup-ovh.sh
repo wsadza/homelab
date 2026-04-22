@@ -1,8 +1,4 @@
 # ==============================
-# Author: 
-# - igor.sadza@gmail.com
-# Usage:
-# - ./setup-ovh.sh 
 # Documentation:
 # - https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/ovh.md
 # ==============================
