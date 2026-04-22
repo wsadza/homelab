@@ -35,6 +35,7 @@ spec:
         {{ range .products }}
         - repoUrl: 'https://github.com/wsadza/homelab.git'
           targetRevision: HEAD
+          requeueAfterSeconds: 30
           path: bootstrap/charts/applicationset-generator
           helm:
             values: |

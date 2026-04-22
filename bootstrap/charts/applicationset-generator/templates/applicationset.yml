@@ -15,6 +15,7 @@ spec:
          - git:
              repoURL: 'https://github.com/wsadza/homelab'
              revision: HEAD 
+             requeueAfterSeconds: 30
              files:
                - path: {{ $.Values.file }}
          - list:
