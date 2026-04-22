@@ -13,6 +13,8 @@ spec:
         revision: HEAD
         files:
           - path: "environments/dev.yml"
+  syncPolicy:
+    preserveResourcesOnDeletion: true
   template:
     metadata:
       name: 'products'
@@ -22,7 +24,6 @@ spec:
         server: 'https://kubernetes.default.svc'
         namespace: 'default' 
       syncPolicy:
-        preserveResourcesOnDeletion: true
         automated:
           prune: true
           selfHeal: true
