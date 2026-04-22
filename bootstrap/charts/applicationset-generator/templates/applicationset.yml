@@ -85,6 +85,6 @@ spec:
         {{ `{{- if hasKey . "manifests" }}` }}
         - repoURL: 'https://github.com/wsadza/homelab'
           targetRevision: HEAD
-          path: applications/{{ `{{ .name }}` }}/manifests/
+          path: products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/manifests/
         {{ `{{- end -}}` }}  
 ...
