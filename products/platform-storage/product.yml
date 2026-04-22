@@ -8,12 +8,12 @@ applications:
   # ------------------
 
     - name: local-path-provisioner
-      chartName: local-path-storage
+      #chartName: local-path-storage
       enabled: true 
       chartPath: ./deploy/chart/local-path-provisioner 
       targetRevision: v0.0.35
       repoURL: https://github.com/rancher/local-path-provisioner
-      manifests: true
+      #manifests: true
       chartValues: true
       namespace: local-path-provisioner
-      priority: 0
+      #priority: 0
