@@ -9,11 +9,10 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
     - git:
-        repoURL: "https://github.com/wsadza/homelab.git"
+        repoURL: "https://github.com/utilizable/charts.git"
         revision: HEAD
-        requeueAfterSeconds: 60
         files:
-          - path: "./environments/dev.yml"
+          - path: "products/products-list.yml"
   template:
     metadata:
       name: 'products'
@@ -22,29 +21,22 @@ spec:
       destination:
         server: 'https://kubernetes.default.svc'
         namespace: 'default' 
-
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
-
-      #syncPolicy:
-      #  automated:
-      #    enabled: false
-
         syncOptions:
           - CreateNamespace=true
-
   templatePatch: |
     spec:
       sources:
-        {{ range .products }}
-        - repoURL: 'https://github.com/wsadza/homelab.git'
+        {{ range .list }}
+        - repoUrl: 'https://github.com/utilizable/charts.git'
           targetRevision: HEAD
-          path: bootstrap/charts/applicationset-generator/ 
+          path: generator/ 
           helm:
             values: |
-              file: "products/{{ . }}/product.yml"
+              file: "products/{{ . }}/applications.yml"
               name: "{{ . }}" 
         {{ end }}
 ...

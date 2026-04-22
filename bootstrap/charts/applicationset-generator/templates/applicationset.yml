@@ -7,27 +7,16 @@ metadata:
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
-
-  syncPolicy:
-    applicationsSync: create-delete
-
   generators:
   - matrix:
       generators:
          - git:
-             repoURL: 'https://github.com/wsadza/homelab'
+             repoURL: 'https://github.com/utilizable/charts'
              revision: HEAD 
              files:
                - path: {{ $.Values.file }}
          - list:
-             elementsYaml: |
-               {{ `{{- $enabledApps := list }}` }}
-               {{ `{{- range .applications }}` }}
-               {{ `{{- if (dig "enabled" true .) }}` }}
-               {{ `{{- $enabledApps = append $enabledApps . }}` }}
-               {{ `{{- end }}` }}
-               {{ `{{- end }}` }}
-               {{ `{{ $enabledApps | toYaml }}` }}
+             elementsYaml: '{{ `{{ .applications | toYaml }}` }}'
   template:
     metadata:
       name: '{{ `{{ .name }}` }}'
@@ -36,20 +25,12 @@ spec:
       destination:
         server: 'https://kubernetes.default.svc'
         namespace: 'default'
-
-      #syncPolicy:
-      #  automated:
-      #    enabled: false
-
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
-
         syncOptions:
           - CreateNamespace=true
-#          - ServerSideApply=true
-
   templatePatch: |
     metadata:
       annotations:
@@ -64,7 +45,7 @@ spec:
         namespace: {{ `{{ .name }}` }} 
         {{ `{{- end }}` }}
       sources:
-        - repoURL: {{ `{{ .repoURL }}` }} 
+        - repoUrl: {{ `{{ .repoURL }}` }} 
           targetRevision: {{ `{{ .targetRevision }}` }} 
 
           {{ `{{- if hasKey . "chartPath" }}` }}
@@ -82,18 +63,18 @@ spec:
           {{ `{{- if hasKey . "chartValues" }}` }}
           helm:
             valueFiles:
-              - $values/products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/helm/values.yml
+              - $values/applications/{{ `{{ .name }}` }}/helm/values.yml
           {{ `{{- end -}}` }}
 
         {{ `{{- if hasKey . "chartValues" }}` }}
-        - repoURL: 'https://github.com/wsadza/homelab'
+        - repoURL: 'https://github.com/utilizable/charts'
           targetRevision: HEAD
           ref: values
         {{ `{{- end -}}` }}
 
         {{ `{{- if hasKey . "manifests" }}` }}
-        - repoURL: 'https://github.com/wsadza/homelab'
+        - repoURL: 'https://github.com/utilizable/charts'
           targetRevision: HEAD
-          path: products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/manifests/
+          path: applications/{{ `{{ .name }}` }}/manifests/
         {{ `{{- end -}}` }}  
 ...
