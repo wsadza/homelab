@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
@@ -10,4 +11,4 @@ helm upgrade \
   --values ../applications/argocd/helm/values.yml \
   --force-conflicts
 
-kubectl apply -f ../applications/argocd/manifests/
+kubectl apply -f ../applications/argocd/manifests/ || true
