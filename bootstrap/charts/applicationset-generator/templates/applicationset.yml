@@ -96,11 +96,6 @@ spec:
               - $values/products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/helm/values.yml
           {{ `{{- end -}}` }}
         {{ `{{- end -}}` }}
-
-        # ------------------
-        # Manifests 
-        # ------------------
-
         {{ `{{- if hasKey . "manifests" }}` }}
         - repoURL: 'https://github.com/wsadza/homelab'
           targetRevision: HEAD
@@ -108,15 +103,9 @@ spec:
           directory:
             recurse: true
         {{ `{{- end -}}` }}
-        
-        # ------------------
-        # Kustomize 
-        # ------------------
-
         {{ `{{- if hasKey . "kustomize" }}` }}
         - repoURL: 'https://github.com/wsadza/homelab'
           targetRevision: HEAD
           path: products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/kustomize/
         {{ `{{- end -}}` }}
-
 ...
