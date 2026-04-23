@@ -100,8 +100,8 @@ spec:
         - repoURL: 'https://github.com/wsadza/homelab'
           targetRevision: HEAD
           path: products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/manifests/
-          directory:
-            recurse: true
+          #directory:
+          #  recurse: true
         {{ `{{- end -}}` }}
         {{ `{{- if hasKey . "kustomize" }}` }}
         - repoURL: 'https://github.com/wsadza/homelab'
