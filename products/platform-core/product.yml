@@ -53,7 +53,7 @@ applications:
   # ------------------
   
     - name: external-dns
-      enabled: false
+      enabled: true
       chartName: external-dns
       #chartPath: 
       targetRevision: 1.20.0
