@@ -5,21 +5,25 @@ ipam:
 
 kubeProxyReplacement: false
 
-gatewayAPI:
-  enabled: true
-
 hubble:
   enabled: true
   relay:
     enabled: true
   ui:
     enabled: true
-  tls:
-    enabled: true
-    auto:
-      enabled: true
-      method: certmanager
-      certManagerIssuerRef:
-        group: cert-manager.io
-        kind: Issuer
-        name: cilium-selfsigned-ca
+
+envoy:
+  enabled: false
+
+ingressController:
+  enabled: false
+
+gatewayAPI:
+  enabled: false
+
+loadBalancer:
+  l7:
+    backend: disabled
+
+envoyConfig:
+  enabled: false
