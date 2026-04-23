@@ -7,7 +7,7 @@ applications:
   # Argo-CD - Gateway-API
   # ------------------
   
-    - name: argocd 
+    - name: argocd-extras
       enabled: true
       chartName: argocd 
       #chartPath: 
