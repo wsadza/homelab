@@ -9,8 +9,8 @@ metadata:
   namespace: envoy-gateway-system
   labels:
     traffic-profile: shared
-  annotations: 
-    external-dns.alpha.kubernetes.io/target: anykey.pl
+    #annotations: 
+    #  external-dns.alpha.kubernetes.io/target: anykey.pl
 spec:
   gatewayClassName: envoy
   listeners:
