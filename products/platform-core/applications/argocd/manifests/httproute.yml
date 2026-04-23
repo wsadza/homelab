@@ -8,7 +8,7 @@ metadata:
   name: argocd-host-https
   namespace: argocd 
 spec:
-  paretnRefs:
+  parentRefs:
     - name: gateway-argocd-https
       namespace: envoy-gateway-system
       sectionName: argocd-https
@@ -27,7 +27,7 @@ metadata:
   name: argocd-host-http
   namespace: argocd 
 spec:
-  paretnRefs:
+  parentRefs:
     - name: gateway-argocd-http
       namespace: envoy-gateway-system
       sectionName: argocd-http
