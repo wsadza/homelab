@@ -7,7 +7,7 @@ spec:
   paretnRefs:
     - name: gateway-argocd
       namespace: envoy-gateway-system
-      sectionName: argocd 
+      sectionName: argocd-http
     - name: gateway-argocd
       namespace: envoy-gateway-system
       sectionName: argocd-https
