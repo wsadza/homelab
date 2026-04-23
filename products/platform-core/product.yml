@@ -74,20 +74,3 @@ applications:
       priority: 0
       syncPolicy:
         automated: false
-
-  # ------------------
-  # Argo-CD
-  # ------------------
-  
-    - name: argocd 
-      enabled: true
-      chartName: argocd 
-      #chartPath: 
-      #targetRevision: 1.20.0
-      #repoURL: https://kubernetes-sigs.github.io/external-dns/
-      manifests: true
-      #chartValues: true
-      namespace: argocd
-      priority: 0
-      syncPolicy:
-        automated: true
