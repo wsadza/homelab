@@ -17,6 +17,9 @@ applications:
       chartValues: true
       namespace: envoy-gateway-system
       priority: -10
+      syncPolicy:
+        syncOptions:
+          - ServerSideApply=true
 
   # ------------------
   # Envoy-Gateway 
@@ -32,6 +35,9 @@ applications:
       chartValues: true
       namespace: envoy-gateway-system
       priority: -5
+      syncPolicy:
+        syncOptions:
+          - ServerSideApply=true
 
   # ------------------
   # Cert-Manager 

@@ -40,7 +40,10 @@ spec:
           prune: true
           selfHeal: true
         syncOptions:
-          - CreateNamespace=true
+        - CreateNamespace=true
+        {{- `{{ range .syncPolicy.syncOptions }}` }}
+        - {{ `{{ . }}` }}
+        {{ `{{- end }}` }}
   templatePatch: |
     metadata:
       annotations:
