@@ -96,13 +96,33 @@ spec:
               - $values/products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/helm/values.yml
           {{ `{{- end -}}` }}
         {{ `{{- end -}}` }}
+
+        # ----------------
+        # Values 
+        # ----------------
+
+        {{ `{{- if hasKey . "chartValues" }}` }}
+        - repoURL: 'https://github.com/wsadza/homelab'
+          targetRevision: HEAD
+          ref: values
+        {{ `{{- end -}}` }}
+
+        # ----------------
+        # Manifests 
+        # ----------------
+
         {{ `{{- if hasKey . "manifests" }}` }}
         - repoURL: 'https://github.com/wsadza/homelab'
           targetRevision: HEAD
           path: products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/manifests/
-          #directory:
-          #  recurse: true
+          directory:
+            recurse: true
         {{ `{{- end -}}` }}
+
+        # ----------------
+        # Kustomize
+        # ----------------
+
         {{ `{{- if hasKey . "kustomize" }}` }}
         - repoURL: 'https://github.com/wsadza/homelab'
           targetRevision: HEAD
