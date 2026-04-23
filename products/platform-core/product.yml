@@ -52,6 +52,7 @@ applications:
       targetRevision: 1.20.2
       repoURL: https://charts.jetstack.io
       #manifests: true
+      kustomize: true
       chartValues: true
       namespace: cert-manager 
       priority: -5
