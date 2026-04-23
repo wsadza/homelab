@@ -42,30 +42,18 @@ spec:
         argocd.argoproj.io/sync-wave: "{{ `{{ .priority }}` }}"
         {{ `{{- end }}` }}
     spec:
-
-      # ------------------
-      # SyncPolicy 
-      # ------------------
-
-      {{- if (dig "syncPolicy" "automated" false .) }}
       syncPolicy:
+        {{ `{{- if (dig "syncPolicy" "automated" false .) }}` }}
         automated:
           prune: true
           selfHeal: true
+        {{- end }}
+        {{ `{{- end }}` ]]
         syncOptions:
           - CreateNamespace=true
-          {{- range (dig "syncPolicy" "syncOptions" (list) .) }}
-          - {{ . }}
-          {{- end }}
-      {{- else }}
-      syncPolicy:
-        syncOptions:
-          - CreateNamespace=true
-          {{- range (dig "syncPolicy" "syncOptions" (list) .) }}
-          - {{ . }}
-          {{- end }}
-      {{- end }}
-
+          {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}
+          - {{ `{{ . }}` }}
+          {{ `{{- end }}` }}
       destination:
         {{ `{{- if hasKey . "namespace" }}` }}
         namespace: {{ `{{ .namespace }}` }} 
