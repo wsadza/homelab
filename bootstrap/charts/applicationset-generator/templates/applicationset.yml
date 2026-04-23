@@ -47,8 +47,7 @@ spec:
         automated:
           prune: true
           selfHeal: true
-        {{- end }}
-        {{ `{{- end }}` ]]
+        {{ `{{- end }}` }}
         syncOptions:
           - CreateNamespace=true
           {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}
