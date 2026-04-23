@@ -93,6 +93,6 @@ spec:
           targetRevision: HEAD
           path: products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/manifests/
           directory:
-          recurse: true
+            recurse: true
         {{ `{{- end -}}` }}  
 ...
