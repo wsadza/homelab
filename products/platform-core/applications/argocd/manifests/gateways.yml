@@ -43,5 +43,5 @@ spec:
           from: Selector
           selector:
             matchLabels:
-              kubernetes.io/metadata.name: argocd-server
+              kubernetes.io/metadata.name: argocd
 ---
