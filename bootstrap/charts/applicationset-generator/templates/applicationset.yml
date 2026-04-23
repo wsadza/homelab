@@ -93,7 +93,7 @@ spec:
           {{ `{{- if hasKey . "chartValues" }}` }}
           helm:
             valueFiles:
-              - $values/products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/helm/values.yml
+              - products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/helm/values.yml
           {{ `{{- end -}}` }}
         {{ `{{- end -}}` }}
         {{ `{{- if hasKey . "manifests" }}` }}
