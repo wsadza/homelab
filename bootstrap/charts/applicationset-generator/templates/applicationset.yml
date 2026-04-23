@@ -35,10 +35,6 @@ spec:
       destination:
         server: 'https://kubernetes.default.svc'
         namespace: 'default'
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
   templatePatch: |
     metadata:
       annotations:
@@ -47,6 +43,11 @@ spec:
         {{ `{{- end }}` }}
     spec:
       syncPolicy:
+        {{ `{{- if hasKey . "automated" }}` }}
+        automated:
+          prune: true
+          selfHeal: true
+        {{ `{{- end }}` }}
         syncOptions:
           - CreateNamespace=true
           {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}

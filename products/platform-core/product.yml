@@ -18,6 +18,7 @@ applications:
       namespace: envoy-gateway-system
       priority: -10
       syncPolicy:
+        automated: true
         syncOptions:
           - ServerSideApply=true
 
@@ -36,6 +37,7 @@ applications:
       namespace: envoy-gateway-system
       priority: -5
       syncPolicy:
+        automated: true
         syncOptions:
           - ServerSideApply=true
 
@@ -53,6 +55,8 @@ applications:
       chartValues: true
       namespace: cert-manager 
       priority: -5
+      syncPolicy:
+        automated: true
 
   # ------------------
   # Exteranl-DNS 
@@ -68,6 +72,8 @@ applications:
       chartValues: true
       namespace: external-dns
       priority: 0
+      syncPolicy:
+        automated: false
 
   # ------------------
   # Argo-CD
@@ -83,3 +89,5 @@ applications:
       #chartValues: true
       namespace: argocd
       priority: 0
+      syncPolicy:
+        automated: true
