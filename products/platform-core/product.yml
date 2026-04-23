@@ -38,7 +38,7 @@ applications:
   # ------------------
 
     - name: cert-manager
-      enabled: false
+      enabled: true
       chartName: cert-manager
       #chartPath: 
       targetRevision: 1.20.2
