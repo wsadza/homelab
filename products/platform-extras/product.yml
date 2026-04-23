@@ -9,7 +9,7 @@ applications:
   
     - name: argocd-extras
       enabled: true
-      chartName: argocd 
+      #chartName: argocd 
       #chartPath: 
       #targetRevision: 1.20.0
       #repoURL: https://kubernetes-sigs.github.io/external-dns/
@@ -17,6 +17,24 @@ applications:
       kustomize: true
       #chartValues: true
       namespace: argocd
+      priority: 0
+      syncPolicy:
+        automated: true
+
+  # ------------------
+  # MetricServer 
+  # ------------------
+  
+    - name: metric-server-extras 
+      enabled: true
+      #chartName: argo
+      #chartPath: 
+      #targetRevision: 1.20.0
+      #repoURL: https://kubernetes-sigs.github.io/external-dns/
+      #manifests: true
+      kustomize: true
+      #chartValues: true
+      namespace: kube-system
       priority: 0
       syncPolicy:
         automated: true
