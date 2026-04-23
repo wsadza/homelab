@@ -10,7 +10,6 @@ metadata:
   labels:
     traffic-profile: shared
   annotations: 
-    external-dns.alpha.kubernetes.io/hostname: argocd.anykey.pl 
     external-dns.alpha.kubernetes.io/target: anykey.pl
 spec:
   gatewayClassName: envoy
