@@ -5,6 +5,8 @@ ipam:
 
 kubeProxyReplacement: false
 
+gatewayAPI:
+  enabled: true
 
 hubble:
   enabled: true
