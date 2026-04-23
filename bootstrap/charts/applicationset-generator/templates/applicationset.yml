@@ -40,18 +40,18 @@ spec:
           prune: true
           selfHeal: true
   templatePatch: |
-    syncPolicy:
-      syncOptions:
-        - CreateNamespace=true
-        {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}
-        - {{ `{{ . }}` }}
-        {{ `{{- end }}` }}
     metadata:
       annotations:
         {{ `{{- if hasKey . "priority" }}` }}
         argocd.argoproj.io/sync-wave: "{{ `{{ .priority }}` }}"
         {{ `{{- end }}` }}
     spec:
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+          {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}
+          - {{ `{{ . }}` }}
+          {{ `{{- end }}` }}
       destination:
         {{ `{{- if hasKey . "namespace" }}` }}
         namespace: {{ `{{ .namespace }}` }} 
