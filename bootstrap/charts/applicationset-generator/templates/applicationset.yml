@@ -41,8 +41,10 @@ spec:
           selfHeal: true
         syncOptions:
         - CreateNamespace=true
+        {{ `{{- if hasKey . "syncPolicy.syncOptions" }}` }}
         {{- `{{ range .syncPolicy.syncOptions }}` }}
         - {{ `{{ . }}` }}
+        {{ `{{- end }}` }}
         {{ `{{- end }}` }}
   templatePatch: |
     metadata:
