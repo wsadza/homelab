@@ -1,3 +1,17 @@
+# ===========================================================
+# Purpose:  
+# Notes:
+#
+# Issues:
+# - kustomize is not working with applicationset settings directory: true
+#   
+#   - repoURL: 
+#     targetRevision: 
+#     path: 
+#     directory: 
+#       recurse: true <-- Will couse issue
+#
+# ===========================================================
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
@@ -93,7 +107,7 @@ spec:
         - repoURL: 'https://github.com/wsadza/homelab'
           targetRevision: HEAD
           path: products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/manifests/
-          directory:
-            recurse: true
+          #directory:
+          #  recurse: true
         {{ `{{- end -}}` }}  
 ...
