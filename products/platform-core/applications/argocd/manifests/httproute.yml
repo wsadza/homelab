@@ -9,10 +9,10 @@ metadata:
   namespace: argocd 
 spec:
   parentRefs:
-    - name: gateway-argocd-http
+    - name: gateway-argocd
       namespace: envoy-gateway-system
       sectionName: argocd-http
-    - name: gateway-argocd-https
+    - name: gateway-argocd
       namespace: envoy-gateway-system
       sectionName: argocd-https
   hostnames:
