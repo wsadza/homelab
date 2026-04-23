@@ -39,14 +39,14 @@ spec:
         automated:
           prune: true
           selfHeal: true
-        syncOptions:
-        - CreateNamespace=true
-        {{ `{{- if hasKey . "syncPolicy.syncOptions" }}` }}
-        {{- `{{ range .syncPolicy.syncOptions }}` }}
-        - {{ `{{ . }}` }}
-        {{ `{{- end }}` }}
-        {{ `{{- end }}` }}
   templatePatch: |
+    spec:
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+          {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}
+          - {{ `{{ . }}` }}
+          {{ `{{- end }}` }}
     metadata:
       annotations:
         {{ `{{- if hasKey . "priority" }}` }}
