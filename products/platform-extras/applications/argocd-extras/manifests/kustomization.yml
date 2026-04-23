@@ -1,4 +1,13 @@
-resources: []
+# kustomization.yml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - certificate.yml
+  - gateways.yml
+  - httproute.yml
+  - issuer.yml
 
 generators:
   - ksops.yml
+
