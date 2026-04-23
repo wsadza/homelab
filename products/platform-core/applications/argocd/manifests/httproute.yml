@@ -5,10 +5,10 @@ metadata:
   namespace: argocd 
 spec:
   paretnRefs:
-    - name: gateway-argocd
+    - name: gateway-argocd-http
       namespace: envoy-gateway-system
       sectionName: argocd-http
-    - name: gateway-argocd
+    - name: gateway-argocd-https
       namespace: envoy-gateway-system
       sectionName: argocd-https
   hostnames:

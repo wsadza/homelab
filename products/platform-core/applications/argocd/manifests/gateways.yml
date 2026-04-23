@@ -5,7 +5,7 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: gateway-argocd
+  name: gateway-argocd-https
   namespace: envoy-gateway-system
   labels:
     traffic-profile: shared
@@ -14,14 +14,6 @@ metadata:
 spec:
   gatewayClassName: envoy
   listeners:
-
-    - name: argocd-http 
-      protocol: HTTP
-      port: 80
-      hostname: argocd.anykey.pl
-      allowedRoutes:
-        namespaces:
-          from: All
 
     # -- Entry ------------
     # This definition needs to be unique
@@ -44,4 +36,25 @@ spec:
           selector:
             matchLabels:
               kubernetes.io/metadata.name: argocd
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: gateway-argocd-http
+  namespace: envoy-gateway-system
+  labels:
+    traffic-profile: shared
+  annotations: 
+    external-dns.alpha.kubernetes.io/target: anykey.pl
+spec:
+  gatewayClassName: envoy
+  listeners:
+
+    - name: argocd-http 
+      protocol: HTTP
+      port: 80
+      hostname: argocd.anykey.pl
+      allowedRoutes:
+        namespaces:
+          from: All
 ---
