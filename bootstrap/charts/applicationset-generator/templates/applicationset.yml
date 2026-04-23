@@ -92,5 +92,9 @@ spec:
         - repoURL: 'https://github.com/wsadza/homelab'
           targetRevision: HEAD
           path: products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/manifests/
+
+        - repoURL: 'https://github.com/wsadza/homelab'
+          targetRevision: HEAD
+          path: products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/manifests/{{ `{{ . }}` }}/
         {{ `{{- end -}}` }}  
 ...
