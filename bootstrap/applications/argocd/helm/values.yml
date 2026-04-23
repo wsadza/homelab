@@ -16,7 +16,7 @@ configs:
 
   # -- Insecure TLS
   params:
-    server.insecure: false  # HTTPS backend
+    server.insecure: true # HTTPS backend
 
 # -- SOPS
 
