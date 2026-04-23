@@ -40,13 +40,12 @@ spec:
           prune: true
           selfHeal: true
   templatePatch: |
-    spec:
-      syncPolicy:
-        syncOptions:
-          - CreateNamespace=true
-          {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}
-          - {{ `{{ . }}` }}
-          {{ `{{- end }}` }}
+    syncPolicy:
+      syncOptions:
+        - CreateNamespace=true
+        {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}
+        - {{ `{{ . }}` }}
+        {{ `{{- end }}` }}
     metadata:
       annotations:
         {{ `{{- if hasKey . "priority" }}` }}
