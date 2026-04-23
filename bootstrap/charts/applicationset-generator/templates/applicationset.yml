@@ -43,7 +43,7 @@ spec:
         {{ `{{- end }}` }}
     spec:
       syncPolicy:
-        {{ `{{- if hasKey . "automated" }}` }}
+        {{ `{{- if hasKey . "syncPolicy.automated" }}` }}
         automated:
           prune: true
           selfHeal: true
@@ -82,6 +82,7 @@ spec:
               - $values/products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/helm/values.yml
           {{ `{{- end -}}` }}
         {{ `{{- end -}}` }}
+
         {{ `{{- if hasKey . "chartValues" }}` }}
         - repoURL: 'https://github.com/wsadza/homelab'
           targetRevision: HEAD
