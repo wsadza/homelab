@@ -97,17 +97,26 @@ spec:
           {{ `{{- end -}}` }}
         {{ `{{- end -}}` }}
 
-        {{ `{{- if hasKey . "chartValues" }}` }}
-        - repoURL: 'https://github.com/wsadza/homelab'
-          targetRevision: HEAD
-          ref: values
-        {{ `{{- end -}}` }}
+        # ------------------
+        # Manifests 
+        # ------------------
 
         {{ `{{- if hasKey . "manifests" }}` }}
         - repoURL: 'https://github.com/wsadza/homelab'
           targetRevision: HEAD
           path: products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/manifests/
-          #directory:
-          #  recurse: true
-        {{ `{{- end -}}` }}  
+          directory:
+            recurse: true
+        {{ `{{- end -}}` }}
+        
+        # ------------------
+        # Kustomize 
+        # ------------------
+
+        {{ `{{- if hasKey . "kustomize" }}` }}
+        - repoURL: 'https://github.com/wsadza/homelab'
+          targetRevision: HEAD
+          path: products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/kustomize/
+        {{ `{{- end -}}` }}
+
 ...
