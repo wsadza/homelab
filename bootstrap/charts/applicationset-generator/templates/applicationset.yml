@@ -55,6 +55,7 @@ spec:
         namespace: {{ `{{ .name }}` }} 
         {{ `{{- end }}` }}
       sources:
+        {{ `{{- if hasKey . "repoURL" }}` }}
         - repoURL: {{ `{{ .repoURL }}` }} 
           targetRevision: {{ `{{ .targetRevision }}` }} 
 
@@ -75,7 +76,7 @@ spec:
             valueFiles:
               - $values/products/{{ $.Values.name }}/applications/{{ `{{ .name }}` }}/helm/values.yml
           {{ `{{- end -}}` }}
-
+        {{ `{{- end -}}` }}
         {{ `{{- if hasKey . "chartValues" }}` }}
         - repoURL: 'https://github.com/wsadza/homelab'
           targetRevision: HEAD
