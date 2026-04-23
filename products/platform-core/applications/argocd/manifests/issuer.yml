@@ -19,6 +19,6 @@ spec:
             parentRefs:
               - group: gateway.networking.k8s.io
                 kind: Gateway
-                name: gateway-argocd-http
+                name: gateway-argocd
                 namespace: envoy-gateway-system
 ---
