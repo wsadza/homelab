@@ -3,7 +3,13 @@ ipam:
     clusterPoolIPv4PodCIDRList:
       - "10.42.0.0/16"
 
-kubeProxyReplacement: false
+kubeProxyReplacement: true
+
+externalIPs:
+  enabled: true
+
+l2announcements:
+  enabled: true
 
 hubble:
   enabled: true
@@ -27,3 +33,11 @@ loadBalancer:
 
 envoyConfig:
   enabled: false
+
+ipv4NativeRoutingCIDR: ""
+routingMode: tunnel
+autoDirectNodeRoutes: false
+
+enableIPv4Masquerade: true
+bpf:
+  masquerade: true
