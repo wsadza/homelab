@@ -11,4 +11,10 @@ helm upgrade \
   --values ../applications/argocd/helm/values.yml \
   --force-conflicts
 
-kubectl apply -f ../applications/argocd/manifests/ || true
+echo "==> Waiting..."
+sleep 10
+
+MANIFEST_PATH="../applications/argocd/manifests/"
+if [ ! -z "$( ls -A ${MANIFEST_PATH} )" ]; then 
+  kubectl apply -f ${MANIFEST_PATH}
+fi

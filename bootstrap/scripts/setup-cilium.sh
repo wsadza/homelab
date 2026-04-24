@@ -11,6 +11,8 @@ helm upgrade \
   --values ../applications/cilium/helm/values.yml \
   --force-conflicts
 
+sleep 10
+
 MANIFEST_PATH="../applications/cilium/manifests/"
 if [ ! -z "$( ls -A ${MANIFEST_PATH} )" ]; then 
   kubectl apply -f ${MANIFEST_PATH}
