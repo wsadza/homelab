@@ -11,6 +11,7 @@ helm upgrade \
   --values ../applications/cilium/helm/values.yml \
   --force-conflicts
 
+echo "==> Waiting..."
 sleep 10
 
 MANIFEST_PATH="../applications/cilium/manifests/"
