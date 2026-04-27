@@ -61,41 +61,36 @@ spec:
       destination:
         namespace: {{ `{{ dig "namespace" .name . }}` }}
       sources:
-        {{ `{{- if hasKey . "repoURL" }}` }}
-        - repoURL: {{ `{{ .repoURL }}` }} 
-          targetRevision: {{ `{{ .targetRevision }}` }} 
+        {{ `{{- range .sources }}` }}
 
-          {{ `{{- with .chartPath }}` }}
-          path: {{ `{{ . }}` }}
-          {{ `{{- end -}}` }}
+        {{ `{{- if eq .type "values"}}` }}
+        - repoURL: {{ `{{ .repoURL | quote }}` }}
+          targetRevision: {{ `{{ .targetRevision | quote }}` }}
+          ref:  {{ `{{ .ref }}` }}
 
-          {{ `{{- with .chartName }}` }}
-          chart: {{ `{{ . }}` }} 
-          {{ `{{- end -}}` }}
-          
-          {{ `{{- if not (or (hasKey . "chartPath") (hasKey . "chartName")) }}` }}
-          chart: {{ `{{ .name }}` }}
-          {{ `{{- end }}` }}
-
-          {{ `{{- if hasKey . "chartValues" }}` }}
+        {{ `{{- else if eq .type "helm"}}` }}
+        - repoURL: {{ `{{ .repoURL | quote }}` }}
+          targetRevision: {{ `{{ .targetRevision | quote }}` }}
+          chart:  {{ `{{ .chart | quote }}` }}
+          {{ `{{- with .valueFiles }}` }}
           helm:
             valueFiles:
-              - {{ `{{ .path }}` }}/{{ `{{ .chartValues }} }}` | quote }}
+            {{ `{{- range . }}` }}
+            - {{ `{{ . }}` }}
+            {{ `{{- end }}` }}
           {{ `{{- end }}` }}
-        {{ `{{- end }}` }}
 
-        {{ `{{- with .kustomize }}` }}
-        - repoURL: {{ $.Values.repoURL | quote }}
-          targetRevision: {{ $.Values.targetRevision | quote }}
-          path: {{ `{{ .path }}` }}
-        {{ `{{- end }}` }}
-
-        {{ `{{- if .manifests }}` }}
-        - repoURL: {{ $.Values.repoURL | quote }}
-          targetRevision: {{ $.Values.targetRevision | quote }}
-          path: {{ `{{ .path }}` }}
+        {{ `{{- else if eq .type "manifest"}}` }}
+        - repoURL: {{ `{{ .repoURL | quote }}` }}
+          targetRevision: {{ `{{ .targetRevision | quote }}` }}
+          path:  {{ `{{ .path | quote }}` }}
           directory:
-            recurse: true
+            recurse: {{ `{{- .recurse }}` }}
+
+        {{ `{{- else if eq .type "kustomize"}}` }}
+        - repoURL: {{ `{{ .repoURL | quote }}` }}
+          targetRevision: {{ `{{ .targetRevision | quote }}` }}
+          path:  {{ `{{ .path | quote }}` }}
         {{ `{{- end }}` }}
 
 {{- end }}
