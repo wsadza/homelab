@@ -70,20 +70,20 @@ applications:
           targetRevision: v1.7.1
           chart: envoy-gateway-crds
           valueFiles: 
-            - '$values/platform-products/platform-core/applications/{{ .name }}/helm/values.yml'
+            - $values/platform-products/platform-core/applications/envoy-gateway/helm/values.yml
         
         - type: manifest
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
-          path: 'platform-products/platform-core/applications/{{ .name }}/manifests'
+          path: platform-products/platform-core/applications/envoy-gateway/manifests
           recurse: true
 
   # ------------------
   # Cert-Manager 
   # ------------------
   
-    - name: cert-manager
-      namespace: cert-manager
+    - name: cert-manager 
+      namespace: cert-manager 
 
       enabled: true
       priority: -5
@@ -103,23 +103,36 @@ applications:
           targetRevision: 1.20.2 
           chart: cert-manager 
           valueFiles: 
-          - {{ `{{ printf "$values/platform-products/platform-core/applications/%s/helm/values.yml" .name | quote }}` }}
+            - $values/platform-products/platform-core/applications/cert-manager/helm/values.yml
 
   # ------------------
   # Exteranl-DNS 
   # ------------------
   
-          #- name: external-dns
-          #  enabled: true
-          #  chartName: external-dns
-          #  #chartPath: 
-          #  targetRevision: 1.20.0
-          #  repoURL: https://kubernetes-sigs.github.io/external-dns/
-          #  valuesFile: '{{ .path }}/helm/values.yml'
-          #  manifests: false
-          #  kustomize: true
-          #  chartValues: true
-          #  namespace: external-dns
-          #  priority: 0
-          #  syncPolicy:
-          #    automated: false
+    - name: external-dns
+      namespace: external-dns
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://kubernetes-sigs.github.io/external-dns/
+          targetRevision: 1.20.0
+          chart: cert-manager 
+          valueFiles: 
+            - $values/platform-products/platform-core/applications/external-dns/helm/values.yml
+
+        - type: kustomize 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-products/platform-core/applications/external-dns/kustomize
