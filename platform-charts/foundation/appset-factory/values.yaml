@@ -4,8 +4,8 @@ repoURL: https://github.com/wsadza/homelab.git
 targetRevision: HEAD
 
 root:
-  listKey: domains
-  name: domains
+  listKey: products
+  name: anykey.pl 
   file: environments/dev.yml 
 
   childChartPath: platform-charts/foundation/appset-factory
@@ -14,6 +14,6 @@ root:
   childNameTemplate: "{{ item }}"
 
 leaf:
-  listKey: domains 
+  listKey: products
   name: ""
   file: ""

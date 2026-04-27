@@ -1,5 +1,5 @@
 name: dev
-domains:
+products:
   - platform-core
   - workload-tests
   - platform-extras

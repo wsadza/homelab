@@ -13,10 +13,12 @@ configs:
 
     kustomize.buildOptions: "--enable-alpha-plugins --enable-exec"
 
-    # -- Timeout to discover if a new manifests version got published to the repository
+    # -- Timeout to discover if a new manifests 
+    #    version got published to the repository
     timeout.reconciliation: 30s
 
-    # -- Maximum jitter added to the reconciliation timeout to spread out refreshes and reduce repo-server load
+    # -- Maximum jitter added to the 
+    #    reconciliation timeout to spread out refreshes and reduce repo-server load
     timeout.reconciliation.jitter: 0s
 
   # -- Create the argocd-secret
@@ -98,7 +100,7 @@ extraObjects:
   # -------------------
   # Default argocd password: admin/admin
   # Note:
-  # - To generate use bcrypt hash
+  # - To generate use bcrypt: argocd account bcrypt --password 'YOUR_PASSWORD' 
   # -------------------
   
   - apiVersion: v1
@@ -111,19 +113,19 @@ extraObjects:
       admin.password: "$2a$10$2rNf5wKIRzfGwjjbvORvYenItTtsh3LGDMfB50dpLv/UJiavpF2QK"
       admin.passwordMtime: "2026-02-13T00:00:00Z" 
 
-
-# =====================================
-# Repositories Used ArgoCD 
-# =====================================
-
-repositories:
-
   # -------------------
-  # Top-level Argo CD ApplicationSet orchestrator 
-  # for enabling and deploying environment products dynamically.
+  # Default sops.key: 
+  # Note:
+  # - To generate use: age-keygen -o keys.txt
   # -------------------
-
-  appset-factory:
-    url: https://github.com/wsadza/homelab/platform-charts/foundation/appset-factory
-    name: appset-factory
-    type: helm
+  
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: sops-age 
+      namespace: argocd
+    type: Opaque
+    stringData:
+      key.txt: |
+        AGE-SECRET-KEY-REPLACE-ME
+        
