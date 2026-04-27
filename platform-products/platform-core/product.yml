@@ -47,6 +47,37 @@ applications:
   # Envoy-Gateway 
   # ------------------
   
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+
+      enabled: true
+      priority: -5
+
+      syncPolicy:
+        automated: true
+        syncOptions:
+          - ServerSideApply=true
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: oci://docker.io/envoyproxy/gateway-crds-helm
+          targetRevision: v1.7.1
+          chart: envoy-gateway-crds
+          valueFiles: 
+            - $values/platform-products/platform-core/applications/envoy-gateway-crds/helm/values.yml
+        
+        - type: manifest
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-products/platform-core/applications/envoy-gateway-crds/manifests
+          recurse: true
+
           #- name: envoy-gateway 
           #  enabled: true
           #  chartName: envoy-gateway
