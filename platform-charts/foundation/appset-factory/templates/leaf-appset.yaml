@@ -72,7 +72,6 @@ spec:
         - repoURL: {{ `{{ .repoURL | quote }}` }}
           targetRevision: {{ `{{ .targetRevision | quote }}` }}
 
-
           {{ `{{- if hasKey . "chart" }}` }}
           chart:  {{ `{{ .chart | quote }}` }}
           {{ `{{- end }}` }}
