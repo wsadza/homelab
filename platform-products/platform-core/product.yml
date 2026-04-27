@@ -103,7 +103,7 @@ applications:
           targetRevision: 1.20.2 
           chart: cert-manager 
           valueFiles: 
-            - '$values/platform-products/platform-core/applications/{{ $.Values.name }}/helm/values.yml'
+          - $values/platform-products/platform-core/applications/{{ .name }}/helm/values.yml
 
   # ------------------
   # Exteranl-DNS 
