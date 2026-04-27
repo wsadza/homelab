@@ -31,10 +31,7 @@ gatewayApi:
         hostname: podinfo.anykey.pl
         allowedRoutes:
           namespaces:
-            from: Selector
-            selector:
-              matchLabels:
-                kubernetes.io/metadata.name: podinfo
+            from: All
 
       - name: podinfo-https
         protocol: HTTPS

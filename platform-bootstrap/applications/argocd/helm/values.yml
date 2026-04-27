@@ -119,13 +119,13 @@ extraObjects:
   # - To generate use: age-keygen -o keys.txt
   # -------------------
   
-  - apiVersion: v1
-    kind: Secret
-    metadata:
-      name: sops-age 
-      namespace: argocd
-    type: Opaque
-    stringData:
-      key.txt: |
-        AGE-SECRET-KEY-REPLACE-ME
+  #- apiVersion: v1
+  #  kind: Secret
+  #  metadata:
+  #    name: sops-age 
+  #    namespace: argocd
+  #  type: Opaque
+  #  stringData:
+  #    key.txt: |
+  #      AGE-SECRET-KEY-REPLACE-ME
         
