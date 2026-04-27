@@ -13,7 +13,7 @@ applications:
       enabled: true
 
       chartName: envoy-gateway-crds
-      chartValues: helm/values.yml
+      chartValues: {{ .path }}/helm/values.yml
       chartPath: null
       targetRevision: v1.7.1
       repoURL: oci://docker.io/envoyproxy/gateway-crds-helm
