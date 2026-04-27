@@ -46,7 +46,6 @@ spec:
         {{ `{{- if hasKey . "priority" }}` }}
         argocd.argoproj.io/sync-wave: "{{ `{{ .priority }}` }}"
         {{ `{{- end }}` }}
-
     spec:
       syncPolicy:
         {{ `{{- if (dig "syncPolicy" "automated" false .) }}` }}
@@ -59,12 +58,9 @@ spec:
           {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}
           - {{ `{{ . }}` }}
           {{ `{{- end }}` }}
-
       destination:
         namespace: {{ `{{ dig "namespace" .name . }}` }}
-
       sources:
-
         {{ `{{- if hasKey . "repoURL" }}` }}
         - repoURL: {{ `{{ .repoURL }}` }} 
           targetRevision: {{ `{{ .targetRevision }}` }} 
@@ -87,7 +83,6 @@ spec:
               - {{ `{{ .chartValues }}` }}
           {{ `{{- end -}}` }}
         {{ `{{- end -}}` }}
-
 
         {{ `{{- with .kustomize }}` }}
         - repoURL: {{ $.Values.repoURL | quote }}
