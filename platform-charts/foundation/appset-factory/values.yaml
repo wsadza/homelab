@@ -8,12 +8,12 @@ root:
   name: domains
   file: environments/dev.yml 
 
-  childChartPath: bootstrap/charts/appset-factory
+  childChartPath: platform-charts/foundation/appset-factory
   childMode: leaf
   childFileTemplate: "platform-domains/{{ item }}/product.yml"
   childNameTemplate: "{{ item }}"
 
 leaf:
-  listKey: applications
+  listKey: domains 
   name: ""
   file: ""

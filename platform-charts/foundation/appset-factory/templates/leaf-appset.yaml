@@ -64,14 +64,13 @@ spec:
         namespace: {{ `{{ dig "namespace" .name . }}` }}
 
       sources:
-
-        {{ `{{- if eq .type "kustomize" }}` }}
+        {{ `{{- if .kustomize }}` }}
         - repoURL: {{ $.Values.repoURL | quote }}
           targetRevision: {{ $.Values.targetRevision | quote }}
           path: {{ `{{ .path }}` }}
         {{ `{{- end }}` }}
 
-        {{ `{{- if eq .type "manifests" }}` }}
+        {{ `{{- if .manifests }}` }}
         - repoURL: {{ $.Values.repoURL | quote }}
           targetRevision: {{ $.Values.targetRevision | quote }}
           path: {{ `{{ .path }}` }}
@@ -79,7 +78,7 @@ spec:
             recurse: true
         {{ `{{- end }}` }}
 
-        {{ `{{- if eq .type "helm" }}` }}
+        {{ `{{- if .helm }}` }}
         - repoURL: {{ `{{ .repoURL }}` }}
           targetRevision: {{ `{{ .targetRevision }}` }}
           chart: {{ `{{ dig "chart" .name . }}` }}
