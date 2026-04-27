@@ -71,11 +71,15 @@ spec:
         {{ `{{- else if eq .type "helm"}}` }}
         - repoURL: {{ `{{ .repoURL | quote }}` }}
           targetRevision: {{ `{{ .targetRevision | quote }}` }}
+
+
+          {{ `{{- if hasKey . "chart" }}` }}
           chart:  {{ `{{ .chart | quote }}` }}
+          {{ `{{- end }}` }}
 
           {{ `{{- if hasKey . "chartPath" }}` }}
-          path: {{ `{{ .chartPath }}` }}
-          {{ `{{- end -}}` }}
+          path: {{ `{{ .chartPath | quote }}` }}
+          {{ `{{- end }}` }}
 
           {{ `{{- with .valueFiles }}` }}
           helm:

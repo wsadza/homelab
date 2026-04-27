@@ -34,5 +34,6 @@ applications:
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
           path: platform-charts/applications/app-platform
+          chart: app-platform
           valueFiles: 
             - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
