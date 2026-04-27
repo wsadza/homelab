@@ -128,7 +128,7 @@ applications:
         - type: helm
           repoURL: https://kubernetes-sigs.github.io/external-dns/
           targetRevision: 1.20.0
-          chart: cert-manager 
+          chart: external-dns
           valueFiles: 
             - $values/platform-products/platform-core/applications/external-dns/helm/values.yml
 
