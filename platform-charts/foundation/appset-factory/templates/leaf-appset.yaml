@@ -72,9 +72,13 @@ spec:
         - repoURL: {{ `{{ .repoURL | quote }}` }}
           targetRevision: {{ `{{ .targetRevision | quote }}` }}
           chart:  {{ `{{ .chart | quote }}` }}
+          {{ `{{- with .valueFiles }}` }}
           helm:
             valueFiles:
-            - {{ `{{ .valueFiles }}` }}
+            {{ `{{- range . }}` }}
+            - {{ `{{ . | quote }}` }}
+            {{ `{{- end }}` }}
+          {{ `{{- end }}` }}
 
         {{ `{{- else if eq .type "manifest"}}` }}
         - repoURL: {{ `{{ .repoURL | quote }}` }}
