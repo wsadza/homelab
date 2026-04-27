@@ -63,9 +63,6 @@ gatewayApi:
     parentRefs:
       - name: gateway-podinfo
         namespace: envoy-gateway-system
-        sectionName: podinfo-http
-      - name: gateway-podinfo
-        namespace: envoy-gateway-system
         sectionName: podinfo-https
     hostnames:
       - podinfo.anykey.pl
