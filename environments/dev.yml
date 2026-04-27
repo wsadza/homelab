@@ -1,10 +1,10 @@
 name: dev
-products:
+domains:
   - platform-core
   - workload-tests
   - platform-extras
-  #- platform-storage
 
+#  - platform-storage
 #  - platform-observability
 #  - platform-security
 #  - gpu

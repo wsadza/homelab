@@ -1,0 +1,130 @@
+# Inspirations
+# - https://github.com/bitnami/charts/blob/main/bitnami/keycloak/values.yaml
+# - https://github.com/wsadza/metal/blob/develop/metal/distributed/chart/templates/stream/deployment.yaml
+# - https://github.com/wsadza/charts/blob/develop/generator/templates/applicationset.yml
+
+
+# ===============================================
+# @section gatewayApi parameters
+# ===============================================
+
+gatewayApi:
+  enabled: true
+  
+  # Generate Issuer for cerificate
+  #
+  gateway:
+    enabled: true
+
+    name: gateway-podinfo
+    namespace: envoy-gateway-system
+    labels:
+      traffic-profile: shared
+    annotations:
+      external-dns.alpha.kubernetes.io/target: anykey.pl
+
+    gatewayClassName: envoy
+    listeners:
+      - name: podinfo-http
+        protocol: HTTP
+        port: 80
+        hostname: podinfo.anykey.pl
+        allowedRoutes:
+          namespaces:
+            from: Selector
+            selector:
+              matchLabels:
+                kubernetes.io/metadata.name: podinfo
+
+      - name: podinfo-https
+        protocol: HTTPS
+        port: 443
+        hostname: podinfo.anykey.pl
+
+        tls:
+          mode: Terminate
+          certificateRefs:
+            - name: podinfo-tls-certificate 
+
+        allowedRoutes:
+          namespaces:
+            from: Selector
+            selector:
+              matchLabels:
+                kubernetes.io/metadata.name: podinfo
+
+  # HttpRoute 
+  #
+  httpRoute:
+    enabled: true
+
+    name: podinfo-host
+    namespace: podinfo
+    labels: {}
+    annotations: {}
+
+    parentRefs:
+      - name: gateway-podinfo
+        namespace: envoy-gateway-system
+        sectionName: podinfo-http
+      - name: gateway-podinfo
+        namespace: envoy-gateway-system
+        sectionName: podinfo-https
+    hostnames:
+      - podinfo.anykey.pl
+    rules:
+      - backendRefs:
+          - kind: Service
+            name: podinfo 
+            namespace: podinfo
+            port: 9898
+
+# ===============================================
+# @section Certificate parameters
+# ===============================================
+#
+# @param certificate.enabled 
+# @param certificate.name
+# @param certificate.namespace
+
+certificate:
+  enabled: true
+  name: podinfo-tls-certificate
+  namespace: envoy-gateway-system
+  existingIssuer: issuer-podinfo
+  existingIssuerKind: Issuer
+  keySize: 2048
+  keyAlgorithm: RSA
+  duration: 2160h
+  renewBefore: 360h
+  secretName: podinfo-tls-certificate
+  dnsNames:
+    - podinfo.anykey.pl
+
+  # @subsection Issuer
+  #
+  # @param certificate.issuer.enabled 
+  # @param certificate.issuer.name
+  # @param certificate.issuer.namespace
+  issuer:
+    enabled: true
+    name: issuer-podinfo
+    namespace: envoy-gateway-system
+    kind: Issuer
+    acme:
+      email: podinfo@anykey.pl 
+      server: https://acme-v02.api.letsencrypt.org/directory
+      privateKeySecretName: letsencrypt-account-key
+      gatewayHTTPRoute:
+        parentRefs:
+          - group: gateway.networking.k8s.io
+            kind: Gateway
+            name: gateway-podinfo
+            namespace: envoy-gateway-system
+
+# ===============================================
+# @section NetworkPolicy parameters 
+# ===============================================
+
+networkPolicy:
+  enabled: false

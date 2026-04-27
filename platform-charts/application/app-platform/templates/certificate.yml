@@ -1,0 +1,28 @@
+{{- if .Values.certificate.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:  
+  name: {{ default (printf "%s-tls" (include "common.names.fullname" .)) .Values.certificate.name }}
+  namespace: {{ default (include "common.names.namespace" .) .Values.certificate.namespace }}
+spec:
+{{- $root := . -}}
+{{- with .Values.certificate }}
+  duration: {{ .duration | quote }}
+  renewBefore: {{ .renewBefore | quote }}
+  secretName: {{ default (printf "%s-tls" (include "common.names.fullname" $root )) .secretName }}
+  commonName: {{ first .dnsNames | default (printf "%s-tls" (include "common.names.fullname" $root)) | quote }}
+  privateKey:
+    algorithm: {{ .keyAlgorithm }}
+    size: {{ .keySize }}
+  issuerRef:
+    name: {{ required "certificate.existingIssuer is required when certificate.enabled=true" .existingIssuer }}
+    kind: {{ default "Issuer" .existingIssuerKind }}
+    group: cert-manager.io
+  {{- with .dnsNames }}
+  dnsNames:
+    {{- range . }}
+    - {{ . }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- end }}

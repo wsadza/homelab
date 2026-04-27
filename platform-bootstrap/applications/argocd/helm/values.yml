@@ -1,19 +1,13 @@
-# ===========================================================
+# ###########################################################
 # Purpose:  
 # Notes:
-#
-# Issues:
-# - kustomize is not working with applicationset settings directory: true
-#   
-#   - repoURL: 
-#     targetRevision: 
-#     path: 
-#     directory: 
-#       recurse: true <-- Will couse issue
-#
-# ===========================================================
+# Author:
+# ###########################################################
 
-# -- Argo Instance Extra Configuration
+# =====================================
+# ArgoCD Configuration
+# =====================================
+
 configs:
   cm:
 
@@ -33,7 +27,11 @@ configs:
   params:
     server.insecure: true # HTTPS backend
 
-# -- SOPS
+# =====================================
+# Repo Server
+# Note:
+# - Extra kustomize support
+# =====================================
 
 repoServer:
   volumes:
@@ -89,3 +87,43 @@ repoServer:
     limits:
       memory: 1Gi
 
+# =====================================
+# Extra Manifests
+# Note: 
+# - Supports use of custom Helm templates
+# =====================================
+
+extraObjects:
+  
+  # -------------------
+  # Default argocd password: admin/admin
+  # Note:
+  # - To generate use bcrypt hash
+  # -------------------
+  
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: argocd-secret
+      namespace: argocd
+    type: Opaque
+    stringData:
+      admin.password: "$2a$10$2rNf5wKIRzfGwjjbvORvYenItTtsh3LGDMfB50dpLv/UJiavpF2QK"
+      admin.passwordMtime: "2026-02-13T00:00:00Z" 
+
+
+# =====================================
+# Repositories Used ArgoCD 
+# =====================================
+
+repositories:
+
+  # -------------------
+  # Top-level Argo CD ApplicationSet orchestrator 
+  # for enabling and deploying environment products dynamically.
+  # -------------------
+
+  appset-factory:
+    url: https://github.com/wsadza/homelab/platform-charts/foundation/appset-factory
+    name: appset-factory
+    type: helm

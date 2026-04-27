@@ -1,0 +1,19 @@
+mode: root
+
+repoURL: https://github.com/wsadza/homelab.git
+targetRevision: HEAD
+
+root:
+  listKey: domains
+  name: domains
+  file: environments/dev.yml 
+
+  childChartPath: bootstrap/charts/appset-factory
+  childMode: leaf
+  childFileTemplate: "platform-domains/{{ item }}/product.yml"
+  childNameTemplate: "{{ item }}"
+
+leaf:
+  listKey: applications
+  name: ""
+  file: ""
