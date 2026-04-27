@@ -93,4 +93,6 @@ spec:
           path:  {{ `{{ .path | quote }}` }}
         {{ `{{- end }}` }}
 
+        {{ `{{- end }}` }}
+
 {{- end }}
