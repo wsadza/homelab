@@ -75,7 +75,7 @@ spec:
           helm:
             valueFiles:
             {{ `{{- range .valueFiles }}` }}
-            - {{ `{{ . }}` }}
+            - {{ `{{ . | quote }}` }}
             {{ `{{- end }}` }}
 
         {{ `{{- else if eq .type "manifest"}}` }}
