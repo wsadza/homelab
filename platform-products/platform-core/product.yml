@@ -50,7 +50,7 @@ applications:
     - name: envoy-gateway
       namespace: envoy-gateway-system
 
-      enabled: false
+      enabled: true
       priority: -5
 
       syncPolicy:
@@ -66,51 +66,44 @@ applications:
           ref: values
 
         - type: helm
-          repoURL: oci://docker.io/envoyproxy/gateway-crds-helm
+          repoURL: oci://docker.io/envoyproxy/gateway-helm
           targetRevision: v1.7.1
           chart: envoy-gateway-crds
           valueFiles: 
-            - $values/platform-products/platform-core/applications/envoy-gateway/helm/values.yml
+            - '$values/platform-products/platform-core/applications/{{ .name }}/helm/values.yml'
         
         - type: manifest
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
-          path: platform-products/platform-core/applications/envoy-gateway/manifests
+          path: 'platform-products/platform-core/applications/{{ .name }}/manifests'
           recurse: true
-
-          #- name: envoy-gateway 
-          #  enabled: true
-          #  chartName: envoy-gateway
-          #  #chartPath: 
-          #  targetRevision: v1.7.1
-          #  repoURL: oci://docker.io/envoyproxy/gateway-helm
-          #  valuesFile: '{{ .path }}/helm/values.yml'
-          #  manifests: true
-          #  chartValues: true
-          #  namespace: envoy-gateway-system
-          #  priority: -5
-          #  syncPolicy:
-          #    automated: true
-          #    syncOptions:
-          #      - ServerSideApply=true
 
   # ------------------
   # Cert-Manager 
   # ------------------
+  
+    - name: cert-manager 
+      namespace: cert-manager 
 
-          #- name: cert-manager
-          #  enabled: true
-          #  chartName: cert-manager
-          #  #chartPath: 
-          #  targetRevision: 1.20.2
-          #  repoURL: https://charts.jetstack.io
-          #  valuesFile: '{{ .path }}/helm/values.yml'
-          #  manifests: false
-          #  kustomize: false
-          #  namespace: cert-manager 
-          #  priority: -5
-          #  syncPolicy:
-          #    automated: true
+      enabled: true
+      priority: -5
+
+      syncPolicy:
+        automated: true
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://charts.jetstack.io
+          targetRevision: 1.20.2 
+          chart: cert-manager 
+          valueFiles: 
+            - '$values/platform-products/platform-core/applications/{{ .name }}/helm/values.yml'
 
   # ------------------
   # Exteranl-DNS 
