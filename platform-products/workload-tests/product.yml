@@ -7,13 +7,32 @@ applications:
   # Podinfo
   # ------------------
 
-    - name: podinfo
-      chartName: podinfo
-      enabled: true
-      #chartPath: 
-      targetRevision: 6.9.1
-      repoURL: https://stefanprodan.github.io/podinfo
-      manifests: true
-      chartValues: true
+    - name: podinfo 
       namespace: podinfo 
+
+      enabled: true
       priority: 0
+
+      syncPolicy:
+        automated: true
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://stefanprodan.github.io/podinfo
+          targetRevision: 6.9.1
+          chart: podinfo 
+          valueFiles: 
+            - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
+        
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/applications/app-platform
+          valueFiles: 
+            - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml

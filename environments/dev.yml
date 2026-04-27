@@ -2,8 +2,8 @@ name: dev
 products:
   - platform-core
   - workload-tests
-  - platform-extras
 
+#  - platform-extras
 #  - platform-storage
 #  - platform-observability
 #  - platform-security

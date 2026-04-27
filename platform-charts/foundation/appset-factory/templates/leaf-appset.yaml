@@ -72,6 +72,11 @@ spec:
         - repoURL: {{ `{{ .repoURL | quote }}` }}
           targetRevision: {{ `{{ .targetRevision | quote }}` }}
           chart:  {{ `{{ .chart | quote }}` }}
+
+          {{ `{{- with .hartPath }}` }}
+          path: {{ `{{ . }}` }}
+          {{ `{{- end }}` }}
+
           {{ `{{- with .valueFiles }}` }}
           helm:
             valueFiles:
