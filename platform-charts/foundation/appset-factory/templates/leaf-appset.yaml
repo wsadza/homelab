@@ -76,7 +76,7 @@ spec:
           helm:
             valueFiles:
             {{ `{{- range . }}` }}
-            - {{ `{{ . }}` }}
+            - {{ `{{ tpl . $ | quote }}` }}
             {{ `{{- end }}` }}
           {{ `{{- end }}` }}
 
