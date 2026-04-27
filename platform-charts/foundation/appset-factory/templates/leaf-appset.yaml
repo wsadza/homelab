@@ -73,9 +73,9 @@ spec:
           targetRevision: {{ `{{ .targetRevision | quote }}` }}
           chart:  {{ `{{ .chart | quote }}` }}
 
-          {{ `{{- with .hartPath }}` }}
-          path: {{ `{{ . }}` }}
-          {{ `{{- end }}` }}
+          {{ `{{- if hasKey . "chartPath" }}` }}
+          path: {{ `{{ .chartPath }}` }}
+          {{ `{{- end -}}` }}
 
           {{ `{{- with .valueFiles }}` }}
           helm:
