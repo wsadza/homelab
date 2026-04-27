@@ -84,7 +84,7 @@ spec:
           {{ `{{- if hasKey . "chartValues" }}` }}
           helm:
             valueFiles:
-              - {{ `{{ .valuesFile }}` }}
+              - {{ `{{ .chartValues }}` }}
           {{ `{{- end -}}` }}
         {{ `{{- end -}}` }}
 
@@ -110,7 +110,7 @@ spec:
           {{ `{{- if hasKey . "valuesFile" }}` }}
           helm:
             valueFiles:
-              - {{ `{{ .valuesFile }}` }}
+              - {{ `{{ .chartValues }}` }}
           {{ `{{- end }}` }}
         {{ `{{- end }}` }}
 {{- end }}
