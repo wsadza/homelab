@@ -77,8 +77,8 @@ spec:
           chart:  {{ `{{ .chart | quote }}` }}
           {{ `{{- end }}` }}
 
-          {{ `{{- if hasKey . "chartPath" }}` }}
-          path: {{ `{{ .chartPath | quote }}` }}
+          {{ `{{- if hasKey . "path" }}` }}
+          path: {{ `{{ .path | quote }}` }}
           {{ `{{- end }}` }}
 
           {{ `{{- with .valueFiles }}` }}
