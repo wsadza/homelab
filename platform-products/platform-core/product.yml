@@ -102,7 +102,7 @@ applications:
           repoURL: https://charts.jetstack.io
           targetRevision: 1.20.2 
           chart: cert-manager 
-          valueFiles: '$values/platform-products/platform-core/applications/{{ `{{ .name }}` }}/helm/values.yml'
+          valueFiles: '{{ `{{ printf "$values/platform-products/platform-core/applications/%s/helm/values.yml" .name | quote }}` }}'
 
   # ------------------
   # Exteranl-DNS 
