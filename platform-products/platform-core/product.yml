@@ -50,7 +50,7 @@ applications:
     - name: envoy-gateway
       namespace: envoy-gateway-system
 
-      enabled: true
+      enabled: false
       priority: -5
 
       syncPolicy:
