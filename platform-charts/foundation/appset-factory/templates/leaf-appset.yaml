@@ -80,7 +80,7 @@ spec:
           {{ `{{- if hasKey . "chartValues" }}` }}
           helm:
             valueFiles:
-              - {{ `{{ .chartValues }}` }}
+              - {{ `{{ .chartValues }}` | quote }}
           {{ `{{- end }}` }}
         {{ `{{- end }}` }}
 
