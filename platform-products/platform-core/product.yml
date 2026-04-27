@@ -82,8 +82,8 @@ applications:
   # Cert-Manager 
   # ------------------
   
-    - name: cert-manager 
-      namespace: cert-manager 
+    - name: cert-manager
+      namespace: cert-manager
 
       enabled: true
       priority: -5
