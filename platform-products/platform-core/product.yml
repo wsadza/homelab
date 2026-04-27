@@ -54,9 +54,8 @@ applications:
       targetRevision: 1.20.2
       repoURL: https://charts.jetstack.io
       valuesFile: '{{ .path }}/helm/values.yml'
-      #manifests: true
-      #kustomize: true
-      chartValues: true
+      manifests: false
+      kustomize: false
       namespace: cert-manager 
       priority: -5
       syncPolicy:
