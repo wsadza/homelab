@@ -70,12 +70,12 @@ applications:
           targetRevision: v1.7.1
           chart: envoy-gateway-crds
           valueFiles: 
-            - $values/platform-products/platform-core/applications/envoy-gateway-crds/helm/values.yml
+            - $values/platform-products/platform-core/applications/envoy-gateway/helm/values.yml
         
         - type: manifest
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
-          path: platform-products/platform-core/applications/envoy-gateway-crds/manifests
+          path: platform-products/platform-core/applications/envoy-gateway/manifests
           recurse: true
 
           #- name: envoy-gateway 
