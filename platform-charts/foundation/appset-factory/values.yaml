@@ -10,7 +10,7 @@ root:
 
   childChartPath: platform-charts/foundation/appset-factory
   childMode: leaf
-  childFileTemplate: "platform-domains/{{ item }}/product.yml"
+  childFileTemplate: "platform-products/{{ item }}/product.yml"
   childNameTemplate: "{{ item }}"
 
 leaf:
