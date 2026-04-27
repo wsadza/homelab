@@ -103,14 +103,4 @@ spec:
             recurse: true
         {{ `{{- end }}` }}
 
-        {{ `{{- if .helm }}` }}
-        - repoURL: {{ `{{ .repoURL }}` }}
-          targetRevision: {{ `{{ .targetRevision }}` }}
-          chart: {{ `{{ dig "chart" .name . }}` }}
-          {{ `{{- if hasKey . "valuesFile" }}` }}
-          helm:
-            valueFiles:
-              - {{ `{{ .chartValues }}` }}
-          {{ `{{- end }}` }}
-        {{ `{{- end }}` }}
 {{- end }}
