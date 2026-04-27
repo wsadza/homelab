@@ -74,9 +74,7 @@ spec:
           chart:  {{ `{{ .chart | quote }}` }}
           helm:
             valueFiles:
-            {{ `{{- range .valueFiles }}` }}
-            - {{ `{{ . | quote }}` }}
-            {{ `{{- end }}` }}
+            - {{ `{{- .valueFiles }}` }}
 
         {{ `{{- else if eq .type "manifest"}}` }}
         - repoURL: {{ `{{ .repoURL | quote }}` }}
