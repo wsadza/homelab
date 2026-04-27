@@ -8,17 +8,19 @@ applications:
   # ------------------
 
     - name: envoy-gateway-crds
-      enabled: true
-      chartName: envoy-gateway-crds
+      namespace: envoy-gateway-system
 
+      enabled: true
+
+      chartName: envoy-gateway-crds
       chartValues: '{{ .path }}/helm/values.yml'
       chartPath: null
       targetRevision: v1.7.1
       repoURL: oci://docker.io/envoyproxy/gateway-crds-helm
 
+      kustomize: null
+      manifests: true
 
-      #manifests: true
-      namespace: envoy-gateway-system
       priority: -10
       syncPolicy:
         automated: true

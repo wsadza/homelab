@@ -89,7 +89,7 @@ spec:
         {{ `{{- end -}}` }}
 
 
-        {{ `{{- if .kustomize }}` }}
+        {{ `{{- with .kustomize }}` }}
         - repoURL: {{ $.Values.repoURL | quote }}
           targetRevision: {{ $.Values.targetRevision | quote }}
           path: {{ `{{ .path }}` }}
