@@ -64,6 +64,31 @@ spec:
         namespace: {{ `{{ dig "namespace" .name . }}` }}
 
       sources:
+
+        {{ `{{- if hasKey . "repoURL" }}` }}
+        - repoURL: {{ `{{ .repoURL }}` }} 
+          targetRevision: {{ `{{ .targetRevision }}` }} 
+
+          {{ `{{- if hasKey . "chartPath" }}` }}
+          path: {{ `{{ .chartPath }}` }}
+          {{ `{{- end -}}` }}
+
+          {{ `{{- if hasKey . "chartName" }}` }}
+          chart: {{ `{{ .chartName }}` }} 
+          {{ `{{- end -}}` }}
+          
+          {{ `{{- if not (or (hasKey . "chartPath") (hasKey . "chartName")) }}` }}
+          chart: {{ `{{ .name }}` }}
+          {{ `{{- end }}` }}
+
+          {{ `{{- if hasKey . "chartValues" }}` }}
+          helm:
+            valueFiles:
+              - {{ `{{ .valuesFile }}` }}
+          {{ `{{- end -}}` }}
+        {{ `{{- end -}}` }}
+
+
         {{ `{{- if .kustomize }}` }}
         - repoURL: {{ $.Values.repoURL | quote }}
           targetRevision: {{ $.Values.targetRevision | quote }}
