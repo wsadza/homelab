@@ -10,12 +10,14 @@ applications:
     - name: envoy-gateway-crds
       enabled: true
       chartName: envoy-gateway-crds
-      #chartPath: 
+
+      chartValues: '{{ .path }}/helm/values.yml'
+      chartPath: null
       targetRevision: v1.7.1
       repoURL: oci://docker.io/envoyproxy/gateway-crds-helm
-      valuesFile: '{{ .path }}/helm/values.yml'
+
+
       #manifests: true
-      chartValues: true
       namespace: envoy-gateway-system
       priority: -10
       syncPolicy:
@@ -27,55 +29,55 @@ applications:
   # Envoy-Gateway 
   # ------------------
   
-    - name: envoy-gateway 
-      enabled: true
-      chartName: envoy-gateway
-      #chartPath: 
-      targetRevision: v1.7.1
-      repoURL: oci://docker.io/envoyproxy/gateway-helm
-      valuesFile: '{{ .path }}/helm/values.yml'
-      manifests: true
-      chartValues: true
-      namespace: envoy-gateway-system
-      priority: -5
-      syncPolicy:
-        automated: true
-        syncOptions:
-          - ServerSideApply=true
+          #- name: envoy-gateway 
+          #  enabled: true
+          #  chartName: envoy-gateway
+          #  #chartPath: 
+          #  targetRevision: v1.7.1
+          #  repoURL: oci://docker.io/envoyproxy/gateway-helm
+          #  valuesFile: '{{ .path }}/helm/values.yml'
+          #  manifests: true
+          #  chartValues: true
+          #  namespace: envoy-gateway-system
+          #  priority: -5
+          #  syncPolicy:
+          #    automated: true
+          #    syncOptions:
+          #      - ServerSideApply=true
 
   # ------------------
   # Cert-Manager 
   # ------------------
 
-    - name: cert-manager
-      enabled: true
-      chartName: cert-manager
-      #chartPath: 
-      targetRevision: 1.20.2
-      repoURL: https://charts.jetstack.io
-      valuesFile: '{{ .path }}/helm/values.yml'
-      manifests: false
-      kustomize: false
-      namespace: cert-manager 
-      priority: -5
-      syncPolicy:
-        automated: true
+          #- name: cert-manager
+          #  enabled: true
+          #  chartName: cert-manager
+          #  #chartPath: 
+          #  targetRevision: 1.20.2
+          #  repoURL: https://charts.jetstack.io
+          #  valuesFile: '{{ .path }}/helm/values.yml'
+          #  manifests: false
+          #  kustomize: false
+          #  namespace: cert-manager 
+          #  priority: -5
+          #  syncPolicy:
+          #    automated: true
 
   # ------------------
   # Exteranl-DNS 
   # ------------------
   
-    - name: external-dns
-      enabled: true
-      chartName: external-dns
-      #chartPath: 
-      targetRevision: 1.20.0
-      repoURL: https://kubernetes-sigs.github.io/external-dns/
-      valuesFile: '{{ .path }}/helm/values.yml'
-      #manifests: true
-      kustomize: true
-      chartValues: true
-      namespace: external-dns
-      priority: 0
-      syncPolicy:
-        automated: false
+          #- name: external-dns
+          #  enabled: true
+          #  chartName: external-dns
+          #  #chartPath: 
+          #  targetRevision: 1.20.0
+          #  repoURL: https://kubernetes-sigs.github.io/external-dns/
+          #  valuesFile: '{{ .path }}/helm/values.yml'
+          #  manifests: false
+          #  kustomize: true
+          #  chartValues: true
+          #  namespace: external-dns
+          #  priority: 0
+          #  syncPolicy:
+          #    automated: false

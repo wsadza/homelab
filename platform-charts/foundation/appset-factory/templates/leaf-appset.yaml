@@ -69,12 +69,12 @@ spec:
         - repoURL: {{ `{{ .repoURL }}` }} 
           targetRevision: {{ `{{ .targetRevision }}` }} 
 
-          {{ `{{- if hasKey . "chartPath" }}` }}
-          path: {{ `{{ .chartPath }}` }}
+          {{ `{{- with .chartPath }}` }}
+          path: {{ `{{ . }}` }}
           {{ `{{- end -}}` }}
 
-          {{ `{{- if hasKey . "chartName" }}` }}
-          chart: {{ `{{ .chartName }}` }} 
+          {{ `{{- with .chartName }}` }}
+          chart: {{ `{{ . }}` }} 
           {{ `{{- end -}}` }}
           
           {{ `{{- if not (or (hasKey . "chartPath") (hasKey . "chartName")) }}` }}
