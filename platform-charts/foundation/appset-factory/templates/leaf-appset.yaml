@@ -81,14 +81,14 @@ spec:
           helm:
             valueFiles:
               - {{ `{{ .chartValues }}` }}
-          {{ `{{- end -}}` }}
-        {{ `{{- end -}}` }}
+          {{ `{{- end }}` }}
+        {{ `{{- end }}` }}
 
         {{ `{{- with .kustomize }}` }}
         - repoURL: {{ $.Values.repoURL | quote }}
           targetRevision: {{ $.Values.targetRevision | quote }}
           path: {{ `{{ .path }}` }}
-        {{ `{{- end -}}` }}
+        {{ `{{- end }}` }}
 
         {{ `{{- if .manifests }}` }}
         - repoURL: {{ $.Values.repoURL | quote }}
@@ -96,6 +96,6 @@ spec:
           path: {{ `{{ .path }}` }}
           directory:
             recurse: true
-        {{ `{{- end -}}` }}
+        {{ `{{- end }}` }}
 
 {{- end }}
