@@ -1,12 +1,12 @@
-{{- if .Values.certificate.enabled }}
+{{- if .Values.platformApp.certificate.enabled }}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:  
-  name: {{ default (printf "%s-tls" (include "common.names.fullname" .)) .Values.certificate.name }}
-  namespace: {{ default (include "common.names.namespace" .) .Values.certificate.namespace }}
+  name: {{ default (printf "%s-tls" (include "common.names.fullname" .)) .Values.platformApp.certificate.name }}
+  namespace: {{ default (include "common.names.namespace" .) .Values.platformApp.certificate.namespace }}
 spec:
 {{- $root := . -}}
-{{- with .Values.certificate }}
+{{- with .Values.platformApp.certificate }}
   duration: {{ .duration | quote }}
   renewBefore: {{ .renewBefore | quote }}
   secretName: {{ default (printf "%s-tls" (include "common.names.fullname" $root )) .secretName }}

@@ -1,6 +1,6 @@
-{{- if and .Values.gatewayApi.enabled .Values.gatewayApi.httpRoute.enabled }}
+{{- if and .Values.platformApp.gatewayApi.enabled .Values.platformApp.gatewayApi.httpRoute.enabled }}
 {{- $root := . -}}
-{{- with .Values.gatewayApi.httpRoute }}
+{{- with .Values.platformApp.gatewayApi.httpRoute }}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:

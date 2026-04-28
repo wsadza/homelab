@@ -88,7 +88,7 @@ spec:
             {{ `{{- end }}` }}
           {{ `{{- end }}` }}
 
-        {{ `{{- else if eq .type "manifest"}}` }}
+        {{ `{{- else if eq .type "manifests"}}` }}
         - repoURL: {{ `{{ .repoURL | quote }}` }}
           targetRevision: {{ `{{ .targetRevision | quote }}` }}
           path:  {{ `{{ .path | quote }}` }}

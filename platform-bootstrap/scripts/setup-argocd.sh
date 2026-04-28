@@ -14,7 +14,9 @@ helm upgrade \
 echo "==> Waiting..."
 sleep 10
 
-MANIFEST_PATH="../applications/argocd/manifests/"
+MANIFEST_PATH="../../platform-charts/foundation/appset-factory"
 if [ ! -z "$( ls -A ${MANIFEST_PATH} )" ]; then 
-  kubectl apply -f ${MANIFEST_PATH}
+#  kubectl apply -f ${MANIFEST_PATH}
+  helm upgrade --atomic appset-factory -n argocd ./
 fi
+
