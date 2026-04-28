@@ -1,6 +1,6 @@
-{{- if and .Values.platformApp.gatewayApi.enabled .Values.platformApp.gatewayApi.gateway.enabled }}
+{{- if and .Values.appPlatform.gatewayApi.enabled .Values.appPlatform.gatewayApi.gateway.enabled }}
 {{- $root := . -}}
-{{- with .Values.platformApp.gatewayApi.gateway }}
+{{- with .Values.appPlatform.gatewayApi.gateway }}
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:

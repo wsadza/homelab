@@ -1,11 +1,11 @@
-{{- if and .Values.platformApp.certificate.enabled .Values.platformApp.certificate.issuer.enabled }}
+{{- if and .Values.appPlatform.certificate.enabled .Values.appPlatform.certificate.issuer.enabled }}
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: {{ default (printf "%s-issuer" (include "common.names.fullname" .)) .Values.platformApp.certificate.issuer.name }}
-  namespace: {{ default (include "common.names.namespace" .) .Values.platformApp.certificate.issuer.namespace }}
+  name: {{ default (printf "%s-issuer" (include "common.names.fullname" .)) .Values.appPlatform.certificate.issuer.name }}
+  namespace: {{ default (include "common.names.namespace" .) .Values.appPlatform.certificate.issuer.namespace }}
 spec:
-  {{- with .Values.platformApp.certificate.issuer.acme }}
+  {{- with .Values.appPlatform.certificate.issuer.acme }}
   acme:
     email: {{ required "certificate.issuer.acme.email is required" .email | quote }}
     server: {{ required "certificate.issuer.acme.server is required" .server | quote }}
