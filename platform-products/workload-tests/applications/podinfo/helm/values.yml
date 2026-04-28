@@ -180,7 +180,7 @@ appSecurity:
       matchLabels:
         app.kubernetes.io/name: podinfo
     policyTypes:
-      - egress 
+      - Egress 
     egress:
       - to:
         - namespaceSelector:
