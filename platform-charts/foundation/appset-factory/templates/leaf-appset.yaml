@@ -93,7 +93,7 @@ spec:
           targetRevision: {{ `{{ .targetRevision | quote }}` }}
           path:  {{ `{{ .path | quote }}` }}
           directory:
-            recurse: {{ `{{ .recurse | default true }}` }}
+            recurse: {{ `{{ .recurse | default false }}` }}
 
         {{ `{{- else if eq .type "kustomize"}}` }}
         - repoURL: {{ `{{ .repoURL | quote }}` }}
