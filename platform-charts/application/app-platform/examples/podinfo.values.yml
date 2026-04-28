@@ -30,7 +30,7 @@ appPlatform:
           allowedRoutes:
             namespaces:
               from: All
-
+  
         - name: podinfo-https
           protocol: HTTPS
           port: 443
@@ -87,6 +87,11 @@ appPlatform:
     name: podinfo-tls-certificate
     namespace: envoy-gateway-system
     existingIssuer: issuer-podinfo
+    existingIssuerKind: Issuer
+    keySize: 2048
+    keyAlgorithm: RSA
+    duration: 2160h
+    renewBefore: 360h
     secretName: podinfo-tls-certificate
     dnsNames:
       - podinfo.anykey.pl
@@ -100,8 +105,11 @@ appPlatform:
       enabled: true
       name: issuer-podinfo
       namespace: envoy-gateway-system
+      kind: Issuer
       acme:
         email: podinfo@anykey.pl 
+        server: https://acme-v02.api.letsencrypt.org/directory
+        privateKeySecretName: letsencrypt-account-key
         gatewayHTTPRoute:
           parentRefs:
             - group: gateway.networking.k8s.io

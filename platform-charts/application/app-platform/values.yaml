@@ -1,126 +1,133 @@
-# Inspirations
+# ===============================================================
+#    ___             ___  __     __  ___             
+#   / _ | ___  ___  / _ \/ /__ _/ /_/ _/__  ______ _ 
+#  / __ |/ _ \/ _ \/ ___/ / _ `/ __/ _/ _ \/ __/  ' \
+# /_/ |_/ .__/ .__/_/  /_/\_,_/\__/_/ \___/_/ /_/_/_/
+#      /_/  /_/                                      
+#
+# AppPlatform (wrapper chart)
+# -------------------------------
+#
+# Inspirations:
 # - https://github.com/bitnami/charts/blob/main/bitnami/keycloak/values.yaml
 # - https://github.com/wsadza/metal/blob/develop/metal/distributed/chart/templates/stream/deployment.yaml
 # - https://github.com/wsadza/charts/blob/develop/generator/templates/applicationset.yml
+#
+# Purpose:
+# - Extend existing community charts ~ wrapper chart
+#
+# Supports:
+# - envoy-gateway 
+# - external-dns
+# - cert-manager
+#
+# ===============================================================
 
 appPlatform:
 
   # ===============================================
-  # @section gatewayApi parameters
+  # @section Gateway API parameters
   # ===============================================
-  
+
   gatewayApi:
     # @param gatewayApi.enabled Enable Gateway API resources.
     enabled: false 
-    
-    # Generate Issuer for cerificate
-    #
+
+    # @param gatewayApi.gateway.enabled Enable Gateway resource generation.
+    # @param gatewayApi.gateway.name Gateway resource name.
+    # @param gatewayApi.gateway.namespace Namespace where the Gateway will be created.
+    # @param gatewayApi.gateway.labels Labels to add to the Gateway.
+    # @param gatewayApi.gateway.annotations Annotations to add to the Gateway.
+    # @param gatewayApi.gateway.gatewayClassName GatewayClass name used by the Gateway.
+    # @param gatewayApi.gateway.listeners List of Gateway listeners.
     gateway:
       enabled: false 
-  
-      name: gateway-podinfo
-      namespace: envoy-gateway-system
-      labels:
-        traffic-profile: shared
-      annotations:
-        external-dns.alpha.kubernetes.io/target: anykey.pl
-  
-      gatewayClassName: envoy
-      listeners:
-        - name: podinfo-http
-          protocol: HTTP
-          port: 80
-          hostname: podinfo.anykey.pl
-          allowedRoutes:
-            namespaces:
-              from: All
-  
-        - name: podinfo-https
-          protocol: HTTPS
-          port: 443
-          hostname: podinfo.anykey.pl
-  
-          tls:
-            mode: Terminate
-            certificateRefs:
-              - name: podinfo-tls-certificate 
-  
-          allowedRoutes:
-            namespaces:
-              from: Selector
-              selector:
-                matchLabels:
-                  kubernetes.io/metadata.name: podinfo
-  
-    # HttpRoute 
-    #
-    httpRoute:
-      enabled: false 
-  
-      name: podinfo-host
-      namespace: podinfo
+      name: "" 
+      namespace: "" 
       labels: {}
       annotations: {}
-  
-      parentRefs:
-        - name: gateway-podinfo
-          namespace: envoy-gateway-system
-          sectionName: podinfo-https
-      hostnames:
-        - podinfo.anykey.pl
-      rules:
-        - backendRefs:
-            - kind: Service
-              name: podinfo 
-              namespace: podinfo
-              port: 9898
-  
+      gatewayClassName: ""
+
+      # @param gatewayApi.gateway.listeners[0].name Listener name.
+      # @param gatewayApi.gateway.listeners[0].protocol Listener protocol.
+      # @param gatewayApi.gateway.listeners[0].port Listener port.
+      # @param gatewayApi.gateway.listeners[0].hostname Hostname accepted by the listener.
+      # @param gatewayApi.gateway.listeners[0].allowedRoutes Allowed routes configuration.
+      listeners: []
+
+    # @param gatewayApi.httpRoute.enabled Enable HTTPRoute resource generation.
+    # @param gatewayApi.httpRoute.name HTTPRoute resource name.
+    # @param gatewayApi.httpRoute.namespace Namespace where the HTTPRoute will be created.
+    # @param gatewayApi.httpRoute.labels Labels to add to the HTTPRoute.
+    # @param gatewayApi.httpRoute.annotations Annotations to add to the HTTPRoute.
+    # @param gatewayApi.httpRoute.parentRefs Parent Gateway references.
+    # @param gatewayApi.httpRoute.hostnames Hostnames matched by the HTTPRoute.
+    # @param gatewayApi.httpRoute.rules HTTPRoute routing rules.
+    httpRoute:
+      enabled: false 
+      name: "" 
+      namespace: "" 
+      labels: {}
+      annotations: {}
+      parentRefs: []
+      hostnames: []
+      rules: []
+
   # ===============================================
   # @section Certificate parameters
   # ===============================================
-  #
-  # @param certificate.enabled 
-  # @param certificate.name
-  # @param certificate.namespace
-  
+
+  # @param certificate.enabled Enable Certificate resource generation.
+  # @param certificate.name Certificate resource name.
+  # @param certificate.namespace Namespace where the Certificate will be created.
+  # @param certificate.existingIssuer Name of an existing Issuer or ClusterIssuer.
+  # @param certificate.existingIssuerKind Kind of the existing issuer. Usually Issuer or ClusterIssuer.
+  # @param certificate.keySize Private key size.
+  # @param certificate.keyAlgorithm Private key algorithm.
+  # @param certificate.duration Certificate validity duration.
+  # @param certificate.renewBefore How long before expiry cert-manager should renew the certificate.
+  # @param certificate.secretName Secret name where the TLS certificate will be stored.
+  # @param certificate.dnsNames DNS names covered by the certificate.
   certificate:
-    enabled: false
-    name: podinfo-tls-certificate
-    namespace: envoy-gateway-system
-    existingIssuer: issuer-podinfo
+    enabled: false 
+    name: "" 
+    namespace: "" 
+    existingIssuer: "" 
     existingIssuerKind: Issuer
+
     keySize: 2048
     keyAlgorithm: RSA
     duration: 2160h
     renewBefore: 360h
-    secretName: podinfo-tls-certificate
-    dnsNames:
-      - podinfo.anykey.pl
-  
-    # @subsection Issuer
+
+    secretName: ""
+    dnsNames: []
+
+    # @subsection Issuer parameters
     #
-    # @param certificate.issuer.enabled 
-    # @param certificate.issuer.name
-    # @param certificate.issuer.namespace
+    # @param certificate.issuer.enabled Enable Issuer resource generation.
+    # @param certificate.issuer.name Issuer resource name.
+    # @param certificate.issuer.namespace Namespace where the Issuer will be created.
+    # @param certificate.issuer.kind Issuer kind. Usually Issuer or ClusterIssuer.
+    # @param certificate.issuer.acme.email ACME registration email.
+    # @param certificate.issuer.acme.server ACME server URL.
+    # @param certificate.issuer.acme.privateKeySecretName Secret name used to store the ACME account private key.
+    # @param certificate.issuer.acme.gatewayHTTPRoute.parentRefs Gateway parent references used for HTTP-01 challenges.
     issuer:
       enabled: false
-      name: issuer-podinfo
-      namespace: envoy-gateway-system
+      name: "" 
+      namespace: "" 
       kind: Issuer
       acme:
-        email: podinfo@anykey.pl 
+        email: "" 
         server: https://acme-v02.api.letsencrypt.org/directory
         privateKeySecretName: letsencrypt-account-key
-        gatewayHTTPRoute:
-          parentRefs:
-            - group: gateway.networking.k8s.io
-              kind: Gateway
-              name: gateway-podinfo
-              namespace: envoy-gateway-system
-  
+        gatewayHTTPRoute: []
+
   # ===============================================
-  # @section NetworkPolicy parameters 
+  # @section NetworkPolicy parameters
   # ===============================================
-  
+
   networkPolicy:
+    # @param networkPolicy.enabled Enable NetworkPolicy resource generation.
     enabled: false
