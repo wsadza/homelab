@@ -54,7 +54,7 @@ applications:
       priority: -5
 
       syncPolicy:
-        automated: true
+        automated: false
         syncOptions:
           - ServerSideApply=true
 
