@@ -1,0 +1,36 @@
+# ===============================================================
+#    ___             ____                 _ __      
+#   / _ | ___  ___  / __/__ ______ ______(_) /___ __
+#  / __ |/ _ \/ _ \_\ \/ -_) __/ // / __/ / __/ // /
+# /_/ |_/ .__/ .__/___/\__/\__/\_,_/_/ /_/\__/\_, / 
+#      /_/  /_/                              /___/
+#
+# : AppSecurity (wrapper chart)
+# -------------------------------
+#
+# Inspirations:
+# - https://github.com/bitnami/charts/blob/main/bitnami/keycloak/values.yaml
+# - https://github.com/wsadza/metal/blob/develop/metal/distributed/chart/templates/stream/deployment.yaml
+# - https://github.com/wsadza/charts/blob/develop/generator/templates/applicationset.yml
+#
+# Purpose:
+# - Extend existing community charts (wrapper chart)
+#
+# Supports:
+# - NetworkPolicy
+# -  
+#
+# ToDo:
+# - NetworkPolicy: presets
+#
+# ===============================================================
+
+appSecurity:
+  enabled: true
+
+  # ===============================================
+  # @section NetworkPolicy parameters
+  # ===============================================
+
+  # @param appSecurity.networkPolicies List of NetworkPolicy resources to generate.
+  networkPolicies: []

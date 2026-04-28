@@ -5,7 +5,7 @@
 # /_/ |_/ .__/ .__/_/  /_/\_,_/\__/_/ \___/_/ /_/_/_/
 #      /_/  /_/                                      
 #
-# AppPlatform (wrapper chart)
+# : AppPlatform (wrapper chart)
 # -------------------------------
 #
 # Inspirations:
@@ -30,16 +30,16 @@ appPlatform:
   # ===============================================
 
   gatewayApi:
-    # @param gatewayApi.enabled Enable Gateway API resources.
+    # @param appPlatform.gatewayApi.enabled Enable Gateway API resources.
     enabled: false 
 
-    # @param gatewayApi.gateway.enabled Enable Gateway resource generation.
-    # @param gatewayApi.gateway.name Gateway resource name.
-    # @param gatewayApi.gateway.namespace Namespace where the Gateway will be created.
-    # @param gatewayApi.gateway.labels Labels to add to the Gateway.
-    # @param gatewayApi.gateway.annotations Annotations to add to the Gateway.
-    # @param gatewayApi.gateway.gatewayClassName GatewayClass name used by the Gateway.
-    # @param gatewayApi.gateway.listeners List of Gateway listeners.
+    # @param appPlatform.gatewayApi.gateway.enabled Enable Gateway resource generation.
+    # @param appPlatform.gatewayApi.gateway.name Gateway resource name.
+    # @param appPlatform.gatewayApi.gateway.namespace Namespace where the Gateway will be created.
+    # @param appPlatform.gatewayApi.gateway.labels Labels to add to the Gateway.
+    # @param appPlatform.gatewayApi.gateway.annotations Annotations to add to the Gateway.
+    # @param appPlatform.gatewayApi.gateway.gatewayClassName GatewayClass name used by the Gateway.
+    # @param appPlatform.gatewayApi.gateway.listeners List of Gateway listeners. 
     gateway:
       enabled: false 
       name: "" 
@@ -48,21 +48,21 @@ appPlatform:
       annotations: {}
       gatewayClassName: ""
 
-      # @param gatewayApi.gateway.listeners[0].name Listener name.
-      # @param gatewayApi.gateway.listeners[0].protocol Listener protocol.
-      # @param gatewayApi.gateway.listeners[0].port Listener port.
-      # @param gatewayApi.gateway.listeners[0].hostname Hostname accepted by the listener.
-      # @param gatewayApi.gateway.listeners[0].allowedRoutes Allowed routes configuration.
+      # @param appPlatform.gatewayApi.gateway.listeners[0].name Listener name.
+      # @param appPlatform.gatewayApi.gateway.listeners[0].protocol Listener protocol.
+      # @param appPlatform.gatewayApi.gateway.listeners[0].port Listener port.
+      # @param appPlatform.gatewayApi.gateway.listeners[0].hostname Hostname accepted by the listener.
+      # @param appPlatform.gatewayApi.gateway.listeners[0].allowedRoutes Allowed routes configuration.
       listeners: []
 
-    # @param gatewayApi.httpRoute.enabled Enable HTTPRoute resource generation.
-    # @param gatewayApi.httpRoute.name HTTPRoute resource name.
-    # @param gatewayApi.httpRoute.namespace Namespace where the HTTPRoute will be created.
-    # @param gatewayApi.httpRoute.labels Labels to add to the HTTPRoute.
-    # @param gatewayApi.httpRoute.annotations Annotations to add to the HTTPRoute.
-    # @param gatewayApi.httpRoute.parentRefs Parent Gateway references.
-    # @param gatewayApi.httpRoute.hostnames Hostnames matched by the HTTPRoute.
-    # @param gatewayApi.httpRoute.rules HTTPRoute routing rules.
+    # @param appPlatform.gatewayApi.httpRoute.enabled Enable HTTPRoute resource generation.
+    # @param appPlatform.gatewayApi.httpRoute.name HTTPRoute resource name.
+    # @param appPlatform.gatewayApi.httpRoute.namespace Namespace where the HTTPRoute will be created.
+    # @param appPlatform.gatewayApi.httpRoute.labels Labels to add to the HTTPRoute.
+    # @param appPlatform.gatewayApi.httpRoute.annotations Annotations to add to the HTTPRoute.
+    # @param appPlatform.gatewayApi.httpRoute.parentRefs Parent Gateway references.
+    # @param appPlatform.gatewayApi.httpRoute.hostnames Hostnames matched by the HTTPRoute.
+    # @param appPlatform.gatewayApi.httpRoute.rules HTTPRoute routing rules.
     httpRoute:
       enabled: false 
       name: "" 
@@ -76,18 +76,18 @@ appPlatform:
   # ===============================================
   # @section Certificate parameters
   # ===============================================
-
-  # @param certificate.enabled Enable Certificate resource generation.
-  # @param certificate.name Certificate resource name.
-  # @param certificate.namespace Namespace where the Certificate will be created.
-  # @param certificate.existingIssuer Name of an existing Issuer or ClusterIssuer.
-  # @param certificate.existingIssuerKind Kind of the existing issuer. Usually Issuer or ClusterIssuer.
-  # @param certificate.keySize Private key size.
-  # @param certificate.keyAlgorithm Private key algorithm.
-  # @param certificate.duration Certificate validity duration.
-  # @param certificate.renewBefore How long before expiry cert-manager should renew the certificate.
-  # @param certificate.secretName Secret name where the TLS certificate will be stored.
-  # @param certificate.dnsNames DNS names covered by the certificate.
+  
+  # @param appPlatform.certificate.enabled Enable Certificate resource generation.
+  # @param appPlatform.certificate.name Certificate resource name.
+  # @param appPlatform.certificate.namespace Namespace where the Certificate will be created.
+  # @param appPlatform.certificate.existingIssuer Name of an existing Issuer or ClusterIssuer.
+  # @param appPlatform.certificate.existingIssuerKind Kind of the existing issuer. Usually Issuer or ClusterIssuer.
+  # @param appPlatform.certificate.keySize Private key size.
+  # @param appPlatform.certificate.keyAlgorithm Private key algorithm.
+  # @param appPlatform.certificate.duration Certificate validity duration.
+  # @param appPlatform.certificate.renewBefore How long before expiry cert-manager should renew the certificate.
+  # @param appPlatform.certificate.secretName Secret name where the TLS certificate will be stored.
+  # @param appPlatform.certificate.dnsNames DNS names covered by the certificate. 
   certificate:
     enabled: false 
     name: "" 
@@ -103,16 +103,18 @@ appPlatform:
     secretName: ""
     dnsNames: []
 
+    # -----------------------------------------------
     # @subsection Issuer parameters
+    # -----------------------------------------------
     #
-    # @param certificate.issuer.enabled Enable Issuer resource generation.
-    # @param certificate.issuer.name Issuer resource name.
-    # @param certificate.issuer.namespace Namespace where the Issuer will be created.
-    # @param certificate.issuer.kind Issuer kind. Usually Issuer or ClusterIssuer.
-    # @param certificate.issuer.acme.email ACME registration email.
-    # @param certificate.issuer.acme.server ACME server URL.
-    # @param certificate.issuer.acme.privateKeySecretName Secret name used to store the ACME account private key.
-    # @param certificate.issuer.acme.gatewayHTTPRoute.parentRefs Gateway parent references used for HTTP-01 challenges.
+    # @param appPlatform.certificate.issuer.enabled Enable Issuer resource generation.
+    # @param appPlatform.certificate.issuer.name Issuer resource name.
+    # @param appPlatform.certificate.issuer.namespace Namespace where the Issuer will be created.
+    # @param appPlatform.certificate.issuer.kind Issuer kind. Usually Issuer or ClusterIssuer.
+    # @param appPlatform.certificate.issuer.acme.email ACME registration email.
+    # @param appPlatform.certificate.issuer.acme.server ACME server URL.
+    # @param appPlatform.certificate.issuer.acme.privateKeySecretName Secret name used to store the ACME account private key.
+    # @param appPlatform.certificate.issuer.acme.gatewayHTTPRoute.parentRefs Gateway parent references used for HTTP-01 challenges. 
     issuer:
       enabled: false
       name: "" 
@@ -123,11 +125,3 @@ appPlatform:
         server: https://acme-v02.api.letsencrypt.org/directory
         privateKeySecretName: letsencrypt-account-key
         gatewayHTTPRoute: []
-
-  # ===============================================
-  # @section NetworkPolicy parameters
-  # ===============================================
-
-  networkPolicy:
-    # @param networkPolicy.enabled Enable NetworkPolicy resource generation.
-    enabled: false

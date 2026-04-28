@@ -1,11 +1,11 @@
 {{- if .Values.appPlatform.certificate.enabled }}
+{{- $root := . -}}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:  
   name: {{ default (printf "%s-tls" (include "common.names.fullname" .)) .Values.appPlatform.certificate.name }}
   namespace: {{ default (include "common.names.namespace" .) .Values.appPlatform.certificate.namespace }}
 spec:
-{{- $root := . -}}
 {{- with .Values.appPlatform.certificate }}
   duration: {{ .duration | quote }}
   renewBefore: {{ .renewBefore | quote }}
