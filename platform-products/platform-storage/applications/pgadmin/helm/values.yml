@@ -10,6 +10,8 @@
 env:
   email: admin@anykey.pl
   password: admin
+  variables:
+    PGADMIN_CONFIG_CHECK_EMAIL_DELIVERABILITY: "False"
 
 service:
   type: ClusterIP
@@ -115,7 +117,7 @@ appPlatform:
       rules:
         - backendRefs:
             - kind: Service
-              name: pgadmin
+              name: pgadmin-pgadmin4
               namespace: pgadmin 
               port: 80
   
