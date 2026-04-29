@@ -19,8 +19,8 @@ applications:
       sources:
 
         - type: manifests
-          repourl: https://github.com/wsadza/homelab.git
-          targetrevision: head
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
           path: platform-products/workload-storage/applications/local-path-provisoner/manifests
 
   # ------------------
