@@ -92,10 +92,10 @@ spec:
         - repoURL: {{ `{{ .repoURL | quote }}` }}
           targetRevision: {{ `{{ .targetRevision | quote }}` }}
           path:  {{ `{{ .path | quote }}` }}
-          {{ `{{- with .recurse }}` }}
+          {{- if hasKey . "recurse" }}
           directory:
-            recurse: {{ `{{ . | default false }}` }}
-          {{ `{{- end }}` }}
+            recurse: {{ .recurse | default false }}
+          {{- end }}
 
         {{ `{{- else if eq .type "kustomize"}}` }}
         - repoURL: {{ `{{ .repoURL | quote }}` }}
