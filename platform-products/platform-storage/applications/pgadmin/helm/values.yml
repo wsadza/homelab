@@ -3,11 +3,31 @@
 # - igor.sadza
 #
 # Purpose:
-# - podinfo helm chart values.yaml file
+# - pgadmin helm chart values.yaml file
 #
 # ===============================================================
 
+env:
+  email: admin@anykey.pl
+  password: admin
 
+service:
+  type: ClusterIP
+  port: 80
+
+persistence:
+  enabled: true
+  storageClass: storage-local-retain
+  accessMode: ReadWriteOnce
+  size: 1Gi
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
 
 # ===============================================================
 #    ___             ___  __     __  ___             
@@ -38,7 +58,7 @@ appPlatform:
     # @param appPlatform.gatewayApi.gateway.listeners List of Gateway listeners. 
     gateway:
       enabled: true
-      name: gateway-podinfo
+      name: gateway-pgadmin
       namespace: envoy-gateway-system
       labels:
         traffic-profile: shared
@@ -52,27 +72,27 @@ appPlatform:
       # @param appPlatform.gatewayApi.gateway.listeners[0].hostname Hostname accepted by the listener.
       # @param appPlatform.gatewayApi.gateway.listeners[0].allowedRoutes Allowed routes configuration.
       listeners:
-        - name: podinfo-http
+        - name: pgadmin-http
           protocol: HTTP
           port: 80
-          hostname: podinfo.anykey.pl
+          hostname: pgadmin.anykey.pl
           allowedRoutes:
             namespaces:
               from: All
-        - name: podinfo-https
+        - name: pgadmin-https
           protocol: HTTPS
           port: 443
-          hostname: podinfo.anykey.pl
+          hostname: pgadmin.anykey.pl
           tls:
             mode: Terminate
             certificateRefs:
-              - name: podinfo-tls-certificate 
+              - name: pgadmin-tls-certificate 
           allowedRoutes:
             namespaces:
               from: Selector
               selector:
                 matchLabels:
-                  kubernetes.io/metadata.name: podinfo
+                  kubernetes.io/metadata.name: pgadmin
  
     # @param appPlatform.gatewayApi.httpRoute.enabled Enable HTTPRoute resource generation.
     # @param appPlatform.gatewayApi.httpRoute.name HTTPRoute resource name.
@@ -84,20 +104,20 @@ appPlatform:
     # @param appPlatform.gatewayApi.httpRoute.rules HTTPRoute routing rules.
     httpRoute:
       enabled: true
-      name: podinfo-host
-      namespace: podinfo
+      name: pgadmin-host
+      namespace: pgadmin
       parentRefs:
-        - name: gateway-podinfo
+        - name: gateway-pgadmin
           namespace: envoy-gateway-system
-          sectionName: podinfo-https
+          sectionName: pgadmin-https
       hostnames:
-        - podinfo.anykey.pl
+        - pgadmin.anykey.pl
       rules:
         - backendRefs:
             - kind: Service
-              name: podinfo 
-              namespace: podinfo
-              port: 9898
+              name: pgadmin
+              namespace: pgadmin 
+              port: 80
   
   # ===============================================
   # @section Certificate parameters
@@ -121,7 +141,7 @@ appPlatform:
     existingIssuer: issuer-podinfo
     secretName: podinfo-tls-certificate
     dnsNames:
-      - podinfo.anykey.pl
+      - pgadmin.anykey.pl
 
     # -----------------------------------------------
     # @subsection Issuer parameters
@@ -137,10 +157,10 @@ appPlatform:
     # @param appPlatform.certificate.issuer.acme.gatewayHTTPRoute.parentRefs Gateway parent references used for HTTP-01 challenges. 
     issuer:
       enabled: true
-      name: issuer-podinfo
+      name: issuer-pgadmin
       namespace: envoy-gateway-system
       acme:
-        email: podinfo@anykey.pl 
+        email: pgadmin@anykey.pl 
         gatewayHTTPRoute:
           parentRefs:
             - group: gateway.networking.k8s.io
@@ -173,12 +193,12 @@ appSecurity:
  
   - enabled: true
     name: allow-dns-egress
-    namespace: podinfo
+    namespace: pgadmin
     labels: {}
     annotations: {}
     podSelector:
       matchLabels:
-        app.kubernetes.io/name: podinfo
+        app.kubernetes.io/name: pgadmin
     policyTypes:
       - Egress 
     egress:
@@ -197,12 +217,12 @@ appSecurity:
   # - Allow ingress traffic to podinfo from envoy-gatawy-system
   - enabled: true
     name: allow-from-gateway
-    namespace: podinfo
+    namespace: pgadmin
     labels: {}
     annotations: {}
     podSelector:
       matchLabels:
-        app.kubernetes.io/name: podinfo
+        app.kubernetes.io/name: pgadmin
     policyTypes:
       - Ingress
     ingress:
@@ -216,7 +236,7 @@ appSecurity:
   # - Block all ingress and egress in podinfo namespace
   - enabled: true
     name: deny-all-ingress
-    namespace: podinfo
+    namespace: pgadmin
     podSelector: {}
     policyTypes:
     - Ingress

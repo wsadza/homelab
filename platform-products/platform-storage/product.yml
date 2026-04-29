@@ -11,7 +11,7 @@ applications:
       namespace: kube-system
 
       enabled: true
-      priority: -10
+      priority: -15
 
       syncPolicy:
         automated: false
@@ -60,7 +60,7 @@ applications:
       namespace: pgadmin 
 
       enabled: true
-      priority: -5
+      priority: 0
 
       syncPolicy:
         automated: false
@@ -77,18 +77,18 @@ applications:
           targetRevision: 1.62.0 
           chart: pgadmin4
           valueFiles: 
-            - $values/platform-products/platform-storage/applications/cloudnative-pg/helm/values.yml
+            - $values/platform-products/platform-storage/applications/pgadmin/helm/values.yml
 
         - type: helm 
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: head
           path: platform-charts/application/app-platform
           valueFiles: 
-            - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
+            - $values/platform-products/workload-storage/applications/pgadmin/helm/values.yml
 
         - type: helm 
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: head
           path: platform-charts/application/app-security
           valueFiles: 
-            - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
+            - $values/platform-products/workload-storage/applications/pgadmin/helm/values.yml
