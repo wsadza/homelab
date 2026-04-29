@@ -136,10 +136,10 @@ appPlatform:
   # @param appPlatform.certificate.dnsNames DNS names covered by the certificate. 
   certificate:
     enabled: true
-    name: podinfo-tls-certificate
+    name: pgadmin-tls-certificate
     namespace: envoy-gateway-system
-    existingIssuer: issuer-podinfo
-    secretName: podinfo-tls-certificate
+    existingIssuer: issuer-pgadmin
+    secretName: pgadmin-tls-certificate
     dnsNames:
       - pgadmin.anykey.pl
 
@@ -165,7 +165,7 @@ appPlatform:
           parentRefs:
             - group: gateway.networking.k8s.io
               kind: Gateway
-              name: gateway-podinfo
+              name: gateway-pgadmin
               namespace: envoy-gateway-system
 
 # ===============================================================
@@ -214,7 +214,7 @@ appSecurity:
     ingress: []
 
   # Description:
-  # - Allow ingress traffic to podinfo from envoy-gatawy-system
+  # - Allow ingress traffic to from envoy-gatawy-system
   - enabled: true
     name: allow-from-gateway
     namespace: pgadmin
@@ -233,7 +233,7 @@ appSecurity:
     egress: []
 
   # Description:
-  # - Block all ingress and egress in podinfo namespace
+  # - Block all ingress and egress in namespace
   - enabled: true
     name: deny-all-ingress
     namespace: pgadmin
