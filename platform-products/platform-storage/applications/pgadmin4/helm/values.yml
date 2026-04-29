@@ -39,7 +39,7 @@ platformDefaults:
   certificateName:  &certificateName  pgadmin4-tls-certificate
   gatewayName:      &gatewayName      gateway-pgadmin4
   issuerName:       &issuerName       issuer-pgadmin4
-  serviceName:      &serviceName      pgadmin-pgadmin4
+  serviceName:      &serviceName      pgadmin4
   issuerEmail:      &issuerEmail      pgadmin4@anykey.pl
 
 # ===============================================================
