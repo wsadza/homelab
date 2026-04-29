@@ -80,15 +80,15 @@ applications:
             - $values/platform-products/platform-storage/applications/cloudnative-pg/helm/values.yml
 
         - type: helm 
-          repourl: https://github.com/wsadza/homelab.git
-          targetrevision: head
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: head
           path: platform-charts/application/app-platform
-          valuefiles: 
+          valueFiles: 
             - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
 
         - type: helm 
-          repourl: https://github.com/wsadza/homelab.git
-          targetrevision: head
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: head
           path: platform-charts/application/app-security
-          valuefiles: 
+          valueFiles: 
             - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
