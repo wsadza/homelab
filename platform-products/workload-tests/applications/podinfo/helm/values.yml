@@ -7,7 +7,18 @@
 #
 # ===============================================================
 
+# ===============================================================
 
+platformDefaults:
+  appName:          &appName          podinfo 
+  namespace:        &namespace        podinfo 
+  domain:           &domain           podinfo.anykey.pl
+  gatewayNamespace: &gatewayNamespace envoy-gateway-system
+  certificateName:  &certificateName  podinfo-tls-certificate
+  gatewayName:      &gatewayName      gateway-podinfo
+  issuerName:       &issuerName       issuer-podinfo
+  serviceName:      &serviceName      podinfo 
+  issuerEmail:      &issuerEmail      podinfo@anykey.pl
 
 # ===============================================================
 #    ___             ___  __     __  ___             
@@ -38,10 +49,8 @@ appPlatform:
     # @param appPlatform.gatewayApi.gateway.listeners List of Gateway listeners. 
     gateway:
       enabled: true
-      name: gateway-podinfo
-      namespace: envoy-gateway-system
-      labels:
-        traffic-profile: shared
+      name: *gatewayName
+      namespace: *gatewayNamespace
       annotations:
         external-dns.alpha.kubernetes.io/target: anykey.pl
       gatewayClassName: envoy
@@ -52,27 +61,28 @@ appPlatform:
       # @param appPlatform.gatewayApi.gateway.listeners[0].hostname Hostname accepted by the listener.
       # @param appPlatform.gatewayApi.gateway.listeners[0].allowedRoutes Allowed routes configuration.
       listeners:
-        - name: podinfo-http
+        - name: listner-http
           protocol: HTTP
           port: 80
-          hostname: podinfo.anykey.pl
+          hostname: *domain
           allowedRoutes:
             namespaces:
               from: All
-        - name: podinfo-https
+
+        - name: listner-https
           protocol: HTTPS
           port: 443
-          hostname: podinfo.anykey.pl
+          hostname: *domain
           tls:
             mode: Terminate
             certificateRefs:
-              - name: podinfo-tls-certificate 
+              - name: *certificateName
           allowedRoutes:
             namespaces:
               from: Selector
               selector:
                 matchLabels:
-                  kubernetes.io/metadata.name: podinfo
+                  kubernetes.io/metadata.name: *namespace
  
     # @param appPlatform.gatewayApi.httpRoute.enabled Enable HTTPRoute resource generation.
     # @param appPlatform.gatewayApi.httpRoute.name HTTPRoute resource name.
@@ -84,20 +94,23 @@ appPlatform:
     # @param appPlatform.gatewayApi.httpRoute.rules HTTPRoute routing rules.
     httpRoute:
       enabled: true
-      name: podinfo-host
-      namespace: podinfo
+      name: pgadmin-host
+      namespace: *namespace
       parentRefs:
-        - name: gateway-podinfo
-          namespace: envoy-gateway-system
-          sectionName: podinfo-https
+        - name: *gatewayName
+          namespace: *gatewayNamespace
+          sectionName: listner-http
+        - name: *gatewayName
+          namespace: *gatewayNamespace
+          sectionName: listner-https
       hostnames:
-        - podinfo.anykey.pl
+        - *domain
       rules:
         - backendRefs:
             - kind: Service
-              name: podinfo 
-              namespace: podinfo
-              port: 9898
+              name: *serviceName
+              namespace: *namespace
+              port: 80
   
   # ===============================================
   # @section Certificate parameters
@@ -116,12 +129,12 @@ appPlatform:
   # @param appPlatform.certificate.dnsNames DNS names covered by the certificate. 
   certificate:
     enabled: true
-    name: podinfo-tls-certificate
-    namespace: envoy-gateway-system
-    existingIssuer: issuer-podinfo
-    secretName: podinfo-tls-certificate
+    name: *certificateName
+    namespace: *gatewayNamespace
+    existingIssuer: *issuerName
+    secretName: *certificateName
     dnsNames:
-      - podinfo.anykey.pl
+      - *domain
 
     # -----------------------------------------------
     # @subsection Issuer parameters
@@ -137,16 +150,16 @@ appPlatform:
     # @param appPlatform.certificate.issuer.acme.gatewayHTTPRoute.parentRefs Gateway parent references used for HTTP-01 challenges. 
     issuer:
       enabled: true
-      name: issuer-podinfo
-      namespace: envoy-gateway-system
+      name: *issuerName
+      namespace: *gatewayNamespace
       acme:
-        email: podinfo@anykey.pl 
+        email: *issuerEmail
         gatewayHTTPRoute:
           parentRefs:
             - group: gateway.networking.k8s.io
               kind: Gateway
-              name: gateway-podinfo
-              namespace: envoy-gateway-system
+              name: *gatewayName
+              namespace: *gatewayNamespace
 
 # ===============================================================
 #    ___             ____                 _ __      
@@ -168,17 +181,13 @@ appSecurity:
   # @param appSecurity.networkPolicies List of NetworkPolicy resources to generate.
   networkPolicies:
   
-  # Description:
-  # - Allow consuming Kubernetes DNS 
- 
+  # : Allow consuming Kubernetes DNS 
   - enabled: true
     name: allow-dns-egress
-    namespace: podinfo
-    labels: {}
-    annotations: {}
+    namespace: *namespace
     podSelector:
       matchLabels:
-        app.kubernetes.io/name: podinfo
+        app.kubernetes.io/name: *appName
     policyTypes:
       - Egress 
     egress:
@@ -193,16 +202,15 @@ appSecurity:
           port: 53
     ingress: []
 
-  # Description:
-  # - Allow ingress traffic to podinfo from envoy-gatawy-system
+  # : Allow ingress traffic to from envoy-gatawy-system
   - enabled: true
     name: allow-from-gateway
-    namespace: podinfo
+    namespace: *namespace 
     labels: {}
     annotations: {}
     podSelector:
       matchLabels:
-        app.kubernetes.io/name: podinfo
+        app.kubernetes.io/name: *appName
     policyTypes:
       - Ingress
     ingress:
@@ -212,11 +220,10 @@ appSecurity:
               kubernetes.io/metadata.name: envoy-gateway-system
     egress: []
 
-  # Description:
-  # - Block all ingress and egress in podinfo namespace
+  # : Block all ingress and egress in namespace
   - enabled: true
     name: deny-all-ingress
-    namespace: podinfo
+    namespace: *namespace
     podSelector: {}
     policyTypes:
     - Ingress
