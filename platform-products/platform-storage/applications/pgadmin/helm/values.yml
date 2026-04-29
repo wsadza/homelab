@@ -31,7 +31,7 @@ resources:
 
 # ===============================================================
 
-defaults:
+platformDefaults:
   appName:          &appName          pgadmin
   namespace:        &namespace        pgadmin
   domain:           &domain           pgadmin.anykey.pl
@@ -203,8 +203,7 @@ appSecurity:
   # @param appSecurity.networkPolicies List of NetworkPolicy resources to generate.
   networkPolicies:
   
-  # Description:
-  # - Allow consuming Kubernetes DNS 
+  # : Allow consuming Kubernetes DNS 
   - enabled: true
     name: allow-dns-egress
     namespace: *namespace
@@ -225,8 +224,7 @@ appSecurity:
           port: 53
     ingress: []
 
-  # Description:
-  # - Allow ingress traffic to from envoy-gatawy-system
+  # : Allow ingress traffic to from envoy-gatawy-system
   - enabled: true
     name: allow-from-gateway
     namespace: *namespace 
@@ -244,8 +242,7 @@ appSecurity:
               kubernetes.io/metadata.name: envoy-gateway-system
     egress: []
 
-  # Description:
-  # - Block all ingress and egress in namespace
+  # : Block all ingress and egress in namespace
   - enabled: true
     name: deny-all-ingress
     namespace: *namespace
@@ -253,4 +250,21 @@ appSecurity:
     policyTypes:
     - Ingress
     - Egress
+    ingress: []
+
+  # : Allow egress traffic to sql instances 
+  - enabled: true
+    name: allow-pgadmin-to-sql
+    namespace: *namespace 
+    labels: {}
+    annotations: {}
+    podSelector:
+      matchLabels:
+        app.kubernetes.io/name: *appName
+    policyTypes:
+      - Eggress 
+    egress:
+      - ports:
+        - protocol: TCP 
+          port: 5432
     ingress: []
