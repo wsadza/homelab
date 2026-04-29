@@ -91,18 +91,18 @@ spec:
         {{ `{{- else if eq .type "manifests"}}` }}
         - repoURL: {{ `{{ .repoURL | quote }}` }}
           targetRevision: {{ `{{ .targetRevision | quote }}` }}
-          path:  {{ `{{ .path | quote }}` }}
-          {{ `{{- if hasKey . "recurse" }}` }}
+          path: {{ `{{ .path | quote }}` }}
+        {{ `{{- if hasKey . "recurse" }}` }}
           directory:
             recurse: {{ `{{ .recurse | default false }}` }}
-          {{ `{{- end }}` }}
-
+        {{ `{{- end }}` }}
+          
         {{ `{{- else if eq .type "kustomize"}}` }}
         - repoURL: {{ `{{ .repoURL | quote }}` }}
           targetRevision: {{ `{{ .targetRevision | quote }}` }}
-          path:  {{ `{{ .path | quote }}` }}
+          path: {{ `{{ .path | quote }}` }}
         {{ `{{- end }}` }}
-
+          
         {{ `{{- end }}` }}
 
 {{- end }}
