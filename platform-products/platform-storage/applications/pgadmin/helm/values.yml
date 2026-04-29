@@ -7,6 +7,12 @@
 #
 # ===============================================================
 
+defaults: 
+  image: nginx:latest
+  restart: always
+
+# ------------------------
+
 env:
   email: admin@anykey.pl
   password: admin
@@ -104,19 +110,19 @@ appPlatform:
     # @param appPlatform.gatewayApi.httpRoute.rules HTTPRoute routing rules.
     httpRoute:
       enabled: true
-      name: pgadmin-host
-      namespace: pgadmin
+      name: "{{ name }}-host"
+      namespace: "{{ namespace }}"
       parentRefs:
-        - name: gateway-pgadmin
+        - name: "gateway-{{ name }}"
           namespace: envoy-gateway-system
-          sectionName: pgadmin-https
+          sectionName: "{{ name }}-https"
       hostnames:
-        - pgadmin.anykey.pl
+        - "{{ name }}.anykey.pl"
       rules:
         - backendRefs:
             - kind: Service
-              name: pgadmin-pgadmin4
-              namespace: pgadmin 
+              name: "{{ service }}" 
+              namespace: "{{ namespace }}" 
               port: 80
   
   # ===============================================
@@ -136,12 +142,12 @@ appPlatform:
   # @param appPlatform.certificate.dnsNames DNS names covered by the certificate. 
   certificate:
     enabled: true
-    name: pgadmin-tls-certificate
+    name: "{{ name }}-tls-certificate"
     namespace: envoy-gateway-system
-    existingIssuer: issuer-pgadmin
-    secretName: pgadmin-tls-certificate
+    existingIssuer: "issuer-{{ name }}"
+    secretName: "{{ name }}-tls-certificate"
     dnsNames:
-      - pgadmin.anykey.pl
+      - "{{ name }}.anykey.pl"
 
     # -----------------------------------------------
     # @subsection Issuer parameters
@@ -157,15 +163,15 @@ appPlatform:
     # @param appPlatform.certificate.issuer.acme.gatewayHTTPRoute.parentRefs Gateway parent references used for HTTP-01 challenges. 
     issuer:
       enabled: true
-      name: issuer-pgadmin
+      name: "issuer-{{ name }}"
       namespace: envoy-gateway-system
       acme:
-        email: pgadmin@anykey.pl 
+        email: "{{ name }}@anykey.pl"
         gatewayHTTPRoute:
           parentRefs:
             - group: gateway.networking.k8s.io
               kind: Gateway
-              name: gateway-pgadmin
+              name: "gateway-{{ name }}"
               namespace: envoy-gateway-system
 
 # ===============================================================
@@ -193,12 +199,12 @@ appSecurity:
  
   - enabled: true
     name: allow-dns-egress
-    namespace: pgadmin
+    namespace: "{{ namespace  }}"
     labels: {}
     annotations: {}
     podSelector:
       matchLabels:
-        app.kubernetes.io/name: pgadmin
+        app.kubernetes.io/name: "{{ name }}"
     policyTypes:
       - Egress 
     egress:
@@ -217,12 +223,12 @@ appSecurity:
   # - Allow ingress traffic to from envoy-gatawy-system
   - enabled: true
     name: allow-from-gateway
-    namespace: pgadmin
+    namespace: "{{ namespace  }}"
     labels: {}
     annotations: {}
     podSelector:
       matchLabels:
-        app.kubernetes.io/name: pgadmin
+        app.kubernetes.io/name: "{{ name }}"
     policyTypes:
       - Ingress
     ingress:
@@ -236,7 +242,7 @@ appSecurity:
   # - Block all ingress and egress in namespace
   - enabled: true
     name: deny-all-ingress
-    namespace: pgadmin
+    namespace: "{{ namespace }}"
     podSelector: {}
     policyTypes:
     - Ingress
