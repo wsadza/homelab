@@ -77,7 +77,7 @@ applications:
           targetRevision: 1.62.0 
           chart: pgadmin4
           valueFiles: 
-            - $values/platform-products/platform-storage/applications/pgadmin/helm/values.yml
+            - $values/platform-products/platform-storage/applications/pgadmin/helm/values.tpl.yml
 
         - type: helm 
           repoURL: https://github.com/wsadza/homelab.git
