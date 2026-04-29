@@ -143,12 +143,12 @@ appPlatform:
   # @param appPlatform.certificate.dnsNames DNS names covered by the certificate. 
   certificate:
     enabled: true
-    name: "{{ .Values.defaults.name }}-tls-certificate"
+    name: {{ printf "%s-tls-certificate" .Values.defaults.name | quote }}
     namespace: envoy-gateway-system
-    existingIssuer: "issuer-{{ .Values.defaults.name }}"
-    secretName: "{{ .Values.defaults.name }}-tls-certificate"
+    existingIssuer: {{ printf "issuer-%s" .Values.defaults.name | quote }}
+    secretName: {{ printf "%s-tls-certificate" .Values.defaults.name | quote }}
     dnsNames:
-      - "{{ .Values.defaults.name }}.anykey.pl"
+      - {{ printf "%s.anykey.pl" .Values.defaults.name | quote }}
 
     # -----------------------------------------------
     # @subsection Issuer parameters
