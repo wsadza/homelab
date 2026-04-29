@@ -7,13 +7,6 @@
 #
 # ===============================================================
 
-defaults:
-  name: pgadmin
-  namespace: pgadmin 
-  service: pgadmin-pgadmin4
-
-# ------------------------
-
 env:
   email: admin@anykey.pl
   password: admin
@@ -35,6 +28,19 @@ resources:
   limits:
     cpu: 500m
     memory: 512Mi
+
+# ===============================================================
+
+defaults:
+  appName:          &appName          pgadmin
+  namespace:        &namespace        pgadmin
+  domain:           &domain           pgadmin.anykey.pl
+  mail:             &mail             pgadmin@anykey.pl
+  gatewayNamespace: &gatewayNamespace envoy-gateway-system
+  certificateName:  &certificateName  pgadmin-tls-certificate
+  gatewayName:      &gatewayName      gateway-pgadmin
+  issuerName:       &issuerName       issuer-pgadmin
+  serviceName:      &serviceName      pgadmin-pgadmin4
 
 # ===============================================================
 #    ___             ___  __     __  ___             
@@ -65,10 +71,8 @@ appPlatform:
     # @param appPlatform.gatewayApi.gateway.listeners List of Gateway listeners. 
     gateway:
       enabled: true
-      name: gateway-pgadmin
-      namespace: envoy-gateway-system
-      labels:
-        traffic-profile: shared
+      name: *gatewayName
+      namespace: *gatewayNamespace
       annotations:
         external-dns.alpha.kubernetes.io/target: anykey.pl
       gatewayClassName: envoy
@@ -79,27 +83,28 @@ appPlatform:
       # @param appPlatform.gatewayApi.gateway.listeners[0].hostname Hostname accepted by the listener.
       # @param appPlatform.gatewayApi.gateway.listeners[0].allowedRoutes Allowed routes configuration.
       listeners:
-        - name: pgadmin-http
+        - name: listner-http
           protocol: HTTP
           port: 80
-          hostname: pgadmin.anykey.pl
+          hostname: *domain
           allowedRoutes:
             namespaces:
               from: All
-        - name: pgadmin-https
+
+        - name: listner-https
           protocol: HTTPS
           port: 443
-          hostname: pgadmin.anykey.pl
+          hostname: *domain
           tls:
             mode: Terminate
             certificateRefs:
-              - name: pgadmin-tls-certificate 
+              - name: *certificateName
           allowedRoutes:
             namespaces:
               from: Selector
               selector:
                 matchLabels:
-                  kubernetes.io/metadata.name: pgadmin
+                  kubernetes.io/metadata.name: *namespace
  
     # @param appPlatform.gatewayApi.httpRoute.enabled Enable HTTPRoute resource generation.
     # @param appPlatform.gatewayApi.httpRoute.name HTTPRoute resource name.
@@ -111,19 +116,19 @@ appPlatform:
     # @param appPlatform.gatewayApi.httpRoute.rules HTTPRoute routing rules.
     httpRoute:
       enabled: true
-      name: "{{ .Values.defaults.name }}-host"
-      namespace: "{{ .Values.defaults.namespace }}"
+      name: pgadmin-host
+      namespace: *namespace
       parentRefs:
-        - name: "gateway-{{ .Values.defaults.name }}"
-          namespace: envoy-gateway-system
-          sectionName: "{{ .Values.defaults.name }}-https"
+        - name: *gatewayName
+          namespace: *gatewayNamespace
+          sectionName: listner-https
       hostnames:
-        - "{{ .Values.defaults.name }}.anykey.pl"
+        - *domain
       rules:
         - backendRefs:
             - kind: Service
-              name: "{{ .Values.defaults.service }}" 
-              namespace: "{{ .Values.defaults.namespace }}" 
+              name: *serviceName
+              namespace: *namespace
               port: 80
   
   # ===============================================
@@ -143,12 +148,12 @@ appPlatform:
   # @param appPlatform.certificate.dnsNames DNS names covered by the certificate. 
   certificate:
     enabled: true
-    name: "{{ .Values.defaults.name }}-tls-certificate"
-    namespace: envoy-gateway-system
-    existingIssuer: "issuer-{{ .Values.defaults.name }}"
-    secretName: "{{ .Values.defaults.name }}-tls-certificate"
+    name: *certificateName
+    namespace: *gatewayNamespace
+    existingIssuer: *issuerName
+    secretName: *certificateName
     dnsNames:
-      - "{{ .Values.defaults.name }}.anykey.pl"
+      - *domain
 
     # -----------------------------------------------
     # @subsection Issuer parameters
@@ -164,16 +169,16 @@ appPlatform:
     # @param appPlatform.certificate.issuer.acme.gatewayHTTPRoute.parentRefs Gateway parent references used for HTTP-01 challenges. 
     issuer:
       enabled: true
-      name: "issuer-{{ .Values.defaults.name }}"
-      namespace: envoy-gateway-system
+      name: *issuerName
+      namespace: *gatewayNamespace
       acme:
-        email: "{{ .Values.defaults.name }}@anykey.pl"
+        email: *mail 
         gatewayHTTPRoute:
           parentRefs:
             - group: gateway.networking.k8s.io
               kind: Gateway
-              name: "gateway-{{ .Values.defaults.name }}"
-              namespace: envoy-gateway-system
+              name: *gatewayName
+              namespace: *gatewayNamespace
 
 # ===============================================================
 #    ___             ____                 _ __      
@@ -197,15 +202,12 @@ appSecurity:
   
   # Description:
   # - Allow consuming Kubernetes DNS 
- 
   - enabled: true
     name: allow-dns-egress
-    namespace: "{{ .Values.defaults.namespace }}"
-    labels: {}
-    annotations: {}
+    namespace: *namespace
     podSelector:
       matchLabels:
-        app.kubernetes.io/name: "{{ .Values.defaults.name }}"
+        app.kubernetes.io/name: *appName
     policyTypes:
       - Egress 
     egress:
@@ -224,12 +226,12 @@ appSecurity:
   # - Allow ingress traffic to from envoy-gatawy-system
   - enabled: true
     name: allow-from-gateway
-    namespace: "{{ .Values.defaults.namespace  }}"
+    namespace: *namespace 
     labels: {}
     annotations: {}
     podSelector:
       matchLabels:
-        app.kubernetes.io/name: "{{ .Values.defaults.name }}"
+        app.kubernetes.io/name: *appName
     policyTypes:
       - Ingress
     ingress:
@@ -243,7 +245,7 @@ appSecurity:
   # - Block all ingress and egress in namespace
   - enabled: true
     name: deny-all-ingress
-    namespace: "{{ .Values.defaults.namespace }}"
+    namespace: *namespace
     podSelector: {}
     policyTypes:
     - Ingress
