@@ -262,7 +262,7 @@ appSecurity:
       matchLabels:
         app.kubernetes.io/name: *appName
     policyTypes:
-      - Eggress 
+      - Egress 
     egress:
       - ports:
         - protocol: TCP 
