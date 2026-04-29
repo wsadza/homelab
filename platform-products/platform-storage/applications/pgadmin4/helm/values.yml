@@ -1,6 +1,6 @@
 # ===============================================================
 # Author:
-# - igor.sadza
+# - 
 #
 # Purpose:
 # - pgadmin helm chart values.yaml file
@@ -29,6 +29,8 @@ resources:
     cpu: 500m
     memory: 512Mi
 
+# ===============================================================
+# : Default configuration fro platfrom wrappers
 # ===============================================================
 
 platformDefaults:
@@ -85,7 +87,7 @@ appPlatform:
       # @param appPlatform.gatewayApi.gateway.listeners[0].hostname Hostname accepted by the listener.
       # @param appPlatform.gatewayApi.gateway.listeners[0].allowedRoutes Allowed routes configuration.
       listeners:
-        - name: listner-http
+        - name: listener-http
           protocol: HTTP
           port: 80
           hostname: *domain
@@ -93,7 +95,7 @@ appPlatform:
             namespaces:
               from: All
 
-        - name: listner-https
+        - name: listener-https
           protocol: HTTPS
           port: 443
           hostname: *domain
@@ -116,25 +118,31 @@ appPlatform:
     # @param appPlatform.gatewayApi.httpRoute.parentRefs Parent Gateway references.
     # @param appPlatform.gatewayApi.httpRoute.hostnames Hostnames matched by the HTTPRoute.
     # @param appPlatform.gatewayApi.httpRoute.rules HTTPRoute routing rules.
-    httpRoute:
-      enabled: true
-      name: *httpRouteName 
-      namespace: *namespace
-      parentRefs:
-        - name: *gatewayName
-          namespace: *gatewayNamespace
-          sectionName: listner-http
-        - name: *gatewayName
-          namespace: *gatewayNamespace
-          sectionName: listner-https
-      hostnames:
-        - *domain
-      rules:
-        - backendRefs:
+    httpRoutes:
+
+      - enabled: true
+        name: *httpRouteName 
+        namespace: *namespace
+        parentRefs:
+          - name: *gatewayName
+            namespace: *gatewayNamespace
+            sectionName: listener-https
+        hostnames:
+          - *domain
+        rules:
+
+          - backendRefs:
             - kind: Service
               name: *serviceName
               namespace: *namespace
               port: *httpRouteServicePort 
+
+          - filters:
+            - type: RequestRedirect
+              requestRedirect:
+                scheme: https
+                statusCode: 301
+                port: 443
   
   # ===============================================
   # @section Certificate parameters
@@ -246,7 +254,7 @@ appSecurity:
 
   # : Block all ingress and egress in namespace
   - enabled: true
-    name: deny-all-ingress
+    name: deny-all-ingress-egress
     namespace: *namespace
     podSelector: {}
     policyTypes:
