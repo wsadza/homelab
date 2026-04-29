@@ -10,8 +10,6 @@
 env:
   email: admin@anykey.pl
   password: admin
-  variables:
-    PGADMIN_CONFIG_CHECK_EMAIL_DELIVERABILITY: "False"
 
 service:
   type: ClusterIP
