@@ -4,6 +4,26 @@
 applications:
 
   # ------------------
+  # Local Path Provisoner 
+  # ------------------
+  
+    - name: local-path-provisioner
+      namespace: kube-system
+
+      enabled: true
+      priority: -10
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: manifests
+          repourl: https://github.com/wsadza/homelab.git
+          targetrevision: head
+          path: platform-products/workload-storage/applications/local-path-provisoner/manifests
+
+  # ------------------
   # CloudNativePG (postgresql-operator)
   # ------------------
 
@@ -31,18 +51,44 @@ applications:
           chart: cloudnative-pg
           valueFiles: 
             - $values/platform-products/platform-storage/applications/cloudnative-pg/helm/values.yml
-      
+
   # ------------------
-  # Local Path Provisoner 
+  # PGAdmin 
   # ------------------
-  #
-  #  - name: local-path-provisioner
-  #    #chartName: local-path-storage
-  #    enabled: false
-  #    chartPath: ./deploy/chart/local-path-provisioner 
-  #    targetRevision: v0.0.35
-  #    repoURL: https://github.com/rancher/local-path-provisioner
-  #    #manifests: true
-  #    chartValues: true
-  #    namespace: local-path-provisioner
-  #    #priority: 0
+
+    - name: pgadmin 
+      namespace: pgadmin 
+
+      enabled: true
+      priority: -5
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://helm.runix.net
+          targetRevision: 1.62.0 
+          chart: pgadmin4
+          valueFiles: 
+            - $values/platform-products/platform-storage/applications/cloudnative-pg/helm/values.yml
+
+        - type: helm 
+          repourl: https://github.com/wsadza/homelab.git
+          targetrevision: head
+          path: platform-charts/application/app-platform
+          valuefiles: 
+            - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
+
+        - type: helm 
+          repourl: https://github.com/wsadza/homelab.git
+          targetrevision: head
+          path: platform-charts/application/app-security
+          valuefiles: 
+            - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml

@@ -31,15 +31,15 @@ applications:
             - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
         
         - type: helm 
-          repoURL: https://github.com/wsadza/homelab.git
-          targetRevision: HEAD
+          repourl: https://github.com/wsadza/homelab.git
+          targetrevision: head
           path: platform-charts/application/app-platform
-          valueFiles: 
+          valuefiles: 
             - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
 
         - type: helm 
-          repoURL: https://github.com/wsadza/homelab.git
-          targetRevision: HEAD
+          repourl: https://github.com/wsadza/homelab.git
+          targetrevision: head
           path: platform-charts/application/app-security
-          valueFiles: 
+          valuefiles: 
             - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
