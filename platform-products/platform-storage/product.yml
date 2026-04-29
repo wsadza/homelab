@@ -84,11 +84,11 @@ applications:
           targetRevision: HEAD 
           path: platform-charts/application/app-platform
           valueFiles: 
-            - $values/platform-products/platform-storage/applications/pgadmin/helm/values.yml
+            - $values/platform-products/platform-storage/applications/pgadmin/helm/values.tpl.yml
 
         - type: helm 
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD 
           path: platform-charts/application/app-security
           valueFiles: 
-            - $values/platform-products/platform-storage/applications/pgadmin/helm/values.yml
+            - $values/platform-products/platform-storage/applications/pgadmin/helm/values.tpl.yml
