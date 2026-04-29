@@ -7,19 +7,18 @@
 #
 # ===============================================================
 
-# ===============================================================
-
 platformDefaults:
-  appName:          &appName          podinfo 
-  namespace:        &namespace        podinfo 
-  domain:           &domain           podinfo.anykey.pl
-  gatewayNamespace: &gatewayNamespace envoy-gateway-system
-  certificateName:  &certificateName  podinfo-tls-certificate
-  gatewayName:      &gatewayName      gateway-podinfo
-  issuerName:       &issuerName       issuer-podinfo
-  serviceName:      &serviceName      podinfo 
-  issuerEmail:      &issuerEmail      podinfo@anykey.pl
-  httpRouteName:    &httpRouteName    podinfo-host
+  appName:              &appName              podinfo 
+  namespace:            &namespace            podinfo 
+  domain:               &domain               podinfo.anykey.pl
+  gatewayNamespace:     &gatewayNamespace     envoy-gateway-system
+  certificateName:      &certificateName      podinfo-tls-certificate
+  gatewayName:          &gatewayName          gateway-podinfo
+  issuerName:           &issuerName           issuer-podinfo
+  serviceName:          &serviceName          podinfo 
+  issuerEmail:          &issuerEmail          podinfo@anykey.pl
+  httpRouteName:        &httpRouteName        podinfo-host
+  httpRouteServicePort: &httpRouteServicePort 9898
 
 # ===============================================================
 #    ___             ___  __     __  ___             
@@ -111,7 +110,7 @@ appPlatform:
             - kind: Service
               name: *serviceName
               namespace: *namespace
-              port: 80
+              port: *httpRouteServicePort
   
   # ===============================================
   # @section Certificate parameters

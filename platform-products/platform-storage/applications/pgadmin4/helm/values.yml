@@ -32,15 +32,17 @@ resources:
 # ===============================================================
 
 platformDefaults:
-  appName:          &appName          pgadmin4
-  namespace:        &namespace        pgadmin4
-  domain:           &domain           pgadmin4.anykey.pl
-  gatewayNamespace: &gatewayNamespace envoy-gateway-system
-  certificateName:  &certificateName  pgadmin4-tls-certificate
-  gatewayName:      &gatewayName      gateway-pgadmin4
-  issuerName:       &issuerName       issuer-pgadmin4
-  serviceName:      &serviceName      pgadmin4
-  issuerEmail:      &issuerEmail      pgadmin4@anykey.pl
+  appName:              &appName              pgadmin4
+  namespace:            &namespace            pgadmin4
+  domain:               &domain               pgadmin4.anykey.pl
+  gatewayNamespace:     &gatewayNamespace     envoy-gateway-system
+  certificateName:      &certificateName      pgadmin4-tls-certificate
+  gatewayName:          &gatewayName          gateway-pgadmin4
+  issuerName:           &issuerName           issuer-pgadmin4
+  serviceName:          &serviceName          pgadmin4
+  issuerEmail:          &issuerEmail          pgadmin4@anykey.pl
+  httpRouteName:        &httpRouteName        pgadmin4-host
+  httpRouteServicePort: &httpRouteServicePort 80 
 
 # ===============================================================
 #    ___             ___  __     __  ___             
@@ -116,7 +118,7 @@ appPlatform:
     # @param appPlatform.gatewayApi.httpRoute.rules HTTPRoute routing rules.
     httpRoute:
       enabled: true
-      name: pgadmin-host
+      name: *httpRouteName 
       namespace: *namespace
       parentRefs:
         - name: *gatewayName
@@ -132,7 +134,7 @@ appPlatform:
             - kind: Service
               name: *serviceName
               namespace: *namespace
-              port: 80
+              port: *httpRouteServicePort 
   
   # ===============================================
   # @section Certificate parameters
