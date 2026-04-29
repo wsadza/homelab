@@ -4,16 +4,43 @@
 applications:
 
   # ------------------
-  # Local Path Provisoner 
+  # CloudNativePG (postgresql-operator)
   # ------------------
 
-    - name: local-path-provisioner
-      #chartName: local-path-storage
-      enabled: false
-      chartPath: ./deploy/chart/local-path-provisioner 
-      targetRevision: v0.0.35
-      repoURL: https://github.com/rancher/local-path-provisioner
-      #manifests: true
-      chartValues: true
-      namespace: local-path-provisioner
-      #priority: 0
+    - name: cloudnative-pg
+      namespace: postgresql-operator
+
+      enabled: true
+      priority: -10
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://cloudnative-pg.io/charts/
+          targetRevision: 0.28.0
+          chart: cloudnative-pg
+          valueFiles: 
+            - $values/platform-products/platform-storage/applications/cloudnative-pg/helm/values.yml
+      
+  # ------------------
+  # Local Path Provisoner 
+  # ------------------
+  #
+  #  - name: local-path-provisioner
+  #    #chartName: local-path-storage
+  #    enabled: false
+  #    chartPath: ./deploy/chart/local-path-provisioner 
+  #    targetRevision: v0.0.35
+  #    repoURL: https://github.com/rancher/local-path-provisioner
+  #    #manifests: true
+  #    chartValues: true
+  #    namespace: local-path-provisioner
+  #    #priority: 0
