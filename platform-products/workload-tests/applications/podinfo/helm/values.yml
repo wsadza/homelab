@@ -19,6 +19,7 @@ platformDefaults:
   issuerName:       &issuerName       issuer-podinfo
   serviceName:      &serviceName      podinfo 
   issuerEmail:      &issuerEmail      podinfo@anykey.pl
+  httpRouteName:    &httpRouteName    podinfo-host
 
 # ===============================================================
 #    ___             ___  __     __  ___             
@@ -94,7 +95,7 @@ appPlatform:
     # @param appPlatform.gatewayApi.httpRoute.rules HTTPRoute routing rules.
     httpRoute:
       enabled: true
-      name: pgadmin-host
+      name: *httpRouteName
       namespace: *namespace
       parentRefs:
         - name: *gatewayName
