@@ -94,7 +94,7 @@ spec:
           path:  {{ `{{ .path | quote }}` }}
           {{ `{{- with .recurse }}` }}
           directory:
-            recurse: {{ `{{ .| default false }}` }}
+            recurse: {{ `{{ . | default false }}` }}
           {{ `{{- end }}` }}
 
         {{ `{{- else if eq .type "kustomize"}}` }}
