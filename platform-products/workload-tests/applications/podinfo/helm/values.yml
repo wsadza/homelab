@@ -92,25 +92,39 @@ appPlatform:
     # @param appPlatform.gatewayApi.httpRoute.parentRefs Parent Gateway references.
     # @param appPlatform.gatewayApi.httpRoute.hostnames Hostnames matched by the HTTPRoute.
     # @param appPlatform.gatewayApi.httpRoute.rules HTTPRoute routing rules.
-    httpRoute:
-      enabled: true
-      name: *httpRouteName
-      namespace: *namespace
-      parentRefs:
-        - name: *gatewayName
-          namespace: *gatewayNamespace
-          sectionName: listner-http
-        - name: *gatewayName
-          namespace: *gatewayNamespace
-          sectionName: listner-https
-      hostnames:
-        - *domain
-      rules:
-        - backendRefs:
-            - kind: Service
-              name: *serviceName
-              namespace: *namespace
-              port: *httpRouteServicePort
+    httpRoutes:
+      - enabled: true
+        name: *httpRouteName
+        namespace: *namespace
+        parentRefs:
+          - name: *gatewayName
+            namespace: *gatewayNamespace
+            sectionName: listener-https
+        hostnames:
+          - *domain
+        rules:
+          - backendRefs:
+              - kind: Service
+                name: *serviceName
+                namespace: *namespace
+                port: *httpRouteServicePort
+
+      - enabled: true
+        name: http-redirect
+        namespace: *namespace
+        parentRefs:
+          - name: *gatewayName
+            namespace: *gatewayNamespace
+            sectionName: listener-http
+        hostnames:
+          - *domain
+        rules:
+          - filters:
+              - type: RequestRedirect
+                requestRedirect:
+                  scheme: https
+                  statusCode: 301
+                  port: 443
   
   # ===============================================
   # @section Certificate parameters

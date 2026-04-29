@@ -130,19 +130,28 @@ appPlatform:
         hostnames:
           - *domain
         rules:
-
           - backendRefs:
-            - kind: Service
-              name: *serviceName
-              namespace: *namespace
-              port: *httpRouteServicePort 
+              - kind: Service
+                name: *serviceName
+                namespace: *namespace
+                port: *httpRouteServicePort 
 
+      - enabled: true
+        name: http-redirect
+        namespace: *namespace
+        parentRefs:
+          - name: *gatewayName
+            namespace: *gatewayNamespace
+            sectionName: listener-http
+        hostnames:
+          - *domain
+        rules:
           - filters:
-            - type: RequestRedirect
-              requestRedirect:
-                scheme: https
-                statusCode: 301
-                port: 443
+              - type: RequestRedirect
+                requestRedirect:
+                  scheme: https
+                  statusCode: 301
+                  port: 443
   
   # ===============================================
   # @section Certificate parameters
