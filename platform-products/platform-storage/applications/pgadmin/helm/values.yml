@@ -121,6 +121,9 @@ appPlatform:
       parentRefs:
         - name: *gatewayName
           namespace: *gatewayNamespace
+          sectionName: listner-http
+        - name: *gatewayName
+          namespace: *gatewayNamespace
           sectionName: listner-https
       hostnames:
         - *domain
