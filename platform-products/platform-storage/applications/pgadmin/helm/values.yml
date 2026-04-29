@@ -32,15 +32,15 @@ resources:
 # ===============================================================
 
 platformDefaults:
-  appName:          &appName          pgadmin
-  namespace:        &namespace        pgadmin
-  domain:           &domain           pgadmin.anykey.pl
-  mail:             &mail             pgadmin@anykey.pl
+  appName:          &appName          pgadmin4
+  namespace:        &namespace        pgadmin4
+  domain:           &domain           pgadmin4.anykey.pl
   gatewayNamespace: &gatewayNamespace envoy-gateway-system
-  certificateName:  &certificateName  pgadmin-tls-certificate
-  gatewayName:      &gatewayName      gateway-pgadmin
-  issuerName:       &issuerName       issuer-pgadmin
+  certificateName:  &certificateName  pgadmin4-tls-certificate
+  gatewayName:      &gatewayName      gateway-pgadmin4
+  issuerName:       &issuerName       issuer-pgadmin4
   serviceName:      &serviceName      pgadmin-pgadmin4
+  issuerEmail:      &issuerEmail      pgadmin4@anykey.pl
 
 # ===============================================================
 #    ___             ___  __     __  ___             
@@ -175,7 +175,7 @@ appPlatform:
       name: *issuerName
       namespace: *gatewayNamespace
       acme:
-        email: *mail 
+        email: *issuerEmail
         gatewayHTTPRoute:
           parentRefs:
             - group: gateway.networking.k8s.io
