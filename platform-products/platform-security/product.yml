@@ -74,5 +74,5 @@ applications:
       - type: helm 
         repoURL: https://epam.github.io/edp-helm-charts/stable 
         targetRevision: 1.31.0
-        chart: epamedp
+        chart: keycloak-operator
         valueFiles: []
