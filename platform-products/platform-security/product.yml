@@ -39,6 +39,18 @@ applications:
 
     sources:
 
+      - type: values
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        ref: values
+
+      - type: helm 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-charts/application/app-platform
+        valueFiles: 
+          - $values/platform-products/platform-security/applications/keycloak/helm/values.yml
+
       - type: manifests
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD
