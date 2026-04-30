@@ -1,10 +1,11 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: storage-local-delete
+  name: storage-local-retain
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
 provisioner: rancher.io/local-path
-reclaimPolicy: Delete
+reclaimPolicy: Retain
 volumeBindingMode: WaitForFirstConsumer
-allowVolumeExpansion: true
 parameters:
-  type: hostPath
+  nodePath: /data/k8s/storage-local-retain
