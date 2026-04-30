@@ -1,49 +1,87 @@
-postgresql:
-  enabled: false
+replicas: 1
 
-ingress:
-  enabled: false
+image:
+  repository: quay.io/keycloak/keycloak
+  tag: "26.0.7"
 
-service:
-  type: ClusterIP
-  port: 8080
+command:
+  - "/opt/keycloak/bin/kc.sh"
+  - "start"
 
 extraEnv: |
   - name: KC_DB
     value: postgres
-
   - name: KC_DB_URL
     value: jdbc:postgresql://keycloak-postgresql-rw.keycloak.svc.cluster.local:5432/keycloak
-
   - name: KC_DB_USERNAME
     valueFrom:
       secretKeyRef:
         name: keycloak-db-secret
         key: username
-
   - name: KC_DB_PASSWORD
     valueFrom:
       secretKeyRef:
         name: keycloak-db-secret
         key: password
-
   - name: KEYCLOAK_ADMIN
     valueFrom:
       secretKeyRef:
         name: keycloak-secret
         key: username
-
   - name: KEYCLOAK_ADMIN_PASSWORD
     valueFrom:
       secretKeyRef:
         name: keycloak-secret
         key: password
-
   - name: KC_HOSTNAME
     value: keycloak.anykey.pl
-
   - name: KC_PROXY_HEADERS
     value: xforwarded
-
   - name: KC_HTTP_ENABLED
     value: "true"
+  - name: KC_HEALTH_ENABLED
+    value: "true"
+  - name: KC_METRICS_ENABLED
+    value: "true"
+
+service:
+  type: ClusterIP
+  httpPort: 80
+
+dbchecker:
+  enabled: true
+
+health:
+  enabled: true
+
+metrics:
+  enabled: true
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 1024Mi
+  limits:
+    cpu: 1000m
+    memory: 2048Mi
+
+startupProbe: |
+  httpGet:
+    path: /health/started
+    port: http
+  failureThreshold: 60
+  periodSeconds: 5
+
+readinessProbe: |
+  httpGet:
+    path: /health/ready
+    port: http
+  initialDelaySeconds: 20
+  periodSeconds: 10
+
+livenessProbe: |
+  httpGet:
+    path: /health/live
+    port: http
+  initialDelaySeconds: 60
+  periodSeconds: 10
