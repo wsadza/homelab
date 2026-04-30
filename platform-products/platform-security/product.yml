@@ -11,7 +11,7 @@ applications:
     namespace: keycloak 
 
     enabled: true
-    priority: 0
+    priority: -5
 
     syncPolicy:
       automated: false
@@ -43,17 +43,3 @@ applications:
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD
         path: platform-products/platform-security/applications/keycloak/manifests
-  
-
-      #      - type: values
-      #        repoURL: https://github.com/wsadza/homelab.git
-      #        targetRevision: HEAD
-      #        ref: values
-      #
-      #      - type: helm
-      #        repoURL: https://codecentric.github.io/helm-charts
-      #        targetRevision: 7.1.11
-      #        chart: keycloakx
-      #        valueFiles: 
-      #          - $values/platform-products/platform-security/applications/keycloak/helm/values.yml
-
