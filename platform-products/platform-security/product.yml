@@ -4,7 +4,7 @@
 applications:
 
   # ------------------
-  # keycloak 
+  # keycloak-opertator
   # ------------------
 
   - name: keycloak-operator
@@ -23,6 +23,27 @@ applications:
         repoURL: https://github.com/keycloak/keycloak-k8s-resources.git
         targetRevision: 26.6.1
         path: kubernetes/
+
+  # ------------------
+  # keycloak
+  # ------------------
+  
+  - name: keycloak
+    namespace: keycloak 
+
+    enabled: true
+    priority: 0
+
+    syncPolicy:
+      automated: false
+
+    sources:
+
+      - type: manifests
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-products/platform-security/keycloak/manifests 
+  
 
       #      - type: values
       #        repoURL: https://github.com/wsadza/homelab.git
