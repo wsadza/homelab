@@ -32,5 +32,5 @@ applications:
 
       - type: manifests
         repoURL: https://github.com/wsadza/homelab.git
-        targetRevision: HEAD 
-        path: https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.6.1/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
+        targetRevision: 26.6.1 
+        path: https://github.com/keycloak/keycloak-k8s-resources/kubernetes
