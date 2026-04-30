@@ -7,7 +7,7 @@ applications:
   # keycloak 
   # ------------------
 
-  - name: keycloak 
+  - name: keycloak-operator
     namespace: keycloak 
 
     enabled: true
@@ -17,6 +17,12 @@ applications:
       automated: false
 
     sources:
+
+      # Keycloak prefers OLM installation method
+      - type: manifests
+        repoURL: https://github.com/keycloak/keycloak-k8s-resources.git
+        targetRevision: 26.6.1
+        path: kubernetes/
 
       #      - type: values
       #        repoURL: https://github.com/wsadza/homelab.git
@@ -30,7 +36,3 @@ applications:
       #        valueFiles: 
       #          - $values/platform-products/platform-security/applications/keycloak/helm/values.yml
 
-      - type: manifests
-        repoURL: https://github.com/keycloak/keycloak-k8s-resources.git
-        targetRevision: 26.6.1
-        path: kubernetes/
