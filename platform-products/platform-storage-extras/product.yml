@@ -28,18 +28,18 @@ applications:
           targetRevision: 1.62.0 
           chart: pgadmin4
           valueFiles: 
-            - $values/platform-products/platform-storage/applications/pgadmin4/helm/values.yml
+            - $values/platform-products/platform-storage-extras/applications/pgadmin4/helm/values.yml
 
         - type: helm 
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD 
           path: platform-charts/application/app-platform
           valueFiles: 
-            - $values/platform-products/platform-storage/applications/pgadmin4/helm/values.yml
+            - $values/platform-products/platform-storage-extras/applications/pgadmin4/helm/values.yml
 
         - type: helm 
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD 
           path: platform-charts/application/app-security
           valueFiles: 
-            - $values/platform-products/platform-storage/applications/pgadmin4/helm/values.yml
+            - $values/platform-products/platform-storage-extras/applications/pgadmin4/helm/values.yml
