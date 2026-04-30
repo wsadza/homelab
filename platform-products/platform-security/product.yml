@@ -71,8 +71,14 @@ applications:
 
     sources:
 
+      - type: values
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        ref: values
+
       - type: helm 
         repoURL: https://epam.github.io/edp-helm-charts/stable 
         targetRevision: 1.31.0
         chart: keycloak-operator
-        valueFiles: []
+        valueFiles: 
+          - $values/platform-products/platform-security/applications/edp-keycloak-operator/helm/values.yml
