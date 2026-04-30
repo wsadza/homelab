@@ -42,7 +42,7 @@ applications:
       - type: manifests
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD
-        path: platform-products/platform-security/keycloak/manifests 
+        path: platform-products/platform-security/applications/keycloak/manifests
   
 
       #      - type: values
