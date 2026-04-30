@@ -8,3 +8,4 @@ volumeBindingMode: WaitForFirstConsumer
 allowVolumeExpansion: true
 parameters:
   type: hostPath
+  sharedFileSystemPath: "/data/k8s/storage-local-retain"
