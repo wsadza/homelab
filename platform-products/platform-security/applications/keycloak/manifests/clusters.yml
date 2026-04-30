@@ -14,5 +14,6 @@ spec:
         name: keycloak-db-secret 
   storage:
     size: 5Gi
+    storageClass: storage-local-retain
   monitoring:
     enablePodMonitor: true
