@@ -7,5 +7,5 @@ metadata:
 spec:
   realmName: platform
   keycloakRef:
-    name: keycloak
+    name: keycloak-endpoint
     kind: Keycloak
