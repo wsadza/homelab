@@ -33,4 +33,4 @@ spec:
     enabled: false
 
   health:
-    enabled: true
+    enabled: false
