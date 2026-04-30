@@ -15,7 +15,7 @@ platformDefaults:
   certificateName:      &certificateName      keycloak-tls-certificate
   gatewayName:          &gatewayName          gateway-keycloak
   issuerName:           &issuerName           issuer-keycloak
-  serviceName:          &serviceName          keycloak 
+  serviceName:          &serviceName          keycloak-service
   issuerEmail:          &issuerEmail          keycloak@anykey.pl
   httpRouteName:        &httpRouteName        keycloak-host
   httpRouteServicePort: &httpRouteServicePort 8080
