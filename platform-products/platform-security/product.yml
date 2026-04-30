@@ -4,7 +4,7 @@
 applications:
 
   # ------------------
-  # keycloak-opertator
+  # keycloak-opertator (manage instances)
   # ------------------
 
   - name: keycloak-operator
@@ -25,7 +25,7 @@ applications:
         path: kubernetes/
 
   # ------------------
-  # keycloak
+  # keycloak (instance)
   # ------------------
   
   - name: keycloak
@@ -33,6 +33,38 @@ applications:
 
     enabled: true
     priority: 0
+
+    syncPolicy:
+      automated: false
+
+    sources:
+
+      - type: values
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        ref: values
+
+      - type: helm 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-charts/application/app-platform
+        valueFiles: 
+          - $values/platform-products/platform-security/applications/keycloak/helm/values.yml
+
+      - type: manifests
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-products/platform-security/applications/keycloak/manifests
+
+  # ------------------
+  # edp-keycloak-operator (manage clients) 
+  # ------------------
+  
+  - name: edp-keycloak-operator 
+    namespace: keycloak 
+
+    enabled: true
+    priority: 5
 
     syncPolicy:
       automated: false
