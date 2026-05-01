@@ -56,6 +56,11 @@ applications:
         targetRevision: HEAD
         path: platform-products/platform-security/applications/keycloak/manifests
 
+      - type: kustomize 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-products/platform-security/applications/keycloak/kustomize
+
   # ------------------
   # edp-keycloak-operator (manage clients) 
   # ------------------
