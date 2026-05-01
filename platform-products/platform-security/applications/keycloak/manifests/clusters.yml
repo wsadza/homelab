@@ -9,7 +9,7 @@ spec:
   bootstrap:
     initdb:
       database: keycloak
-      owner: keycloak
+      owner: admin 
       secret:
         name: keycloak-database-secret
   storage:
