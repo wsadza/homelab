@@ -29,7 +29,7 @@ spec:
 
   bootstrapAdmin:
     user:
-      secret: keycloak-admin
+      secret: keycloak-admin-secret
 
   ingress:
     enabled: false
