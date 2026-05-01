@@ -21,10 +21,10 @@ spec:
     port: 5432
     database: keycloak
     usernameSecret:
-      name: keycloak-db-secret
+      name: keycloak-database-secret
       key: username
     passwordSecret:
-      name: keycloak-db-secret
+      name: keycloak-database-secret
       key: password
 
   bootstrapAdmin:
