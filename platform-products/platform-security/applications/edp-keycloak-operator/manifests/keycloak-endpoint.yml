@@ -5,4 +5,4 @@ metadata:
   namespace: keycloak 
 spec:
   url: http://keycloak-service.keycloak.svc.cluster.local:8080
-  secret: keycloak-admin
+  secret: keycloak-admin-secret
