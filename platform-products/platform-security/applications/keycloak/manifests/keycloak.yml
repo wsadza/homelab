@@ -27,6 +27,10 @@ spec:
       name: keycloak-db-secret
       key: password
 
+  bootstrapAdmin:
+    user:
+      secret: keycloak-admin
+
   ingress:
     enabled: false
 

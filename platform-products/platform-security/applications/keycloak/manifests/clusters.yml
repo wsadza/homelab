@@ -11,7 +11,7 @@ spec:
       database: keycloak
       owner: keycloak
       secret:
-        name: keycloak-db-secret 
+        name: keycloak-database-secret
   storage:
     size: 5Gi
     storageClass: storage-local-retain

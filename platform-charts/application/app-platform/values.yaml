@@ -63,15 +63,15 @@ appPlatform:
     # @param appPlatform.gatewayApi.httpRoute.parentRefs Parent Gateway references.
     # @param appPlatform.gatewayApi.httpRoute.hostnames Hostnames matched by the HTTPRoute.
     # @param appPlatform.gatewayApi.httpRoute.rules HTTPRoute routing rules.
-    httpRoute:
-      enabled: false 
-      name: "" 
-      namespace: "" 
-      labels: {}
-      annotations: {}
-      parentRefs: []
-      hostnames: []
-      rules: []
+    httpRoutes:
+      - enabled: false 
+        name: "" 
+        namespace: "" 
+        labels: {}
+        annotations: {}
+        parentRefs: []
+        hostnames: []
+        rules: []
 
   # ===============================================
   # @section Certificate parameters
