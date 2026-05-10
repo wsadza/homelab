@@ -96,8 +96,8 @@ openldap:
     domain: "example.org"
     baseDN: "dc=example,dc=org"
 
-    adminPassword: ""
-    configPassword: "" 
+    adminPassword: "admin"
+    configPassword: "admin" 
 
     existingSecret:
       enabled: false
@@ -143,7 +143,7 @@ openldap:
     # @param openldap.configuration.tls.secretName   : Name of an existing Kubernetes Secret containing TLS certificates.    
     tls:
       enabled: false
-      enforce: true
+      enforce: false
       # Only works with self-signed CA
       verifyClient: never
       # Default `{{ include "common.names.fullname" . }}-tls-secret`
