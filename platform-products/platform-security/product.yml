@@ -8,7 +8,7 @@ applications:
   # ------------------
 
   - name: keycloak-operator
-    namespace: keycloak 
+    namespace: keycloak-system
 
     enabled: true
     priority: -5
@@ -24,6 +24,49 @@ applications:
         targetRevision: 26.6.1
         path: kubernetes/
 
+  # ------------------
+  # edp-keycloak-operator (manage clients) 
+  # ------------------
+  
+  - name: edp-keycloak-operator 
+    namespace: keycloak-system
+
+    enabled: true
+    priority: -5
+
+    syncPolicy:
+      automated: false
+
+    sources:
+
+      - type: values
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        ref: values
+
+      - type: helm 
+        repoURL: https://epam.github.io/edp-helm-charts/stable 
+        targetRevision: 1.31.0
+        chart: keycloak-operator
+        valueFiles: 
+          - $values/platform-products/platform-security/applications/edp-keycloak-operator/helm/values.yml
+
+          #- type: manifests
+          #  repoURL: https://github.com/wsadza/homelab.git
+          #  targetRevision: HEAD
+          #  path: platform-products/platform-security/applications/edp-keycloak-operator/manifests
+
+      - type: kustomize 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-products/platform-security/applications/edp-keycloak-operator/kustomize
+
+      - type: helm 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-charts/platform/platform-auth
+        #valueFiles: 
+        #  - $values/platform-products/platform-security/applications/keycloak/helm/values.yml
 
   # ------------------
   # keycloak (instance)
@@ -62,42 +105,6 @@ applications:
         targetRevision: HEAD
         path: platform-products/platform-security/applications/keycloak/kustomize
 
-  # ------------------
-  # edp-keycloak-operator (manage clients) 
-  # ------------------
-  
-  - name: edp-keycloak-operator 
-    namespace: keycloak 
-
-    enabled: true
-    priority: 5
-
-    syncPolicy:
-      automated: false
-
-    sources:
-
-      - type: values
-        repoURL: https://github.com/wsadza/homelab.git
-        targetRevision: HEAD
-        ref: values
-
-      - type: helm 
-        repoURL: https://epam.github.io/edp-helm-charts/stable 
-        targetRevision: 1.31.0
-        chart: keycloak-operator
-        valueFiles: 
-          - $values/platform-products/platform-security/applications/edp-keycloak-operator/helm/values.yml
-
-      - type: manifests
-        repoURL: https://github.com/wsadza/homelab.git
-        targetRevision: HEAD
-        path: platform-products/platform-security/applications/edp-keycloak-operator/manifests
-
-      - type: kustomize 
-        repoURL: https://github.com/wsadza/homelab.git
-        targetRevision: HEAD
-        path: platform-products/platform-security/applications/edp-keycloak-operator/kustomize
 
   # ------------------
   # openldap (manage clients) 

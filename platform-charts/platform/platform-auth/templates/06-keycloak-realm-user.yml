@@ -1,0 +1,69 @@
+{{- if and .Values.platformAuth.keycloak.enabled .Values.platformAuth.keycloak.users }}
+{{- $root := . -}}
+{{- range .Values.platformAuth.keycloak.users }}
+{{- $userResourceName := .username | replace "." "-" | trunc 63 | trimSuffix "-" }}
+{{- if .enabled }}
+---
+apiVersion: v1.edp.epam.com/v1
+kind: KeycloakRealmUser
+metadata:
+  name: {{ $userResourceName | quote }}
+  namespace: {{ include "common.names.namespace" $root }}
+  labels:
+    {{- include "common.labels.standard" $root | nindent 4 }}
+spec:
+  realmRef:
+    name: {{ $root.Values.platformAuth.keycloak.realm.name | quote }}
+    kind: "KeycloakRealm"
+
+  username: {{ .username | quote }}
+
+  {{- with .firstName }}
+  firstName: {{ . | quote }}
+  {{- end }}
+
+  {{- with .lastName }}
+  lastName: {{ . | quote }}
+  {{- end }}
+
+  {{- with .email }}
+  email: {{ . | quote }}
+  {{- end }}
+
+  {{- if hasKey . "emailVerified" }}
+  emailVerified: {{ .emailVerified }}
+  {{- end }}
+
+  {{- if hasKey . "enabled" }}
+  enabled: {{ .enabled }}
+  {{- end }}
+
+  {{- with .reconciliationStrategy }}
+  reconciliationStrategy: {{ . | quote }}
+  {{- end }}
+
+  {{- if hasKey . "keepResource" }}
+  keepResource: {{ .keepResource }}
+  {{- end }}
+
+  passwordSecret:
+    name: {{ default (printf "%s-secret" (.username | trunc 56 | trimSuffix "-")) .passwordSecret.name | quote }}
+    key: {{ default "password" .passwordSecret.key | quote }}
+
+  {{- with .requiredUserActions }}
+  requiredUserActions:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+  {{- with .roles }}
+  roles:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+  {{- with .groups }}
+  groups:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

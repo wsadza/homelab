@@ -1,11 +1,6 @@
 # ===============================================
-#   ____                __      __        
-#  / __ \___  ___ ___  / /  ___/ /__ ____ 
-# / /_/ / _ \/ -_) _ \/ /__/ _  / _ `/ _ \
-# \____/ .__/\__/_//_/____/\_,_/\_,_/ .__/
-#     /_/                          /_/    
-#
-# : OpenLDAP (application chart)
+# Author: Igor Sadza 
+# Purpose: Openldap Instance 
 # ===============================================
 
 # -----------------------------------------------
@@ -22,12 +17,33 @@ fullnameOverride: ""
 namespaceOverride: ""
 commonLabels: {}
 
+# ===============================================
+#   ____                __      __        
+#  / __ \___  ___ ___  / /  ___/ /__ ____ 
+# / /_/ / _ \/ -_) _ \/ /__/ _  / _ `/ _ \
+# \____/ .__/\__/_//_/____/\_,_/\_,_/ .__/
+#     /_/                          /_/    
+#
+# : OpenLDAP (application)
+# ===============================================
+
 # -----------------------------------------------
-# @section OpenLDAP Configuration parameters
+# @section openldap parameters
 # -----------------------------------------------
 
 openldap:
  
+  # ===============================================
+  # @section OpenLDAP Configuration parameters
+  # =============================================== 
+  #
+  # @param openldap.configuration.organization                       : LDAP organization name.
+  # @param openldap.configuration.domain                             : LDAP domain name.
+  # @param openldap.configuration.baseDN                             : LDAP base distinguished name.
+  # @param openldap.configuration.existingSecret.enabled             : Use an existing Kubernetes Secret for LDAP passwords.
+  # @param openldap.configuration.existingSecret.name                : Name of the existing Kubernetes Secret.
+  # @param openldap.configuration.existingSecret.keys.adminPassword  : Secret key containing the LDAP admin password.
+  # @param openldap.configuration.existingSecret.keys.configPassword : Secret key containing the LDAP config admin password.
   configuration:
 
     organization: "Anyekey pl"
@@ -40,7 +56,12 @@ openldap:
       keys:
         adminPassword: LDAP_ADMIN_PASSWORD
         configPassword: LDAP_CONFIG_PASSWORD
-    
+
+    # ------------------------------------------
+    # @subsection TLS parameters 
+    # ------------------------------------------
+    #
+    # @param openldap.configuration.tls.enabled : Enable TLS support for OpenLDAP.   
     tls:
       enabled: true
 

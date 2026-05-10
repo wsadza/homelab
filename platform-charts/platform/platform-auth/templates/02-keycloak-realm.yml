@@ -1,0 +1,12 @@
+apiVersion: v1.edp.epam.com/v1
+kind: KeycloakRealm
+metadata:
+  name: {{ .Values.platformAuth.keycloak.realm.name | trunc 63 | trimSuffix "-" | quote }}
+  namespace: {{ include "common.names.namespace" . }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+spec:
+  realmName: {{ .Values.platformAuth.keycloak.realm.name }} 
+  keycloakRef:
+    name: keycloak-endpoint
+    kind: Keycloak

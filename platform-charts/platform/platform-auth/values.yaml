@@ -1,0 +1,127 @@
+# ===============================================
+# Author: Igor Sadza 
+# Purpose: 
+# ===============================================
+
+# -----------------------------------------------
+# @section common parameters
+# -----------------------------------------------
+#
+# @param nameOverride      : String to partially override common.names.name
+# @param fullnameOverride  : String to fully override common.names.fullname
+# @param namespaceOverride : String to fully override common.names.namespace
+# @param commonLabels      : Labels to add to all deployed objects
+# @param commonAnnotations : Annotations to add to all deployed objects
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+commonLabels: {}
+commonAnnotations: {}
+
+# ===============================================
+# : platformAuth (wrapper)
+# ===============================================
+
+platformAuth:
+
+  # ===============================================
+  # @section Keycloak parameters
+  # =============================================== 
+  #
+  keycloak:
+    enabled: true 
+
+    # -----------------------------------------------
+    # @subsection endpoint parameters
+    # -----------------------------------------------
+    #
+    endpoint:
+      url: http://keycloak-service.keycloak.svc.cluster.local:8080 
+      secret: keycloak-admin-secret
+
+    # -----------------------------------------------
+    # @subsection relam parameters
+    # -----------------------------------------------
+    #
+    realm:
+      name: platform
+
+    # -----------------------------------------------
+    # @subsection relamComponent parameters
+    # -----------------------------------------------
+    #
+    realmComponents:
+      - name: openldap
+        enabled: true
+        providerId: ldap
+        providerType: org.keycloak.storage.UserStorageProvider
+        config:
+          enabled:
+            - "true"
+          vendor:
+            - "other"
+          connectionUrl:
+            - "ldaps://openldap.anykey.pl"
+          bindDn:
+            - "cn=admin,dc=anykey,dc=pl"
+          bindCredential:
+            - "$openldap-admin-secret:LDAP_ADMIN_PASSWORD"
+          usersDn:
+            - "ou=users,dc=anykey,dc=pl"
+          usernameLDAPAttribute:
+            - "uid"
+          rdnLDAPAttribute:
+            - "uid"
+          uuidLDAPAttribute:
+            - "entryUUID"
+          userObjectClasses:
+            - "inetOrgPerson, organizationalPerson"
+          editMode:
+            - "WRITABLEk"
+          importEnabled:
+            - "true"
+          syncRegistrations:
+            - "false"
+
+    # -----------------------------------------------
+    # @subsection clientScopes parameters
+    # -----------------------------------------------
+    #
+    clientScopes:
+      - name: groups 
+        enabled: true
+        protocol: openid-connect 
+        protocolMappers:
+          - name: groups
+            protocol: openid-connect
+            protocolMapper: oidc-group-membership-mapper
+            config:
+              claim.name: groups
+              full.path: "false"
+              id.token.claim: "true"
+              access.token.claim: "true"
+              userinfo.token.claim: "true"
+
+    # -----------------------------------------------
+    # @subsection users reference parameters
+    # -----------------------------------------------
+    #
+    users:
+    - username: john.doe
+      enabled: true
+      firstName: John
+      lastName: Doe 
+      email: john.doe@example.com
+      emailVerified: true
+      passwordSecret:
+        name: john-doe-password
+        key: password
+      requiredUserActions:
+      - UPDATE_PASSWORD
+      roles:
+      - offline_access
+      groups:
+      - PodInfoDevelopers
+      reconciliationStrategy: full
+      keepResource: true       
+

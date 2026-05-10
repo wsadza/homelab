@@ -1,11 +1,6 @@
 # ===============================================
-#   ____                __      __        
-#  / __ \___  ___ ___  / /  ___/ /__ ____ 
-# / /_/ / _ \/ -_) _ \/ /__/ _  / _ `/ _ \
-# \____/ .__/\__/_//_/____/\_,_/\_,_/ .__/
-#     /_/                          /_/    
-#
-# : OpenLDAP (application chart)
+# Author: Igor Sadza 
+# Purpose: Minimalistic helm chart for osixia/openldap container
 # ===============================================
 
 # -----------------------------------------------
@@ -24,8 +19,18 @@ commonLabels: {}
 commonAnnotations: {}
 
 # ===============================================
-# @section openldap parameters
+#   ____                __      __        
+#  / __ \___  ___ ___  / /  ___/ /__ ____ 
+# / /_/ / _ \/ -_) _ \/ /__/ _  / _ `/ _ \
+# \____/ .__/\__/_//_/____/\_,_/\_,_/ .__/
+#     /_/                          /_/    
+#
+# : OpenLDAP (application)
 # ===============================================
+
+# -----------------------------------------------
+# @section openldap parameters
+# -----------------------------------------------
 
 openldap:
 
@@ -64,29 +69,27 @@ openldap:
 
   # ===============================================
   # @section OpenLDAP Configuration parameters
-  # ===============================================
+  # =============================================== 
   #
-  # @param openldap.configuration.organization              LDAP organization name.
-  # @param openldap.configuration.domain                    LDAP domain name.
-  # @param openldap.configuration.baseDN                    LDAP base distinguished name.
-  # @param openldap.configuration.adminPassword                    LDAP admin password. Ignored when existingSecret.enabled is true.
-  # @param openldap.configuration.configPassword                   LDAP config admin password. Ignored when existingSecret.enabled is true.
-  # @param openldap.configuration.existingSecret.enabled           Use an existing Kubernetes Secret for LDAP passwords.
-  # @param openldap.configuration.existingSecret.name              Name of the existing Kubernetes Secret.
-  # @param openldap.configuration.existingSecret.keys.adminPassword Secret key containing the LDAP admin password.
+  # @param openldap.configuration.organization                       LDAP organization name.
+  # @param openldap.configuration.domain                             LDAP domain name.
+  # @param openldap.configuration.baseDN                             LDAP base distinguished name.
+  # @param openldap.configuration.existingSecret.enabled             Use an existing Kubernetes Secret for LDAP passwords.
+  # @param openldap.configuration.existingSecret.name                Name of the existing Kubernetes Secret.
+  # @param openldap.configuration.existingSecret.keys.adminPassword  Secret key containing the LDAP admin password.
   # @param openldap.configuration.existingSecret.keys.configPassword Secret key containing the LDAP config admin password.
-  # @param openldap.configuration.bootstrap.enabled         Enable bootstrap LDIF seed loading.
-  # @param openldap.configuration.bootstrap.seeds           List of bootstrap LDIF seed templates.
-  # @param openldap.configuration.bootstrap.seeds[].enabled Enable this bootstrap seed.
-  # @param openldap.configuration.bootstrap.seeds[].name    Bootstrap seed template filename. Should end with `.tpl`.
-  # @param openldap.configuration.bootstrap.seeds[].data    Bootstrap LDIF template content.
-  # @param openldap.configuration.ports                     LDAP and LDAPS container port configuration.
-  # @param openldap.configuration.ports.ldap                LDAP container port.
-  # @param openldap.configuration.ports.ldaps               LDAPS container port.
-  # @param openldap.configuration.logLevel                  OpenLDAP and container logging configuration.
-  # @param openldap.configuration.logLevel.ldap             OpenLDAP log level. Common values: `256` for stats, `0` for no logging, `-1` for all logs.
-  # @param openldap.configuration.logLevel.container        Container log level.
-  # @param openldap.configuration.keepExistingConfig        Whether to keep existing LDAP configuration after pod restart.
+  # @param openldap.configuration.bootstrap.enabled                  Enable bootstrap LDIF seed loading.
+  # @param openldap.configuration.bootstrap.seeds                    List of bootstrap LDIF seed templates.
+  # @param openldap.configuration.bootstrap.seeds[].enabled          Enable this bootstrap seed.
+  # @param openldap.configuration.bootstrap.seeds[].name             Bootstrap seed template filename. Should end with `.tpl`.
+  # @param openldap.configuration.bootstrap.seeds[].data             Bootstrap LDIF template content.
+  # @param openldap.configuration.ports                              LDAP and LDAPS container port configuration.
+  # @param openldap.configuration.ports.ldap                         LDAP container port.
+  # @param openldap.configuration.ports.ldaps                        LDAPS container port.
+  # @param openldap.configuration.logLevel                           OpenLDAP and container logging configuration.
+  # @param openldap.configuration.logLevel.ldap                      OpenLDAP log level. Common values: `256` for stats, `0` for no logging, `-1` for all logs.
+  # @param openldap.configuration.logLevel.container                 Container log level.
+  # @param openldap.configuration.keepExistingConfig                 Whether to keep existing LDAP configuration after pod restart. 
   configuration:
 
     organization: "Example Inc"

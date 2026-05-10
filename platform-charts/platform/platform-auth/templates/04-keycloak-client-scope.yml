@@ -1,0 +1,24 @@
+{{- if and .Values.platformAuth.keycloak.enabled .Values.platformAuth.keycloak.clientScopes }}
+{{- $root := . -}}
+{{- range .Values.platformAuth.keycloak.clientScopes }}
+{{- if .enabled }}
+apiVersion: v1.edp.epam.com/v1
+kind: KeycloakClientScope
+metadata:
+  name: {{ .name | trunc 63 | trimSuffix "-" | quote }}
+  namespace: {{ include "common.names.namespace" $root }} 
+  labels:
+    {{- include "common.labels.standard" $root | nindent 4 }}
+spec:
+  realmRef:
+    name: {{ $root.Values.platformAuth.keycloak.realm.name | quote }}
+    kind: "KeycloakRealm"
+  name: {{ .name | quote }}
+  protocol: {{ .protocol | quote }} 
+  {{- with .protocolMappers }}
+  protocolMappers:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}  
+{{- end }}
+{{- end }}
+{{- end }}
