@@ -11,7 +11,7 @@ metadata:
   labels:
     {{- include "common.labels.standard" $root | nindent 4 }}
 spec:
-  {{- with $root.Values.appAuth.keycloak.realmRef }}
+  {{- with $root.Values.platformAuth.keycloak.realmRef }}
   realmRef:
     name: {{ .name }}
     kind: {{ default "KeycloakRealm" .kind }}
