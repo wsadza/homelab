@@ -1,6 +1,6 @@
 # ===============================================
 # Author: Igor Sadza 
-# Purpose: 
+# Purpose: Manage keycloak instacne 
 # ===============================================
 
 # -----------------------------------------------
@@ -77,7 +77,7 @@ platformAuth:
           userObjectClasses:
             - "inetOrgPerson, organizationalPerson"
           editMode:
-            - "WRITABLEk"
+            - "WRITABLE"
           importEnabled:
             - "true"
           syncRegistrations:
@@ -133,7 +133,7 @@ platformAuth:
       roles:
       - offline_access
       groups:
-      - PodInfoDevelopers
+      - PlatformAdmins
       reconciliationStrategy: full
       keepResource: true       
 
