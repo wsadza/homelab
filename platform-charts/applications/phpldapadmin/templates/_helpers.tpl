@@ -113,16 +113,11 @@ Allow the release namespace to be overridden for multi-namespace deployments in 
 
 {{/*
 --------------------------------------------
-Generate replication hosts list for LDAP_REPLICATION_HOSTS
+Build phpLDAPadmin LDAP config string.
 --------------------------------------------
 */}}
-{{- define "extras.openldap.replicationHosts" -}}
-{{- $replicas := int .Values.openldap.configuration.replication.replicas }}
-{{- $namespace := default (include "common.names.namespace" . ) .Values.openldap.namespace }}
-{{- $fullname := include "common.names.fullname" . }}
-{{- $hosts := list }}
-{{- range $i := until $replicas }}
-{{- $hosts = append $hosts (printf "ldap://%s-%d.%s-headless.%s.svc.cluster.local" $fullname $i $fullname $namespace) }}
-{{- end }}
-{{- printf "#PYTHON2BASH:%s" (toJson $hosts) }}
-{{- end }}
+{{- define "phpldapadmin.ldapConfig" -}}
+{{- $ldap := .Values.phpldapadmin.configuration.ldapHost -}}
+{{- $base := printf "array('%s')" (join "," $ldap.server.base) -}}
+#PYTHON2BASH:[{'{{ $ldap.name }}': [{'server': [{'name': '{{ $ldap.name }}'}, {'host': '{{ $ldap.server.host }}'}, {'port': {{ $ldap.server.port }}}, {'tls': {{ ternary "True" "False" $ldap.server.tls }}}, {'base': "{{ $base }}"}]}, {'login': [{'auth_type': '{{ $ldap.login.auth_type }}'}, {'bind_id': '{{ $ldap.login.bind_id }}'}]}]}]
+{{- end -}}

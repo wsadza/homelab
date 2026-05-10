@@ -96,8 +96,8 @@ openldap:
     domain: "example.org"
     baseDN: "dc=example,dc=org"
 
-    adminPassword: "admin"
-    configPassword: "admin" 
+    adminPassword: ""
+    configPassword: "" 
 
     existingSecret:
       enabled: false

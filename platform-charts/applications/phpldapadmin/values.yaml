@@ -69,25 +69,22 @@ phpldapadmin:
   # @param phpldapmin.configuration.ports.http:  
   configuration:
 
-    # LDAP host reachable from inside the cluster.
-    # Examples:
-    # - openldap
-    # - openldap.openldap.svc.cluster.local
-    ldapHost: 
-      openldap:
-        - server:
-            - name: OpenLDAP
-            - host: openldap.openldap.svc.cluster.local
-            - port: 389
-            - tls: 'true'
-            - base: "array('dc=anykey,dc=pl')"
-        - login:
-            - auth_type: session
-            - bind_id: cn=admin,dc=anykey,dc=pl
+    baseDN: "dc=example,dc=org"
+
+    ldapHost:
+      name: openldap
+      server:
+        host: openldap.openldap.svc.cluster.local
+        port: 389
+        tls: True
+        base: "array('dc=anykey,dc=pl')"
+      login:
+        auth_type: session
+        bind_id: cn=admin,dc=anykey,dc=pl
   
     tls:
       enabled: false
-      enforce: false
+      enforce: "never"
 
     ports:
       http: 80

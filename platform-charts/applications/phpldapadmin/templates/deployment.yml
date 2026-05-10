@@ -41,7 +41,7 @@ spec:
             --------------------------------------------
             */}}
             - name: PHPLDAPADMIN_LDAP_HOSTS
-              value: {{ printf "#PYTHON2BASH:%s" (.Values.phpldapadmin.configuration.ldapHost | toJson) | quote }}
+              value: {{ include "extras.phpldapadmin.ldapConfig" . | quote }}
             - name: PHPLDAPADMIN_HTTPS
               value: {{ .Values.phpldapadmin.configuration.tls.enabled | quote }}
             - name: PHPLDAPADMIN_LDAP_CLIENT_TLS_REQCERT
