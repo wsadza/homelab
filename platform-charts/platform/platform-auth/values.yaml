@@ -89,6 +89,7 @@ platformAuth:
     #
     groups:
       - name: platform-admins
+        enabled: true
         groupName: PlatformAdmins
         namespace: keycloak
         labels: {}
