@@ -8,7 +8,7 @@ applications:
   # ------------------
 
   - name: keycloak-operator
-    namespace: keycloak-system
+    namespace: keycloak
 
     enabled: true
     priority: -5
@@ -29,7 +29,7 @@ applications:
   # ------------------
   
   - name: edp-keycloak-operator 
-    namespace: keycloak-system
+    namespace: keycloak
 
     enabled: true
     priority: -5
