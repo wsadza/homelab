@@ -1,0 +1,38 @@
+############################################################
+# Copyright (c) wsadza 
+# Released under the MIT license
+# ----------------------------------------------------------
+#
+# Values:
+# - https://github.com/cert-manager/cert-manager/blob/master/deploy/charts/cert-manager/values.yaml
+#
+############################################################
+
+# This option decides if the CRDs should be installed
+# as part of the Helm installation.
+crds:
+  enabled: true
+
+# Good defaults for small labs; you can omit if you want full defaults
+replicaCount: 1
+
+# Number of replicas of the cert-manager webhook to run.
+webhook:
+  replicaCount: 1
+
+# Create the CA Injector deployment
+cainjector:
+  replicaCount: 1
+
+# This property is used to configure options for the controller pod.
+# This allows setting options that would usually be provided using flags.
+config:
+  enableGatewayAPI: true
+
+# Resources to provide to the cert-manager controller pod.
+resources:
+  requests:
+    cpu: 10m
+    memory: 64Mi
+  limits:
+    memory: 256Mi

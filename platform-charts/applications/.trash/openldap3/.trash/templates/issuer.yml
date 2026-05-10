@@ -1,0 +1,32 @@
+{{- if and .Values.openldap.tls.certificate.enabled .Values.openldap.tls.certificate.issuer.enabled }}
+{{- $root := . -}}
+{{- with .Values.openldap.tls.certificate.issuer }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ default (printf "%s-issuer" (include "common.names.fullname" $root)) .name }}
+  namespace: {{ default (include "common.names.namespace" $root) .namespace }}
+spec:
+  {{- if .ca.enabled }}
+  ca:
+    secretName: {{ required "openldap.tls.certificate.issuer.ca.secretName is required" .ca.secretName | quote }}
+  {{- else if .acme.enabled }}
+  acme:
+    email: {{ required "openldap.tls.certificate.issuer.acme.email is required" .acme.email | quote }}
+    server: {{ required "openldap.tls.certificate.issuer.acme.server is required" .acme.server | quote }}
+    privateKeySecretRef:
+      name: {{ required "openldap.tls.certificate.issuer.acme.privateKeySecretName is required" .acme.privateKeySecretName | quote }}
+    solvers:
+      - http01:
+          gatewayHTTPRoute:
+            parentRefs:
+              {{- range .acme.gatewayHTTPRoute.parentRefs }}
+              - group: {{ default "gateway.networking.k8s.io" .group }}
+                kind: {{ default "Gateway" .kind }}
+                name: {{ required "openldap.tls.certificate.issuer.acme.gatewayHTTPRoute.parentRefs[].name is required" .name }}
+                namespace: {{ required "openldap.tls.certificate.issuer.acme.gatewayHTTPRoute.parentRefs[].namespace is required" .namespace }}
+              {{- end }}
+  {{- else }}
+  {{- fail "Either openldap.tls.certificate.issuer.ca.enabled or openldap.tls.certificate.issuer.acme.enabled must be true" }}
+  {{- end }}
+{{- end }}

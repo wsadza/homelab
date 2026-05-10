@@ -1,0 +1,280 @@
+# ===============================================
+#   ____                __      __        
+#  / __ \___  ___ ___  / /  ___/ /__ ____ 
+# / /_/ / _ \/ -_) _ \/ /__/ _  / _ `/ _ \
+# \____/ .__/\__/_//_/____/\_,_/\_,_/ .__/
+#     /_/                          /_/    
+#
+# : OpenLDAP (application chart)
+# ===============================================
+
+# -----------------------------------------------
+# @section common parameters
+# -----------------------------------------------
+#
+# @param nameOverride      : String to partially override common.names.name
+# @param fullnameOverride  : String to fully override common.names.fullname
+# @param namespaceOverride : String to fully override common.names.namespace
+# @param commonLabels      : Labels to add to all deployed objects
+# @param commonAnnotations : Annotations to add to all deployed objects
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+commonLabels: {}
+commonAnnotations: {}
+
+# ===============================================
+# @section openldap parameters
+# ===============================================
+
+openldap:
+
+  # ===============================================
+  # @section Image parameters
+  # ===============================================
+  #
+  # @param openldap.image.repository : OpenLDAP container image repository.
+  # @param openldap.image.tag        : OpenLDAP container image tag.
+  # @param openldap.image.pullPolicy : OpenLDAP container image pull policy.
+  image:
+    repository: osixia/openldap
+    tag: "1.5.0"
+    pullPolicy: IfNotPresent
+
+  # ===============================================
+  # @section Service Configuration parameters
+  # ===============================================
+  #
+  # @param openldap.service.type        : Kubernetes Service type.
+  # @param openldap.service.annotations : Additional annotations for the OpenLDAP Service.
+  # @param openldap.service.ports       : List of Service ports exposed by OpenLDAP.
+  service:
+    type: ClusterIP
+    annotations: {}
+    ports:
+      - name: ldap
+        port: 389
+        targetPort: 389
+        protocol: TCP 
+
+      - name: ldaps
+        port: 636
+        targetPort: 636
+        protocol: TCP 
+
+  # ===============================================
+  # @section OpenLDAP Configuration parameters
+  # ===============================================
+  #
+  # @param openldap.configuration.organization              LDAP organization name.
+  # @param openldap.configuration.domain                    LDAP domain name.
+  # @param openldap.configuration.baseDN                    LDAP base distinguished name.
+  # @param openldap.configuration.adminPassword                    LDAP admin password. Ignored when existingSecret.enabled is true.
+  # @param openldap.configuration.configPassword                   LDAP config admin password. Ignored when existingSecret.enabled is true.
+  # @param openldap.configuration.existingSecret.enabled           Use an existing Kubernetes Secret for LDAP passwords.
+  # @param openldap.configuration.existingSecret.name              Name of the existing Kubernetes Secret.
+  # @param openldap.configuration.existingSecret.keys.adminPassword Secret key containing the LDAP admin password.
+  # @param openldap.configuration.existingSecret.keys.configPassword Secret key containing the LDAP config admin password.
+  # @param openldap.configuration.bootstrap.enabled         Enable bootstrap LDIF seed loading.
+  # @param openldap.configuration.bootstrap.seeds           List of bootstrap LDIF seed templates.
+  # @param openldap.configuration.bootstrap.seeds[].enabled Enable this bootstrap seed.
+  # @param openldap.configuration.bootstrap.seeds[].name    Bootstrap seed template filename. Should end with `.tpl`.
+  # @param openldap.configuration.bootstrap.seeds[].data    Bootstrap LDIF template content.
+  # @param openldap.configuration.ports                     LDAP and LDAPS container port configuration.
+  # @param openldap.configuration.ports.ldap                LDAP container port.
+  # @param openldap.configuration.ports.ldaps               LDAPS container port.
+  # @param openldap.configuration.logLevel                  OpenLDAP and container logging configuration.
+  # @param openldap.configuration.logLevel.ldap             OpenLDAP log level. Common values: `256` for stats, `0` for no logging, `-1` for all logs.
+  # @param openldap.configuration.logLevel.container        Container log level.
+  # @param openldap.configuration.keepExistingConfig        Whether to keep existing LDAP configuration after pod restart.
+  configuration:
+
+    organization: "Example Inc"
+    domain: "example.org"
+    baseDN: "dc=example,dc=org"
+
+    adminPassword: ""
+    configPassword: "" 
+
+    existingSecret:
+      enabled: false
+      name: openldap-admin-secret
+      keys:
+        adminPassword: LDAP_ADMIN_PASSWORD
+        configPassword: LDAP_CONFIG_PASSWORD
+
+    bootstrap: 
+      enabled: true
+      seeds:
+        # Make sure to end your seed name with `.tpl`.
+        - enabled: true
+          name: 00-rootdn.ldif.tpl
+          data: |
+            dn: cn=admin,${LDAP_BASE_DN}
+            objectClass: simpleSecurityObject
+            objectClass: organizationalRole
+            cn: admin
+            description: LDAP administrator
+            userPassword: ${LDAP_ADMIN_PASSWORD}
+
+    # Port configuration - can be overridden
+    ports:
+      ldap: 389
+      ldaps: 636
+   
+    logLevel: 
+      # Logging level (256 = stats, 0 = no logging, -1 = any)
+      ldap: "256"
+      container: "debug"
+
+    # Keep existing config on pod restart
+    keepExistingConfig: false
+
+    # ------------------------------------------
+    # @subsection TLS parameters 
+    # ------------------------------------------
+    #
+    # @param openldap.configuration.tls.enabled      : Enable TLS support for OpenLDAP.   
+    # @param openldap.configuration.tls.enforce      : Require encrypted LDAP connections.
+    # @param openldap.configuration.tls.verifyClient : Require and verify client TLS certificates.   
+    # @param openldap.configuration.tls.secretName   : Name of an existing Kubernetes Secret containing TLS certificates.    
+    tls:
+      enabled: false
+      enforce: true
+      # Only works with self-signed CA
+      verifyClient: never
+      # Default `{{ include "common.names.fullname" . }}-tls-secret`
+      secretName: "" 
+
+    # ------------------------------------------
+    # @subsection Replication parameters 
+    # ------------------------------------------
+    #
+    # @param openldap.configuration.replication.enabled        : Enable OpenLDAP replication.   
+    # @param openldap.configuration.replication.replicas       : Number of OpenLDAP replicas to deploy.
+    # @param openldap.configuration.replication.configSyncprov : Sync provider configuration for the LDAP config database.
+    replication:
+      enabled: false
+      replicas: 3
+
+      configSyncprov: '
+        binddn="cn=admin,cn=config" 
+        bindmethod=simple 
+        credentials=$LDAP_CONFIG_PASSWORD 
+        searchbase="cn=config" 
+        type=refreshAndPersist 
+        retry="60 +" 
+        timeout=1'
+
+      dbSyncprov: '
+        binddn="cn=admin,$LDAP_BASE_DN" 
+        bindmethod=simple 
+        credentials=$LDAP_ADMIN_PASSWORD 
+        searchbase="$LDAP_BASE_DN" 
+        type=refreshAndPersist 
+        interval=00:00:00:10 
+        retry="60 +" 
+        timeout=1'
+
+  # ===============================================
+  # @section PodDisruptionBudget parameters
+  # ===============================================
+  #
+  # @param openldap.podDisruptionBudget.enabled      : Create a PodDisruptionBudget for OpenLDAP pods.
+  # @param openldap.podDisruptionBudget.minAvailable : Minimum number of OpenLDAP pods that must remain available during voluntary disruptions.
+  podDisruptionBudget:
+    enabled: false
+    minAvailable: 2
+
+  # ===============================================
+  # @section Affinity parameters
+  # ===============================================
+  #
+  # @param openldap.affinity.enabled : Enable pod affinity or anti-affinity rules for OpenLDAP pods.
+  # @param openldap.affinity.weight  : Affinity rule weight used by preferred scheduling rules.
+  affinity:
+    enabled: false
+    weight: 100
+
+  # ===============================================
+  # @section Probes parameters
+  # ===============================================
+  #
+  probes:
+
+    # ------------------------------------------
+    # @subsection OpenLDAP liveness probe parameters
+    # ------------------------------------------
+    #
+    # @param openldap.probes.livneness.enabled             : Enable readiness probe for OpenLDAP pods.
+    # @param openldap.probes.livneness.tcpSocket           : TCP socket configuration for the readiness probe.
+    # @param openldap.probes.livneness.tcpSocket.port      : Port used by the readiness probe.
+    # @param openldap.probes.livneness.initialDelaySeconds : Delay before the readiness probe starts.
+    # @param openldap.probes.livneness.periodSeconds       : How often the readiness probe is executed.
+    # @param openldap.probes.livneness.timeoutSeconds      : Timeout for each readiness probe attempt.
+    # @param openldap.probes.livneness.failureThreshold    : Number of failed readiness checks before the pod is marked unready.
+    liveness:
+      enabled: true
+      tcpSocket:
+        port: ldap
+      initialDelaySeconds: 60
+      periodSeconds: 30
+      timeoutSeconds: 5
+      failureThreshold: 6
+
+    # ------------------------------------------
+    # @subsection OpenLDAP readiness probe parameters
+    # ------------------------------------------
+    #
+    # @param openldap.probes.readiness.enabled             : Enable readiness probe for OpenLDAP pods.
+    # @param openldap.probes.readiness.tcpSocket           : TCP socket configuration for the readiness probe.
+    # @param openldap.probes.readiness.tcpSocket.port      : Port used by the readiness probe.
+    # @param openldap.probes.readiness.initialDelaySeconds : Delay before the readiness probe starts.
+    # @param openldap.probes.readiness.periodSeconds       : How often the readiness probe is executed.
+    # @param openldap.probes.readiness.timeoutSeconds      : Timeout for each readiness probe attempt.
+    # @param openldap.probes.readiness.failureThreshold    : Number of failed readiness checks before the pod is marked unready.
+    readiness:
+      enabled: true
+      tcpSocket:
+        port: ldap
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 3
+      failureThreshold: 3
+
+  # ===============================================
+  # @section Persistent Volume Claims parameters
+  # ===============================================
+  #
+  # @param openldap.persistence.data.enabled      : Enable persistent storage for LDAP data.
+  # @param openldap.persistence.data.accessMode   : Access mode for the LDAP data PersistentVolumeClaim.
+  # @param openldap.persistence.data.size         : Size of the LDAP data PersistentVolumeClaim.
+  # @param openldap.persistence.data.storageClass : StorageClass for the LDAP data PersistentVolumeClaim. Empty value uses the cluster default.
+  persistence:
+    data:
+      enabled: true
+      accessMode: ReadWriteOnce
+      size: 10Gi
+      storageClass: ""
+    config:
+      enabled: true
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      storageClass: ""
+
+  # ===============================================
+  # @section Resources parameters
+  # ===============================================
+  #
+  # @param openldap.resources.requests.memory : Memory requested for the OpenLDAP container.
+  # @param openldap.resources.requests.cpu    : CPU requested for the OpenLDAP container.
+  # @param openldap.resources.limits.memory   : Memory limit for the OpenLDAP container.
+  # @param openldap.resources.limits.cpu      : CPU limit for the OpenLDAP container.
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "50m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+

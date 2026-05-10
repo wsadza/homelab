@@ -1,0 +1,11 @@
+applications:
+
+    - name: nvidia-device-plugin
+      #chartName:
+      #chartPath: 
+      chartValues: true
+      targetRevision: 0.16.0
+      repoURL: https://nvidia.github.io/k8s-device-plugin
+      manifests: true     
+      #namespace: 
+      #priority:

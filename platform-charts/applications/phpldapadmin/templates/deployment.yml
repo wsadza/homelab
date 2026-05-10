@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "common.labels.matchLabels" . | nindent 8 }}
+  template:
+    metadata:
+      labels:
+        {{- include "common.labels.matchLabels" . | nindent 8 }}
+    spec:
+
+      {{- /*
+      --------------------------------------------
+        Containers 
+      --------------------------------------------
+      */}}
+      containers:
+        - name: phpldapadmin
+          image: "{{ .Values.phpldapadmin.image.repository }}:{{
+            .Values.phpldapadmin.image.tag }}"
+          imagePullPolicy: {{ .Values.phpldapadmin.image.pullPolicy }}
+
+          {{- /*
+          --------------------------------------------
+            Ports 
+          --------------------------------------------
+          */}}
+          ports:
+            - name: http 
+              containerPort: {{ .Values.phpldapadmin.configuration.ports.http }}
+          env:
+            {{- /*
+            --------------------------------------------
+              Base configuration
+            --------------------------------------------
+            */}}
+            - name: PHPLDAPADMIN_LDAP_HOSTS
+              value: {{ .Values.phpldapadmin.configuration.ldapHost | quote }}
+            - name: PHPLDAPADMIN_HTTPS
+              value: "false"
+          resources:
+            {{- toYaml .Values.phpldapadmin.resources | nindent 12 }}
+          {{- /*
+          --------------------------------------------
+           Probes
+          --------------------------------------------
+          */}}
+          {{- with .Values.phpldapadmin.probes }}
+          {{- if .liveness.enabled }}
+          livenessProbe:
+            {{- omit .liveness "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .readiness.enabled }}
+          readinessProbe:
+            {{- omit .readiness "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- end }}
+

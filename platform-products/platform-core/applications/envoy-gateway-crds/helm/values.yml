@@ -1,0 +1,16 @@
+############################################################
+# Copyright (c) wsadza 
+# Released under the MIT license
+# ----------------------------------------------------------
+#
+# Values:
+# - https://github.com/envoyproxy/gateway/blob/main/charts/gateway-crds-helm/values.yaml
+#
+############################################################
+
+crds:
+  gatewayAPI:
+    enabled: true
+    channel: standard
+  envoyGateway:
+    enabled: true

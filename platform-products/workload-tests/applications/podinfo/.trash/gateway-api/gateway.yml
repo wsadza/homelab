@@ -1,0 +1,47 @@
+# ===========================================================
+# Purpose:  
+# Notes:
+# ===========================================================
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: gateway-podinfo
+  namespace: envoy-gateway-system
+  labels:
+    traffic-profile: shared
+  annotations: 
+    external-dns.alpha.kubernetes.io/target: anykey.pl
+spec:
+  gatewayClassName: envoy
+  listeners:
+
+    - name: podinfo
+      protocol: HTTP
+      port: 80
+      hostname: podinfo.anykey.pl
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    # -- Entry ------------
+    # This definition needs to be unique
+    # This will be merged at gatway-backend
+    - name: podinfo-https
+      protocol: HTTPS
+      port: 443
+      hostname: podinfo.anykey.pl
+
+    # Here we are defingin TLS configuration
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: podinfo-tls-certificate 
+
+      # Allow consuming this definition across whole cluster
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: podinfo
+---

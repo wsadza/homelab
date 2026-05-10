@@ -1,0 +1,41 @@
+apiVersion: v1.edp.epam.com/v1
+kind: KeycloakRealmComponent
+metadata:
+  name: openldap
+  namespace: keycloak
+spec:
+  name: openldap
+  realmRef:
+    name: keycloak-realm
+    kind: KeycloakRealm
+  providerId: ldap
+  providerType: org.keycloak.storage.UserStorageProvider
+  config:
+    enabled:
+      - "true"
+    vendor:
+      - "other"
+
+    #  - "ldap://openldap.openldap.svc.cluster.local:389"
+      - "ldaps://openldap.anykey.pl"
+    bindDn:
+      - "cn=admin,dc=anykey,dc=pl"
+    bindCredential:
+      - "$openldap-admin-secret:LDAP_ADMIN_PASSWORD"
+      #- "admin"
+    usersDn:
+      - "ou=users,dc=anykey,dc=pl"
+    usernameLDAPAttribute:
+      - "uid"
+    rdnLDAPAttribute:
+      - "uid"
+    uuidLDAPAttribute:
+      - "entryUUID"
+    userObjectClasses:
+      - "inetOrgPerson, organizationalPerson"
+    editMode:
+      - "READ_ONLY"
+    importEnabled:
+      - "true"
+    syncRegistrations:
+      - "false"

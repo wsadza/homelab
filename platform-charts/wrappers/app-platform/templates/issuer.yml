@@ -1,0 +1,27 @@
+{{- if and .Values.appPlatform.certificate.enabled .Values.appPlatform.certificate.issuer.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ default (printf "issuer-%s" (include "common.names.fullname" . )) .Values.appPlatform.certificate.issuer.name }}
+  namespace: {{ default (include "common.names.namespace" . ) .Values.appPlatform.certificate.issuer.namespace }}
+  labels:
+      {{- include "common.labels.standard" . | nindent 4 }}    
+spec:
+  acme:
+    {{- with .Values.appPlatform.certificate.issuer.acme.email }}
+    email: {{ . | quote }}
+    {{- end }}
+    server: {{ .Values.appPlatform.certificate.issuer.acme.server | quote }}
+    privateKeySecretRef:
+      name: {{ .Values.appPlatform.certificate.issuer.acme.privateKeySecretName | quote }}
+    solvers:
+      - http01:
+          gatewayHTTPRoute:
+            parentRefs:
+              {{- range .Values.appPlatform.certificate.issuer.acme.gatewayHTTPRoute.parentRefs }}
+              - group: {{ .group | quote }}
+                kind: {{ .kind | quote }}
+                name: {{ .name | quote }}
+                namespace: {{ .namespace | quote }}
+              {{- end }}
+{{- end }}

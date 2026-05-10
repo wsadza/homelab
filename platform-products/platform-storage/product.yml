@@ -1,0 +1,53 @@
+# ===============================
+# 
+# ===============================
+applications:
+
+  # ------------------
+  # Local Path Provisoner 
+  # ------------------
+  
+    - name: local-path-provisioner
+      namespace: kube-system
+
+      enabled: true
+      priority: 0 
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: manifests
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-products/platform-storage/applications/local-path-provisioner/manifests
+
+  # ------------------
+  # CloudNativePG (postgresql-operator)
+  # ------------------
+
+    - name: cloudnative-pg
+      namespace: postgresql-operator
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+        syncOptions:
+          - ServerSideApply=true
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://cloudnative-pg.io/charts/
+          targetRevision: 0.28.0
+          chart: cloudnative-pg
+          valueFiles: 
+            - $values/platform-products/platform-storage/applications/cloudnative-pg/helm/values.yml

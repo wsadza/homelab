@@ -1,0 +1,27 @@
+{{- if .Values.appPlatform.certificate.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:  
+  name: {{ default ( printf "%s-tls-certificate" (include "common.names.fullname" . )) .Values.appPlatform.certificate.name }} 
+  namespace: {{ default ( include "common.names.namespace" . ) .Values.appPlatform.certificate.namespace }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}    
+spec:
+  duration: {{ .Values.appPlatform.certificate.duration | quote }}
+  renewBefore: {{ .Values.appPlatform.certificate.renewBefore | quote }}
+  secretName: {{ default (printf "%s-tls-certificate" (include "common.names.fullname" . )) .Values.appPlatform.certificate.secretName }}
+  commonName: {{ first .Values.appPlatform.certificate.dnsNames | default (printf "%s-tls" (include "common.names.fullname" . )) | quote }}
+  privateKey:
+    algorithm: {{ .Values.appPlatform.certificate.keyAlgorithm }}
+    size: {{ .Values.appPlatform.certificate.keySize }}
+  issuerRef:
+    name: {{ default (printf "issuer-%s" (include "common.names.fullname" . )) .Values.appPlatform.certificate.existingIssuer }}
+    kind: {{ .Values.appPlatform.certificate.existingIssuerKind }}
+    group: cert-manager.io
+  {{- with .Values.appPlatform.certificate.dnsNames }}
+  dnsNames:
+    {{- range . }}
+    - {{ . }}
+    {{- end }}
+  {{- end }}
+{{- end }}

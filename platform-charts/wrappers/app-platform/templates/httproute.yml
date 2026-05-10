@@ -1,0 +1,39 @@
+{{- if and .Values.appPlatform.gatewayApi.enabled .Values.appPlatform.gatewayApi.httpRoutes }}
+{{- $root := . -}}
+{{- range .Values.appPlatform.gatewayApi.httpRoutes }}
+{{- if .enabled }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ default (include "common.names.fullname" $root ) .name | quote }} 
+  namespace: {{ default (include "common.names.namespace" $root ) .namespace | quote }} 
+  labels:
+  {{- include "common.labels.standard" $root | nindent 4 }}
+  {{- with .labels }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  parentRefs:
+  {{- range .parentRefs }}
+  - name: {{ .name | quote }}
+    sectionName: {{ .sectionName | quote }}
+    {{- with .namespace }}
+    namespace: {{ . | quote }}
+    {{- end }}
+  {{- end }}
+  {{- with .hostnames }}
+  hostnames:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .rules }}
+  rules:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

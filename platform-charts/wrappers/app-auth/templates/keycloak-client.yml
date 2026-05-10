@@ -1,0 +1,41 @@
+{{- if and .Values.appAuth.keycloak.enabled .Values.appAuth.keycloak.client.enabled }}
+{{- $root := . }}
+{{- with .Values.appAuth.keycloak.client }}
+---
+apiVersion: v1.edp.epam.com/v1
+kind: KeycloakClient
+metadata:
+  name: {{ default (include "common.names.fullname" $root) .name }}
+  namespace: {{ default (include "common.names.namespace" $root) .namespace }}
+  {{- with .labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with $root.Values.appAuth.keycloak.realmRef }}
+  realmRef:
+    name: {{ .name }}
+    kind: {{ default "KeycloakRealm" .kind }}
+  {{- end }}
+  clientId: {{ required "appAuth.keycloak.client.clientId is required" .clientId | quote }}
+  public: {{ default false .public }}
+  directAccess: {{ default true .directAccess }}
+  advancedProtocolMappers: {{ default true .advancedProtocolMappers }}
+  secret: {{ printf "$%s:%s" .secretName .secretKey | quote }}
+  webUrl: {{ .webUrl | quote }}
+  adminUrl: {{ .adminUrl | quote }}
+  homeUrl: {{ default "/" .homeUrl | quote }}
+  {{- with .defaultClientScopes }}
+  defaultClientScopes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .redirectUris }}
+  redirectUris:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}

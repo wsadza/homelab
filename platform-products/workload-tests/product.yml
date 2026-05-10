@@ -1,0 +1,45 @@
+# ===============================
+# 
+# ===============================
+applications:
+
+  # ------------------
+  # Podinfo
+  # ------------------
+
+    - name: podinfo 
+      namespace: podinfo 
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://stefanprodan.github.io/podinfo
+          targetRevision: 6.9.1
+          chart: podinfo 
+          valueFiles: 
+            - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
+        
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-platform
+          valueFiles: 
+            - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
+
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-security
+          valueFiles: 
+            - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml

@@ -1,0 +1,89 @@
+#providers:
+#  kubernetesCRD:
+#    enabled: true
+#    allowCrossNamespace: true
+
+additionalArguments:
+  - "--api.dashboard=true"
+  - "--log.level=debug"
+  - "--providers.kubernetescrd"
+  - "--api.insecure=true"
+  
+  #- "--entrypoints.web.address=:8000"
+  #- "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+  #- "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+  #- "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+  
+  #- "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
+  #- "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=ovh"
+  #- "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+  #- "--certificatesresolvers.letsencrypt.acme.email=konta@disroot.org"
+  #- "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+  #- "--certificatesresolvers.letsencrypt.acme.storage=acme.json"
+  
+  #- "--entrypoints.websecure.address=:8443"
+  #- "--entrypoints.websecure.http.tls=true"
+  #- "--entrypoints.websecure.http.tls.certResolver=letsencrypt"
+  #- "--entrypoints.websecure.http.tls.domains[0].main=anykey.pl"
+  #- "--entrypoints.websecure.http.tls.domains[0].sans=*.anykey.pl"
+
+
+env:
+
+  - name: OVH_ENDPOINT
+    valueFrom:
+      secretKeyRef:
+        name: ovh-secrets
+        key: OVH_ENDPOINT
+        
+  - name: OVH_APPLICATION_KEY
+    valueFrom:
+      secretKeyRef:
+        name: ovh-secrets
+        key: OVH_APPLICATION_KEY
+        
+  - name: OVH_APPLICATION_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: ovh-secrets
+        key: OVH_APPLICATION_SECRET
+        
+  - name: OVH_CONSUMER_KEY
+    valueFrom:
+      secretKeyRef:
+        name: ovh-secrets
+        key: OVH_CONSUMER_KEY
+        
+certResolvers:
+  letsencrypt:
+    email: "konta@disroot.org"
+    #caServer: https://acme-v02.api.letsencrypt.org/directory # Production server
+    #caServer: https://acme-staging-v02.api.letsencrypt.org/directory # Staging server
+    dnsChallenge:
+      provider: ovh
+    storage: /data/acme.json
+    tlsChallenge: true
+  
+deployment:
+  initContainers:
+    - name: volume-permissions
+      image: busybox:latest
+      command: ["sh", "-c", "ls -la /; touch /data/acme.json; chmod -v 600 /data/acme.json"]
+      volumeMounts:
+      - mountPath: /data
+        name: data
+  
+ports:
+  web:
+    redirectTo: 
+      port: websecure
+      permanent: true
+  websecure:
+    tls:
+      certResolver: letsencrypt
+      domains:
+      - main: "*.anykey.pl"
+        sans:
+        - '*.anykey.pl'
+      enabled: true
+      options: ""

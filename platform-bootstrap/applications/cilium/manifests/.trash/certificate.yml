@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cilium-selfsigned-ca
+spec:
+  isCA: true
+  commonName: cilium-selfsigned-ca
+  duration: 438000h # 50y
+  secretName: cilium-selfsigned-ca
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: cilium-selfsigned

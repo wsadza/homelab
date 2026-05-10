@@ -1,0 +1,78 @@
+# ===============================================================
+#    ___             ____                 _ __      
+#   / _ | ___  ___  / __/__ ______ ______(_) /___ __
+#  / __ |/ _ \/ _ \_\ \/ -_) __/ // / __/ / __/ // /
+# /_/ |_/ .__/ .__/___/\__/\__/\_,_/_/ /_/\__/\_, / 
+#      /_/  /_/                              /___/
+#
+# : AppSecurity (wrapper chart)
+# ===============================================================
+
+appSecurity:
+  enabled: true
+
+  # ===============================================
+  # @section NetworkPolicy parameters
+  # ===============================================
+
+  # @param appSecurity.networkPolicies List of NetworkPolicy resources to generate.
+  networkPolicies:
+
+  # -----------------------------------------------
+  # Examples
+  # -----------------------------------------------
+  
+  # Description:
+  # - Allow consuming Kubernetes DNS 
+ 
+  - enabled: true
+    name: allow-dns-egress
+    namespace: podinfo
+    labels: {}
+    annotations: {}
+    podSelector:
+      matchLabels:
+        app.kubernetes.io/name: podinfo
+    policyTypes:
+      - egress 
+    egress:
+      - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system 
+        ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    ingress: []
+
+  # Description:
+  # - Allow ingress traffic to podinfo from envoy-gatawy-system
+  - enabled: true
+    name: allow-from-gateway
+    namespace: podinfo
+    labels: {}
+    annotations: {}
+    podSelector:
+      matchLabels:
+        app.kubernetes.io/name: podinfo
+    policyTypes:
+      - Ingress
+    ingress:
+      - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: envoy-gateway-system
+    egress: []
+
+  # Description:
+  # - Block all ingress and egress in podinfo namespace
+  - enabled: true
+    name: deny-all-ingress
+    namespace: podinfo
+    podSelector: {}
+    policyTypes:
+    - Ingress
+    - Egress
+    ingress: []

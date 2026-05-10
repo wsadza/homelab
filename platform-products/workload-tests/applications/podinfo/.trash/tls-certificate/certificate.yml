@@ -1,0 +1,18 @@
+# ===========================================================
+# Purpose:  
+# Notes:
+# ===========================================================
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: podinfo-tls-certificate
+  namespace: envoy-gateway-system
+spec:
+  secretName: podinfo-tls-certificate
+  issuerRef:
+    name: issuer-podinfo
+    kind: Issuer
+    group: cert-manager.io
+  dnsNames:
+    - podinfo.anykey.pl
+---

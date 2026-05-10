@@ -1,0 +1,26 @@
+{{- if and .Values.appAuth.keycloak.enabled .Values.appAuth.keycloak.groups }}
+{{- $root := . }}
+{{- range .Values.appAuth.keycloak.groups }}
+---
+apiVersion: v1.edp.epam.com/v1
+kind: KeycloakRealmGroup
+metadata:
+  name: {{ default (include "common.names.fullname" $root) .name }}
+  namespace: {{ default (include "common.names.namespace" $root) .namespace }}
+  {{- with .labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with $root.Values.appAuth.keycloak.realmRef }}
+  realmRef:
+    name: {{ .name }}
+    kind: {{ default "KeycloakRealm" .kind }}
+  {{- end }}
+  name: {{ required "appAuth.keycloak.groups[].groupName is required" .groupName | quote }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,225 @@
+# ===============================================
+#   ____                __      __        
+#  / __ \___  ___ ___  / /  ___/ /__ ____ 
+# / /_/ / _ \/ -_) _ \/ /__/ _  / _ `/ _ \
+# \____/ .__/\__/_//_/____/\_,_/\_,_/ .__/
+#     /_/                          /_/    
+#
+# : OpenLDAP (application chart)
+# ===============================================
+
+# -----------------------------------------------
+# @section common parameters
+# -----------------------------------------------
+#
+# @param nameOverride      : String to partially override common.names.name
+# @param fullnameOverride  : String to fully override common.names.fullname
+# @param namespaceOverride : String to fully override common.names.namespace
+# @param commonLabels      : Labels to add to all deployed objects
+# @param commonAnnotations : Annotations to add to all deployed objects
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+commonLabels: {}
+
+# -----------------------------------------------
+# @section OpenLDAP Configuration parameters
+# -----------------------------------------------
+
+openldap:
+ 
+  configuration:
+
+    organization: "Anyekey pl"
+    domain: "anykey.pl"
+    baseDN: "dc=anykey,dc=pl"
+
+    existingSecret:
+      enabled: true 
+      name: openldap-admin-secret
+      keys:
+        adminPassword: LDAP_ADMIN_PASSWORD
+        configPassword: LDAP_CONFIG_PASSWORD
+    
+    tls:
+      enabled: true
+
+# ===============================================================
+#    ___             ___  __     __  ___             
+#   / _ | ___  ___  / _ \/ /__ _/ /_/ _/__  ______ _ 
+#  / __ |/ _ \/ _ \/ ___/ / _ `/ __/ _/ _ \/ __/  ' \
+# /_/ |_/ .__/ .__/_/  /_/\_,_/\__/_/ \___/_/ /_/_/_/
+#      /_/  /_/                                      
+#
+# : AppPlatform (wrapper)
+# ===============================================================
+
+appPlatform:
+
+  # ===============================================
+  # @section Gateway API parameters
+  # ===============================================
+
+  gatewayApi:
+    # @param appPlatform.gatewayApi.enabled Enable Gateway API resources.
+    enabled: true
+
+    # @param appPlatform.gatewayApi.gateway.enabled          : Enable Gateway resource generation.
+    # @param appPlatform.gatewayApi.gateway.name             : Gateway resource name.
+    # @param appPlatform.gatewayApi.gateway.namespace        : Namespace where the Gateway will be created.
+    # @param appPlatform.gatewayApi.gateway.labels           : Labels to add to the Gateway.
+    # @param appPlatform.gatewayApi.gateway.annotations      : Annotations to add to the Gateway.
+    # @param appPlatform.gatewayApi.gateway.gatewayClassName : GatewayClass name used by the Gateway.
+    # @param appPlatform.gatewayApi.gateway.listeners        : List of Gateway listeners. 
+    gateway:
+      enabled: true
+      name: gateway-openldap
+      namespace: envoy-gateway-system
+      annotations:
+        external-dns.alpha.kubernetes.io/target: anykey.pl
+      gatewayClassName: envoy
+
+      # @param appPlatform.gatewayApi.gateway.listeners[0].name          : Listener name.
+      # @param appPlatform.gatewayApi.gateway.listeners[0].protocol      : Listener protocol.
+      # @param appPlatform.gatewayApi.gateway.listeners[0].port          : Listener port.
+      # @param appPlatform.gatewayApi.gateway.listeners[0].hostname      : Hostname accepted by the listener.
+      # @param appPlatform.gatewayApi.gateway.listeners[0].allowedRoutes : Allowed routes configuration.
+      listeners:
+        - name: listener-http
+          protocol: HTTP
+          port: 80
+          hostname: openldap.anykey.pl 
+          allowedRoutes:
+            namespaces:
+              from: All
+
+        - name: listener-tls
+          protocol: TLS
+          port: 636
+          hostname: openldap.anykey.pl 
+          tls:
+            mode: Passthrough
+          allowedRoutes:
+            namespaces:
+              from: Selector
+              selector:
+                matchLabels:
+                  kubernetes.io/metadata.name: openldap
+
+    # -----------------------------------------------
+    # @subsection HTTPRoutes parameters
+    # -----------------------------------------------
+    #
+    # @param appPlatform.gatewayApi.httpRoute.enabled     : Enable HTTPRoute resource generation.
+    # @param appPlatform.gatewayApi.httpRoute.name        : HTTPRoute resource name.
+    # @param appPlatform.gatewayApi.httpRoute.namespace   : Namespace where the HTTPRoute will be created.
+    # @param appPlatform.gatewayApi.httpRoute.labels      : Labels to add to the HTTPRoute.
+    # @param appPlatform.gatewayApi.httpRoute.annotations : Annotations to add to the HTTPRoute.
+    # @param appPlatform.gatewayApi.httpRoute.parentRefs  : Parent Gateway references.
+    # @param appPlatform.gatewayApi.httpRoute.hostnames   : Hostnames matched by the HTTPRoute.
+    # @param appPlatform.gatewayApi.httpRoute.rules       : HTTPRoute routing rules.
+    httpRoutes:
+      - enabled: true
+        name: openldap-http-route
+        namespace: openldap
+        parentRefs:
+          - name: gateway-openldap
+            namespace: envoy-gateway-system
+            sectionName: listener-http
+        hostnames:
+          - openldap.anykey.pl
+        rules:
+           - matches:
+              - path:
+                  type: PathPrefix
+                  value: /.well-known/acme-challenge/
+             backendRefs: []
+
+    # -----------------------------------------------
+    # @subsection TLSRoutes parameters
+    # -----------------------------------------------
+    #
+    # @param appPlatform.gatewayApi.tlsRoute.enabled     : Enable TLSRoute resource generation.
+    # @param appPlatform.gatewayApi.tlsRoute.name        : TLSRoute resource name.
+    # @param appPlatform.gatewayApi.tlsRoute.namespace   : Namespace where the HTTPRoute will be created.
+    # @param appPlatform.gatewayApi.tlsRoute.labels      : Labels to add to the HTTPRoute.
+    # @param appPlatform.gatewayApi.tlsRoute.annotations : Annotations to add to the HTTPRoute.
+    # @param appPlatform.gatewayApi.tlsRoute.parentRefs  : Parent Gateway references.
+    # @param appPlatform.gatewayApi.tlsRoute.hostnames   : Hostnames matched by the HTTPRoute.
+    # @param appPlatform.gatewayApi.tlsRoute.rules       : HTTPRoute routing rules.
+    tlsRoutes:
+      - enabled: true
+        name: openldap-tls-route
+        namespace: openldap 
+        parentRefs:
+          - name: gateway-openldap
+            namespace: envoy-gateway-system 
+            sectionName: listener-tls
+        hostnames:
+          - openldap.anykey.pl
+        rules:
+          - backendRefs:
+              - name: openldap
+                port: 636
+                kind: Service
+                namespace: openldap
+
+  # ===============================================
+  # @section Certificate parameters
+  # ===============================================
+  
+  # @param appPlatform.certificate.enabled            : Enable Certificate resource generation.
+  # @param appPlatform.certificate.name               : Certificate resource name.
+  # @param appPlatform.certificate.namespace          : Namespace where the Certificate will be created.
+  # @param appPlatform.certificate.existingIssuer     : Name of an existing Issuer or ClusterIssuer.
+  # @param appPlatform.certificate.existingIssuerKind : Kind of the existing issuer. Usually Issuer or ClusterIssuer.
+  # @param appPlatform.certificate.keySize            : Private key size.
+  # @param appPlatform.certificate.keyAlgorithm       : Private key algorithm.
+  # @param appPlatform.certificate.duration           : Certificate validity duration.
+  # @param appPlatform.certificate.renewBefore        : How long before expiry cert-manager should renew the certificate.
+  # @param appPlatform.certificate.secretName         : Secret name where the TLS certificate will be stored.
+  # @param appPlatform.certificate.dnsNames           : DNS names covered by the certificate. 
+  certificate:
+    enabled: true
+    name: openldap-certificate
+    namespace: openldap
+    existingIssuer: openldap-issuer
+    existingIssuerKind: Issuer
+
+    keySize: 2048
+    keyAlgorithm: RSA
+    duration: 2160h
+    renewBefore: 360h
+
+    secretName: openldap-tls-secret
+    dnsNames:
+      - openldap.anykey.pl
+
+    # -----------------------------------------------
+    # @subsection Issuer parameters
+    # -----------------------------------------------
+    #
+    # @param appPlatform.certificate.issuer.enabled                          : Enable Issuer resource generation.
+    # @param appPlatform.certificate.issuer.name                             : Issuer resource name.
+    # @param appPlatform.certificate.issuer.namespace                        : Namespace where the Issuer will be created.
+    # @param appPlatform.certificate.issuer.kind                             : Issuer kind. Usually Issuer or ClusterIssuer.
+    # @param appPlatform.certificate.issuer.acme.email                       : ACME registration email.
+    # @param appPlatform.certificate.issuer.acme.server                      : ACME server URL.
+    # @param appPlatform.certificate.issuer.acme.privateKeySecretName        : Secret name used to store the ACME account private key.
+    # @param appPlatform.certificate.issuer.acme.gatewayHTTPRoute.parentRefs : Gateway parent references used for HTTP-01 challenges. 
+    issuer:
+      enabled: true
+      name: openldap-issuer
+      namespace: openldap
+      kind: Issuer
+      acme:
+        email: openldap@anykey.pl
+        server: https://acme-v02.api.letsencrypt.org/directory
+        privateKeySecretName: letsencrypt-account-key
+        gatewayHTTPRoute:
+          parentRefs:
+            - group: gateway.networking.k8s.io
+              kind: Gateway
+              name: openldap-gateway 
+              namespace: envoy-gateway-system 
+          

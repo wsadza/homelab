@@ -1,0 +1,131 @@
+# ###########################################################
+# Purpose:  
+# Notes:
+# Author:
+# ###########################################################
+
+# =====================================
+# ArgoCD Configuration
+# =====================================
+
+configs:
+  cm:
+
+    kustomize.buildOptions: "--enable-alpha-plugins --enable-exec"
+
+    # -- Timeout to discover if a new manifests 
+    #    version got published to the repository
+    timeout.reconciliation: 30s
+
+    # -- Maximum jitter added to the 
+    #    reconciliation timeout to spread out refreshes and reduce repo-server load
+    timeout.reconciliation.jitter: 0s
+
+  # -- Create the argocd-secret
+  secret:
+    createSecret: false 
+
+  # -- Insecure TLS
+  params:
+    server.insecure: true # HTTPS backend
+
+# =====================================
+# Repo Server
+# Note:
+# - Extra kustomize support
+# =====================================
+
+repoServer:
+  volumes:
+    - name: custom-tools
+      emptyDir: {}
+    - name: sops-age
+      secret:
+        secretName: sops-age
+
+  initContainers:
+    - name: install-ksops
+      image: viaductoss/ksops:v4.5.1
+      command: ["ksops", "install", "--with-kustomize", "/custom-tools"]
+      volumeMounts:
+        - name: custom-tools
+          mountPath: /custom-tools
+
+  env:
+    - name: XDG_CONFIG_HOME
+      value: /.config
+    - name: SOPS_AGE_KEY_FILE
+      value: /.config/sops/age/keys.txt
+
+  volumeMounts:
+    - name: custom-tools
+      mountPath: /usr/local/bin/kustomize
+      subPath: kustomize
+    - name: custom-tools
+      mountPath: /usr/local/bin/ksops
+      subPath: ksops
+    - name: sops-age
+      mountPath: /.config/sops/age
+      readOnly: true
+
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 10
+    failureThreshold: 6
+
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 10
+    failureThreshold: 6
+
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      memory: 1Gi
+
+# =====================================
+# Extra Manifests
+# Note: 
+# - Supports use of custom Helm templates
+# =====================================
+
+extraObjects:
+  
+  # -------------------
+  # Default argocd password: admin/admin
+  # Note:
+  # - To generate use bcrypt: argocd account bcrypt --password 'YOUR_PASSWORD' 
+  # -------------------
+  
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: argocd-secret
+      namespace: argocd
+    type: Opaque
+    stringData:
+      admin.password: "$2a$10$2rNf5wKIRzfGwjjbvORvYenItTtsh3LGDMfB50dpLv/UJiavpF2QK"
+      admin.passwordMtime: "2026-02-13T00:00:00Z" 
+
+  # -------------------
+  # Default sops.key: 
+  # Note:
+  # - To generate use: age-keygen -o keys.txt
+  # -------------------
+  
+  #- apiVersion: v1
+  #  kind: Secret
+  #  metadata:
+  #    name: sops-age 
+  #    namespace: argocd
+  #  type: Opaque
+  #  stringData:
+  #    key.txt: |
+  #      AGE-SECRET-KEY-REPLACE-ME
+        

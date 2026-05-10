@@ -1,0 +1,65 @@
+# ----------------------
+# Default Deny Policies
+# ----------------------
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+  namespace: podinfo
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+# ----------------------
+# Allow Envoy Gateway to podinfo
+# ----------------------
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-envoy-to-podinfo
+  namespace: podinfo
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: podinfo
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: envoy-gateway-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: envoy
+      ports:
+        - protocol: TCP
+          port: 9898
+---
+# ----------------------
+# Allow Envoy Gateway to podinfo
+# ----------------------
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-egress
+  namespace: podinfo
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53

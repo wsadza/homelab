@@ -1,0 +1,17 @@
+name: dev
+products:
+  - platform-core
+  - platform-core-extras
+
+  - platform-storage
+  - platform-storage-extras
+
+  - platform-security
+  - platform-security-extras
+
+  - workload-tests
+
+#  - platform-observability
+#  - platform-security
+#  - gpu
+#  - infrastructure

@@ -1,0 +1,20 @@
+############################################################
+# Copyright (c) wsadza 
+# Released under the MIT license
+# ----------------------------------------------------------
+#
+# Values:
+# - https://github.com/envoyproxy/gateway/blob/main/charts/gateway-helm/values.tmpl.yaml
+#
+############################################################
+
+# -- EnvoyGateway configuration. Visit https://gateway.envoyproxy.io/docs/api/extension_types/#envoygateway to view all options.
+config:
+  envoyGateway:
+    gateway:
+      controllerName: gateway.envoyproxy.io/gatewayclass-controller
+    provider:
+      type: Kubernetes
+    logging:
+      level:
+        default: info

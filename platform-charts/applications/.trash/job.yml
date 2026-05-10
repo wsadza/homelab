@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . }}
+  labels:
+      {{- include "common.labels.standard" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "10"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  template:
+    restartPolicy: OnFailure
+    containers:
+    - name: bootstrap
+      image: osixia/openldap:1.5.0
+      command:
+      - /bin/sh
+      - c 
+      - |
+        set -eu
+
+        LDAP_URI="ldaps://openldap.anykey.pl"
+        BASE_DN="dc=anykey,dc=pl"
+        ROOT_DN="cn=admin,dc=anykey,dc=pl"
+        LDAP_ADMIN_PASSWORD=admin
+
+        echo "Waiting for LDAP..."
+        until ldapwhoami -x -H "$LDAP_URI" -D "$ROOT_DN" -w "$LDAP_ADMIN_PASSWORD"; do
+          sleep 2
+        done
+
+        echo "Ensuring rootDN entry exists..."
+        if ldapsearch -x -H "$LDAP_URI" \
+          -D "$ROOT_DN" \
+          -w "$LDAP_ADMIN_PASSWORD" \
+          -b "$ROOT_DN" \
+          -s base \
+          "(objectClass=*)" dn | grep -q "^dn: $ROOT_DN"; then
+          echo "rootDN entry already exists"
+        else
+          cat >/tmp/rootdn-entry.ldif <<EOF
+        dn: cn=admin,dc=anykey,dc=pl
+        objectClass: simpleSecurityObject
+        objectClass: organizationalRole
+        cn: admin
+        description: LDAP administrator
+        userPassword: ${LDAP_ADMIN_HASH}
+        EOF
+
+          ldapadd -x -H "$LDAP_URI" \
+            -D "$ROOT_DN" \
+            -w "$LDAP_ADMIN_PASSWORD" \
+            -f /tmp/rootdn-entry.ldif
+        fi

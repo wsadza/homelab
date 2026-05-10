@@ -1,0 +1,44 @@
+{{- if eq .Values.mode "root" }}
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ .Values.root.name }}
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+
+  generators:
+    - git:
+        repoURL: {{ .Values.repoURL | quote }}
+        revision: {{ .Values.targetRevision | quote }}
+        requeueAfterSeconds: 30
+        files:
+          - path: {{ .Values.root.file | quote }}
+
+  template:
+    metadata:
+      name: {{ .Values.root.name | quote }}
+    spec:
+      project: default
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: argocd
+
+  templatePatch: |
+    spec:
+      sources:
+        {{ `{{- range .` }}{{ .Values.root.listKey }}{{ ` }}` }}
+        - repoURL: {{ $.Values.repoURL | quote }}
+          targetRevision: {{ $.Values.targetRevision | quote }}
+          path: {{ $.Values.root.childChartPath | quote }}
+          helm:
+            values: |
+              mode: {{ $.Values.root.childMode | quote }}
+              repoURL: {{ $.Values.repoURL | quote }}
+              targetRevision: {{ $.Values.targetRevision | quote }}
+              leaf:
+                name: {{ $.Values.root.childNameTemplate | replace "{{ item }}" "{{ . }}" | quote }}
+                file: {{ $.Values.root.childFileTemplate | replace "{{ item }}" "{{ . }}" | quote }}
+        {{ `{{- end }}` }}
+{{- end }}

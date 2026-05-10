@@ -1,0 +1,38 @@
+{{- $root := . -}}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: selfsigned-root
+  namespace: {{ default (include "common.names.namespace" $root) .Values.namespace }}
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ printf "%s-ca-crt" (include "common.names.fullname" .) }}
+  namespace: {{ default (include "common.names.namespace" $root) .Values.namespace }}
+spec:
+  isCA: true
+  secretName: {{ printf "%s-ca-crt" (include "common.names.fullname" .) }}
+  commonName: {{ printf "%s-ca" (include "common.names.fullname" .) | quote }}
+  {{- with .Values.openldap.tls.certificate.subject.organizations }}
+  subject:
+    organizations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  privateKey:
+    algorithm: {{ .Values.openldap.tls.certificate.keyAlgorithm }}
+    size: {{ .Values.openldap.tls.certificate.keySize }}
+  issuerRef:
+    name: selfsigned-root
+    kind: Issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ printf "%s-ca-issuer" (include "common.names.fullname" .) }}
+  namespace: {{ default (include "common.names.namespace" $root) $.Values.namespace }}
+spec:
+  ca:
+    secretName: {{ printf "%s-ca-crt" (include "common.names.fullname" .) }}

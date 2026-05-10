@@ -1,0 +1,60 @@
+#
+# DES: csi storage for container orchestration systems 
+# URL: 
+#   https://github.com/democratic-csi/democratic-csi
+#   https://github.com/fenio/k8s-truenas
+#
+---
+csiDriver:
+  name: "nfs"
+storageClasses:
+- name: nfs
+  defaultClass: false
+  reclaimPolicy: Delete
+  volumeBindingMode: Immediate
+  allowVolumeExpansion: true
+  parameters:
+    fsType: nfs
+    detachedVolumesFromSnapshots: "false"
+  mountOptions:
+  - noatime
+  - nfsvers=3
+  secrets:
+    provisioner-secret:
+    controller-publish-secret:
+    node-stage-secret:
+    node-publish-secret:
+    controller-expand-secret:
+driver:
+
+  existingConfigSecret: democratic-driver-config-nfs
+  config:
+    driver: freenas-api-nfs
+    instance_id:
+  
+# This config will be overwriten by secret
+# -------
+    httpConnection:
+      protocol: http
+      host: "CHANGE-ME"
+      port: 80
+      apiKey: "CHANGE-ME"
+      allowInsecure: true
+    zfs:
+      datasetParentName: "CHANGE-ME"
+      detachedSnapshotsDatasetParentName: "CHANGE-ME"
+      datasetEnableQuotas: true
+      datasetEnableReservation: false
+      datasetPermissionsMode: "0777"
+      datasetPermissionsUser: 0
+      datasetPermissionsGroup: 0
+    nfs:
+      shareHost: "CHANGE-ME"
+      shareAlldirs: false
+      shareAllowedHosts: []
+      shareAllowedNetworks: []
+      shareMaprootUser: "CHANGE-ME"
+      shareMaprootGroup: "CHANGE-ME"
+      shareMapallUser: ""
+      shareMapallGroup: ""
+...

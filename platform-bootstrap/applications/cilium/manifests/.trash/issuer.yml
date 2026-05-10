@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: cilium-selfsigned
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: cilium-selfsigned-ca
+spec:
+  ca:
+    secretName: cilium-selfsigned-ca

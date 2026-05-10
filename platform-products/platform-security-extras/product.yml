@@ -1,0 +1,39 @@
+# ===============================
+# 
+# ===============================
+applications:
+
+  # ------------------
+  # openldap (manage clients) 
+  # ------------------
+  
+  - name: phpldapadmin
+    namespace: openldap 
+
+    enabled: true
+    priority: 5
+
+    syncPolicy:
+      automated: false
+
+    sources:
+
+      - type: values
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        ref: values
+
+      - type: helm 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-charts/applications/phpldapadmin
+        valueFiles: 
+          - $values/platform-products/platform-security-extras/applications/phpldapadmin/helm/values.yml
+
+      - type: helm 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-charts/wrappers/app-platform
+        valueFiles: 
+          - $values/platform-products/platform-security-extras/applications/phpldapadmin/helm/values.yml
+

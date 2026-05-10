@@ -1,0 +1,44 @@
+{{- if and .Values.appAuth.envoyGateway.oidc.enabled .Values.appAuth.keycloak.enabled }}
+{{- $root := . }}
+{{- $oidc := .Values.appAuth.envoyGateway.oidc }}
+{{- $client := .Values.appAuth.keycloak.client }}
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: {{ default (printf "%s-oidc" (include "common.names.fullname" $root)) $oidc.name }}
+  namespace: {{ default (include "common.names.namespace" $root) $oidc.namespace }}
+  {{- with $oidc.labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $oidc.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  targetRefs:
+    {{- range $oidc.targetRefs }}
+    - group: {{ default "gateway.networking.k8s.io" .group }}
+      kind: {{ required "targetRefs.kind is required" .kind }}
+      name: {{ required "targetRefs.name is required" .name }}
+      {{- if .namespace }}
+      namespace: {{ .namespace }}
+      {{- end }}
+    {{- end }}
+  oidc:
+    provider:
+      issuer: {{ required "appAuth.gatewayApi.oidc.issuer is required" $oidc.issuer | quote }}
+    clientID: {{ default $client.clientId $oidc.clientId | quote }}
+    clientSecret:
+      name: {{ required "clientSecret.name is required" $oidc.clientSecret.name }}
+    redirectURL: {{ required "appAuth.gatewayApi.oidc.redirectURL is required" $oidc.redirectURL | quote }}
+    logoutPath: {{ default "/logout" $oidc.logoutPath | quote }}
+    {{- with $oidc.scopes }}
+    scopes:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with $oidc.forwardAccessToken }}
+    forwardAccessToken: {{ . }}
+    {{- end }}
+{{- end }}

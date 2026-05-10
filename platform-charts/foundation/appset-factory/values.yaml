@@ -1,0 +1,19 @@
+mode: root
+
+repoURL: https://github.com/wsadza/homelab.git
+targetRevision: HEAD
+
+root:
+  listKey: products
+  name: anykey.pl 
+  file: environments/dev.yml 
+
+  childChartPath: platform-charts/foundation/appset-factory
+  childMode: leaf
+  childFileTemplate: "platform-products/{{ item }}/product.yml"
+  childNameTemplate: "{{ item }}"
+
+leaf:
+  listKey: applications 
+  name: ""
+  file: ""

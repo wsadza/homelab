@@ -1,0 +1,43 @@
+ipam:
+  operator:
+    clusterPoolIPv4PodCIDRList:
+      - "10.42.0.0/16"
+
+kubeProxyReplacement: true
+
+externalIPs:
+  enabled: true
+
+l2announcements:
+  enabled: true
+
+hubble:
+  enabled: true
+  relay:
+    enabled: true
+  ui:
+    enabled: true
+
+envoy:
+  enabled: false
+
+ingressController:
+  enabled: false
+
+gatewayAPI:
+  enabled: false
+
+loadBalancer:
+  l7:
+    backend: disabled
+
+envoyConfig:
+  enabled: false
+
+ipv4NativeRoutingCIDR: ""
+routingMode: tunnel
+autoDirectNodeRoutes: false
+
+enableIPv4Masquerade: true
+bpf:
+  masquerade: true

@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: issuer-podinfo
+  namespace: envoy-gateway-system
+spec:
+  acme:
+    email: podinfo@anykey.pl
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-account-key
+    solvers:
+      - http01:
+          gatewayHTTPRoute:
+            parentRefs:
+              - group: gateway.networking.k8s.io
+                kind: Gateway
+                name: gateway-podinfo
+                namespace: envoy-gateway-system
+---

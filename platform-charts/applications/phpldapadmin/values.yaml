@@ -1,0 +1,137 @@
+# ===============================================
+#    ___  __        __      __          ___     __      _    
+#   / _ \/ /  ___  / /  ___/ /__ ____  / _ |___/ /_ _  (_)__ 
+#  / ___/ _ \/ _ \/ /__/ _  / _ `/ _ \/ __ / _  /  ' \/ / _ \
+# /_/  /_//_/ .__/____/\_,_/\_,_/ .__/_/ |_\_,_/_/_/_/_/_//_/
+#          /_/                 /_/                           
+#
+# : phpldapadmin (application chart)
+# -------------------------------
+#
+# ===============================================
+
+# -----------------------------------------------
+# @section common parameters
+# -----------------------------------------------
+#
+# @param nameOverride      : String to partially override common.names.name
+# @param fullnameOverride  : String to fully override common.names.fullname
+# @param namespaceOverride : String to fully override common.names.namespace
+# @param commonLabels      : Labels to add to all deployed objects
+# @param commonAnnotations : Annotations to add to all deployed objects
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+commonLabels: {}
+commonAnnotations: {}
+
+# ===============================================
+# @section phpldapadmin parameters
+# ===============================================
+
+phpldapadmin:
+
+  # ===============================================
+  # @section Image parameters
+  # ===============================================
+  #
+  # @param phpldapadmin.image.repository : Cntainer image repository.
+  # @param phpldapadmin.image.tag        : Container image tag.
+  # @param phpldapadmin.image.pullPolicy : Container image pull policy.
+  image:
+    repository: osixia/phpldapadmin
+    tag: "0.9.0"
+    pullPolicy: IfNotPresent
+
+  # ===============================================
+  # @section Service Configuration parameters
+  # ===============================================
+  #
+  # @param phpldapadmin.service.type        : Kubernetes Service type.
+  # @param phpldapadmin.service.annotations : Additional annotations for the Service.
+  # @param phpldapadmin.service.ports       : List of Service ports exposed.
+  service:
+    type: ClusterIP
+    annotations: {}
+    ports:
+      - name: http
+        port: 80
+        targetPort: 80
+        protocol: TCP
+
+  # ===============================================
+  # @section Application configuration parameters
+  #
+  # @param phpldapmin.configuration.ldpHost:  
+  # @param phpldapmin.configuration.ports.http:  
+  configuration:
+
+    # LDAP host reachable from inside the cluster.
+    # Examples:
+    # - openldap
+    # - openldap.openldap.svc.cluster.local
+    ldapHost: openldap
+    ports:
+      http: 80
+
+  # ===============================================
+  # @section Probes parameters
+  # ===============================================
+  #
+  probes:
+
+    # ------------------------------------------
+    # @subsection PhpLdapAdmin liveness probe parameters
+    # ------------------------------------------
+    #
+    # @param phpldapadmin.probes.livneness.enabled             : Enable readiness probe for OpenLDAP pods.
+    # @param phpldapadmin.probes.livneness.tcpSocket           : TCP socket configuration for the readiness probe.
+    # @param phpldapadmin.probes.livneness.tcpSocket.port      : Port used by the readiness probe.
+    # @param phpldapadmin.probes.livneness.initialDelaySeconds : Delay before the readiness probe starts.
+    # @param phpldapadmin.probes.livneness.periodSeconds       : How often the readiness probe is executed.
+    # @param phpldapadmin.probes.livneness.timeoutSeconds      : Timeout for each readiness probe attempt.
+    # @param phpldapadmin.probes.livneness.failureThreshold    : Number of failed readiness checks before the pod is marked unready.
+    liveness:
+      enabled: true
+      tcpSocket:
+        port: http 
+      initialDelaySeconds: 60
+      periodSeconds: 30
+      timeoutSeconds: 5
+      failureThreshold: 6
+
+    # ------------------------------------------
+    # @subsection OpenLDAP readiness probe parameters
+    # ------------------------------------------
+    #
+    # @param phpldapadmin.probes.readiness.enabled             : Enable readiness probe for OpenLDAP pods.
+    # @param phpldapadmin.probes.readiness.tcpSocket           : TCP socket configuration for the readiness probe.
+    # @param phpldapadmin.probes.readiness.tcpSocket.port      : Port used by the readiness probe.
+    # @param phpldapadmin.probes.readiness.initialDelaySeconds : Delay before the readiness probe starts.
+    # @param phpldapadmin.probes.readiness.periodSeconds       : How often the readiness probe is executed.
+    # @param phpldapadmin.probes.readiness.timeoutSeconds      : Timeout for each readiness probe attempt.
+    # @param phpldapadmin.probes.readiness.failureThreshold    : Number of failed readiness checks before the pod is marked unready.
+    readiness:
+      enabled: true
+      tcpSocket:
+        port: http
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 3
+      failureThreshold: 3
+
+  # ===============================================
+  # @section Resources parameters
+  # ===============================================
+  #
+  # @param phpldapadmin.resources.requests.memory : Memory requested for the OpenLDAP container.
+  # @param phpldapadmin.resources.requests.cpu    : CPU requested for the OpenLDAP container.
+  # @param phpldapadmin.resources.limits.memory   : Memory limit for the OpenLDAP container.
+  # @param phpldapadmin.resources.limits.cpu      : CPU limit for the OpenLDAP container.
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "25m"
+    limits:
+      memory: "256Mi"
+      cpu: "50m"       

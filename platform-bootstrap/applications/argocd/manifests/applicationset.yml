@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: products
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+  generators:
+    - git:
+        repoURL: "https://github.com/wsadza/homelab.git"
+        revision: HEAD
+        requeueAfterSeconds: 30
+        files:
+          - path: "environments/dev.yml"
+  template:
+    metadata:
+      name: 'products'
+    spec:
+      project: "default"
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: 'default' 
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+  templatePatch: |
+    spec:
+      sources:
+        {{ range .products }}
+        - repoURL: 'https://github.com/wsadza/homelab.git'
+          targetRevision: HEAD
+          path: bootstrap/charts/applicationset-generator
+          helm:
+            values: |
+              file: "products/{{ . }}/product.yml"
+              name: "{{ . }}" 
+        {{ end }}
+...

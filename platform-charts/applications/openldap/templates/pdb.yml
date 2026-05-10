@@ -1,0 +1,14 @@
+{{- if .Values.openldap.podDisruptionBudget.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "common.names.fullname" . }}-pdb
+  namespace: {{ include "common.names.namespace" . }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.openldap.podDisruptionBudget.minAvailable }}
+  selector:
+    matchLabels:
+      {{- include "common.labels.matchLabels" . | nindent 6 }}
+{{- end }}

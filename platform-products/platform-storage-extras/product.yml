@@ -1,0 +1,45 @@
+# ===============================
+# 
+# ===============================
+applications:
+
+  # ------------------
+  # PGAdmin 
+  # ------------------
+
+    - name: pgadmin4
+      namespace: pgadmin4
+
+      enabled: false
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://helm.runix.net
+          targetRevision: 1.62.0 
+          chart: pgadmin4
+          valueFiles: 
+            - $values/platform-products/platform-storage-extras/applications/pgadmin4/helm/values.yml
+
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD 
+          path: platform-charts/wrappers/app-platform
+          valueFiles: 
+            - $values/platform-products/platform-storage-extras/applications/pgadmin4/helm/values.yml
+
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD 
+          path: platform-charts/wrappers/app-security
+          valueFiles: 
+            - $values/platform-products/platform-storage-extras/applications/pgadmin4/helm/values.yml

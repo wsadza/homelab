@@ -1,0 +1,355 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+spec:
+  serviceName: {{ include "common.names.fullname" . }}-headless
+  replicas: {{ include "extras.openldap.replicas" . }} 
+  selector:
+    matchLabels:
+      {{- include "common.labels.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "common.labels.standard" . | nindent 8 }}
+    spec:
+      {{- /*
+      --------------------------------------------
+        Affinity 
+      --------------------------------------------
+      */}}
+      {{- if and .Values.openldap.affinity.enabled }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: {{ .Values.openldap.affinity.weight }}
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    {{- include "common.labels.matchLabels" . | nindent 20 }}
+                topologyKey: kubernetes.io/hostname
+      {{- end }}
+      {{- /*
+      --------------------------------------------
+        InitContainers 
+      --------------------------------------------
+      */}}
+      initContainers:
+
+        - name: prepare-slapd-process
+          image: busybox:1.36.1
+          command:
+            - sh
+            - -c
+            - |
+              cp /custom-scripts/entrypoint /workdir/process.sh
+              chmod 755 /workdir/process.sh
+          volumeMounts:
+            - name: slapd-entrypoint
+              mountPath: /custom-scripts
+            - name: slapd-process
+              mountPath: /workdir
+
+        {{- if .Values.openldap.configuration.tls.enabled }}
+        - name: prepare-certs
+          image: busybox:1.36.1
+          command:
+            - sh
+            - -c
+            - |
+              # Copy certificates from secret
+              cp /tls-source/tls.crt /tls-dest/ldap.crt
+              cp /tls-source/tls.key /tls-dest/ldap.key
+              cp /tls-source/tls.crt /tls-dest/ca.crt
+
+              chown 911:911 /tls-dest/ldap.crt /tls-dest/ldap.key /tls-dest/ca.crt
+              chmod 644 /tls-dest/*.crt
+              chmod 600 /tls-dest/ldap.key
+          volumeMounts:
+            - name: tls-certs-source
+              mountPath: /tls-source
+              readOnly: true
+            - name: tls-certs-prepared
+              mountPath: /tls-dest
+        {{- end }}
+
+        {{- if .Values.openldap.configuration.bootstrap.enabled }}
+        - name: bootstrap-ldif
+          image: alpine:3.20
+          command:
+          - sh
+          - -c
+          - |
+            apk add --no-cache gettext
+           
+            # Render ldif templates
+            for template in /ldif-template/*; do
+              [ -f "${template}" ] || continue
+            
+              rendered="$(basename "${template}" .tpl)"
+            
+              envsubst < "${template}" > "/ldif-rendered/${rendered}"
+              chmod 0400 "/ldif-rendered/${rendered}"
+              chown 911:911 "/ldif-rendered/${rendered}"
+            done
+          env:
+            - name: LDAP_BASE_DN
+              value: {{ .Values.openldap.configuration.baseDN | quote }}
+            - name: LDAP_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "openldap.secretName" . }}
+                  key: {{ include "openldap.secretKey.adminPassword" . }}
+          volumeMounts:
+          - name: bootstrap-ldif-template
+            mountPath: /ldif-template
+          - name: bootstrap-ldif-rendered
+            mountPath: /ldif-rendered
+        {{- end }}
+
+
+      {{- /*
+      --------------------------------------------
+        Containers 
+      --------------------------------------------
+      */}}
+      containers:
+        - name: openldap
+          image: "{{ .Values.openldap.image.repository }}:{{ .Values.openldap.image.tag }}"
+          imagePullPolicy: {{ .Values.openldap.image.pullPolicy }}
+          command:
+            - /bin/bash
+            - -c
+            - | 
+              /container/tool/run -l {{ .Values.openldap.configuration.logLevel.container | default "info" | quote }}
+
+          {{- /*
+          --------------------------------------------
+            Ports 
+          --------------------------------------------
+          */}}
+          ports:
+            - name: ldap
+              containerPort: {{ .Values.openldap.configuration.ports.ldap }}
+            {{- if .Values.openldap.configuration.tls.enabled }}
+            - name: ldaps
+              containerPort: {{ .Values.openldap.configuration.ports.ldaps }}
+            {{- end }}
+          env:
+            {{- /*
+            --------------------------------------------
+              Base configuration
+            --------------------------------------------
+            */}}
+            - name: LDAP_ORGANISATION
+              value: {{ .Values.openldap.configuration.organization | quote }}
+            - name: LDAP_DOMAIN
+              value: {{ .Values.openldap.configuration.domain | quote }}
+            - name: LDAP_BASE_DN
+              value: {{ .Values.openldap.configuration.baseDN | quote }}
+            - name: LDAP_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "openldap.secretName" . }}
+                  key: {{ include "openldap.secretKey.adminPassword" . }}
+            - name: LDAP_CONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "openldap.secretName" . }}
+                  key: {{ include "openldap.secretKey.configPassword" . }}
+           
+            {{- /*
+            --------------------------------------------
+              TLS Configuration
+            --------------------------------------------
+            */}}
+            {{- if .Values.openldap.configuration.tls.enabled }}
+            - name: LDAP_TLS
+              value: "true"
+            - name: LDAP_TLS_CRT_FILENAME
+              value: "ldap.crt"
+            - name: LDAP_TLS_KEY_FILENAME
+              value: "ldap.key"
+            - name: LDAP_TLS_CA_CRT_FILENAME
+              value: "ca.crt"
+            - name: LDAP_TLS_ENFORCE
+              value: {{ .Values.openldap.configuration.tls.enforce | quote }}
+            - name: LDAP_TLS_VERIFY_CLIENT
+              value: {{ .Values.openldap.configuration.tls.verifyClient | quote }}
+            {{- end }}
+
+            {{- /*
+            --------------------------------------------
+              Force listening on all interfaces
+            --------------------------------------------
+            */}}
+            - name: LDAP_HOSTS
+              value: "ldap://:{{ .Values.openldap.configuration.ports.ldap }} ldaps://:{{ .Values.openldap.configuration.ports.ldaps }} ldapi:///"
+
+            {{- /* 
+            --------------------------------------------
+              Replication Configuration
+            --------------------------------------------
+            */}}
+            {{- if .Values.openldap.configuration.replication.enabled }}
+            - name: LDAP_REPLICATION
+              value: "true"
+            - name: LDAP_REPLICATION_CONFIG_SYNCPROV
+              value: {{ .Values.openldap.configuration.replication.configSyncprov | quote }}
+            - name: LDAP_REPLICATION_DB_SYNCPROV
+              value: {{ .Values.openldap.configuration.replication.dbSyncprov | quote }}
+            - name: LDAP_REPLICATION_HOSTS
+              value: {{ include "extras.openldap.replicationHosts" . | quote }}
+            {{- end }}
+            
+            {{- /*
+            --------------------------------------------
+              Logging
+            --------------------------------------------
+            */}}
+            - name: CONTAINER_LOG_LEVEL
+              value: {{ .Values.openldap.configuration.logLevel.container | default "info" | quote }}
+            - name: LDAP_LOG_LEVEL
+              value: {{ .Values.openldap.configuration.logLevel.ldap | default "256" | quote }}
+           
+            {{- /*
+            --------------------------------------------
+              Keep container running
+            --------------------------------------------
+            */}}
+            - name: KEEP_EXISTING_CONFIG
+              value: {{ .Values.openldap.configuration.keepExistingConfig | quote }}
+
+            {{- /*
+            --------------------------------------------
+              Keep bootstrap configuration 
+            --------------------------------------------
+            */}}
+            - name: LDAP_REMOVE_CONFIG_AFTER_SETUP
+              value: "false"
+
+          {{- /*
+          --------------------------------------------
+            Volume Mounts 
+          --------------------------------------------
+          */}}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/ldap
+            - name: config
+              mountPath: /etc/ldap/slapd.d
+            {{- if .Values.openldap.configuration.tls.enabled }}
+            - name: tls-certs-prepared
+              mountPath: /container/service/slapd/assets/certs
+            {{- end }}
+            - name: slapd-process
+              mountPath: /container/service/slapd/process.sh
+              subPath: process.sh
+
+            {{- if .Values.openldap.configuration.bootstrap.enabled }}
+            - name: bootstrap-ldif-rendered
+              mountPath: /container/service/slapd/assets/config/bootstrap/ldif/custom
+              readOnly: false
+            {{- end }}
+
+          {{- /*
+          --------------------------------------------
+           Probes
+          --------------------------------------------
+          */}}
+          {{- with .Values.openldap.probes }}
+          {{- if .liveness.enabled }}
+          livenessProbe:
+            {{- omit .liveness "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .readiness.enabled }}
+          readinessProbe:
+            {{- omit .readiness "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- end }}
+
+          {{- /*
+          --------------------------------------------
+            Resources 
+          --------------------------------------------
+          */}}
+          resources:
+            {{- toYaml .Values.openldap.resources | nindent 12 }}
+
+      {{- /*
+      --------------------------------------------
+        Volumes
+      --------------------------------------------
+      */}}
+      volumes:
+
+        - name: slapd-entrypoint
+          configMap:
+            name: {{ include "common.names.fullname" . }}-entrypoint
+            defaultMode: 0755
+
+        - name: slapd-process
+          emptyDir: {}
+
+        {{- if not .Values.openldap.persistence.data.enabled }}
+        - name: data
+          emptyDir: {}
+        {{- end }}
+
+        {{- if not .Values.openldap.persistence.config.enabled }}
+        - name: config
+          emptyDir: {}
+        {{- end }}
+
+        {{- if .Values.openldap.configuration.tls.enabled }}
+        - name: tls-certs-source
+          secret:
+            secretName: {{ include "common.names.fullname" . }}-tls-secret
+        - name: tls-certs-prepared
+          emptyDir: {}
+        {{- end }}
+
+        {{- if .Values.openldap.configuration.bootstrap.enabled }}
+        - name: bootstrap-ldif-template
+          configMap:
+            name: {{ include "common.names.fullname" . }}-bootstrap-ldif
+            defaultMode: 0755
+        - name: bootstrap-ldif-rendered
+          emptyDir: {}
+        {{- end }}
+
+  {{- /*
+  --------------------------------------------
+    Volume Claim Template 
+  --------------------------------------------
+  */}}
+  {{- if or .Values.openldap.persistence.data.enabled .Values.openldap.persistence.config.enabled }}
+  volumeClaimTemplates:
+    {{- if .Values.openldap.persistence.data.enabled }}
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ {{ .Values.openldap.persistence.data.accessMode | quote }} ]
+        {{- if .Values.openldap.persistence.data.storageClass }}
+        storageClassName: {{ .Values.openldap.persistence.data.storageClass | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.openldap.persistence.data.size }}
+    {{- end }}
+    {{- if .Values.openldap.persistence.config.enabled }}
+    - metadata:
+        name: config
+      spec:
+        accessModes: [ {{ .Values.openldap.persistence.config.accessMode | quote }} ]
+        {{- if .Values.openldap.persistence.config.storageClass }}
+        storageClassName: {{ .Values.openldap.persistence.config.storageClass | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.openldap.persistence.config.size }}
+    {{- end }}
+  {{- end }}
