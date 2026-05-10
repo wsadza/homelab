@@ -50,8 +50,11 @@ openldap:
     domain: "anykey.pl"
     baseDN: "dc=anykey,dc=pl"
 
+    adminPassword: "admin"
+    configPassword: "admin"
+
     existingSecret:
-      enabled: true 
+      enabled: false 
       name: openldap-admin-secret
       keys:
         adminPassword: LDAP_ADMIN_PASSWORD
