@@ -73,9 +73,21 @@ phpldapadmin:
     # Examples:
     # - openldap
     # - openldap.openldap.svc.cluster.local
-    ldapHost: openldap
-    ports:
-      http: 80
+    ldapHost: 
+      openldap:
+        - server:
+            - name: OpenLDAP
+            - host: openldap.openldap.svc.cluster.local
+            - port: 389
+            - tls: true
+            - base: "array('dc=anykey,dc=pl')"
+        - login:
+            - auth_type: session
+            - bind_id: cn=admin,dc=anykey,dc=pl
+  
+    tls:
+      enabled: false
+      enforce: false
 
   # ===============================================
   # @section Probes parameters

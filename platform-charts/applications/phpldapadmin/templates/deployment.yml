@@ -41,9 +41,11 @@ spec:
             --------------------------------------------
             */}}
             - name: PHPLDAPADMIN_LDAP_HOSTS
-              value: {{ .Values.phpldapadmin.configuration.ldapHost | quote }}
+              value: {{ .Values.phpldapadmin.configuration.ldapHost | toJson | quote }}
             - name: PHPLDAPADMIN_HTTPS
-              value: "false"
+              value: {{ .Values.phpldapadmin.configuration.tls.enabled | quote }}
+            - name: PHPLDAPADMIN_LDAP_CLIENT_TLS_REQCERT
+              value: {{ .Values.phpldapadmin.configuration.tls.enforce | quote }}
           resources:
             {{- toYaml .Values.phpldapadmin.resources | nindent 12 }}
           {{- /*
