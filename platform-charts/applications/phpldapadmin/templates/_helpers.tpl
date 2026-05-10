@@ -116,7 +116,7 @@ Allow the release namespace to be overridden for multi-namespace deployments in 
 Build phpLDAPadmin LDAP config string.
 --------------------------------------------
 */}}
-{{- define "phpldapadmin.ldapConfig" -}}
+{{- define "extras.phpldapadmin.ldapConfig" -}}
 {{- $ldap := .Values.phpldapadmin.configuration.ldapHost -}}
 {{- $base := printf "array('%s')" (join "," $ldap.server.base) -}}
 #PYTHON2BASH:[{'{{ $ldap.name }}': [{'server': [{'name': '{{ $ldap.name }}'}, {'host': '{{ $ldap.server.host }}'}, {'port': {{ $ldap.server.port }}}, {'tls': {{ ternary "True" "False" $ldap.server.tls }}}, {'base': "{{ $base }}"}]}, {'login': [{'auth_type': '{{ $ldap.login.auth_type }}'}, {'bind_id': '{{ $ldap.login.bind_id }}'}]}]}]
