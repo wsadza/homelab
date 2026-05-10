@@ -65,8 +65,17 @@ phpldapadmin:
   # ===============================================
   # @section Application configuration parameters
   #
-  # @param phpldapmin.configuration.ldpHost:  
-  # @param phpldapmin.configuration.ports.http:  
+  # @param configuration.baseDN Base              : DN used by phpLDAPadmin.
+  # @param configuration.ldapHost.name            : Logical LDAP host name displayed/used by phpLDAPadmin.
+  # @param configuration.ldapHost.server.host     : LDAP server hostname or Kubernetes service DNS name.
+  # @param configuration.ldapHost.server.port     : LDAP server port.
+  # @param configuration.ldapHost.server.tls      : Enable TLS when connecting to the LDAP server.
+  # @param configuration.ldapHost.server.base     : LDAP search base DN.
+  # @param configuration.ldapHost.login.auth_type : Authentication type used by phpLDAPadmin, for example `session`.
+  # @param configuration.ldapHost.login.bind_id   : Default bind DN used for LDAP login.
+  # @param configuration.tls.enabled Enable       : TLS for the phpLDAPadmin web application.
+  # @param configuration.tls.enforce              : TLS enforcement mode. Common values: `never`, `try`, `always`.
+  # @param configuration.ports.http               : HTTP service port.
   configuration:
 
     baseDN: "dc=example,dc=org"
