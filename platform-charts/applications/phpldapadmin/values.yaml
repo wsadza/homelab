@@ -89,6 +89,9 @@ phpldapadmin:
       enabled: false
       enforce: false
 
+    ports:
+      http: 80
+
   # ===============================================
   # @section Probes parameters
   # ===============================================
