@@ -84,13 +84,25 @@ platformAuth:
             - "false"
 
     # -----------------------------------------------
+    # @subsection groups parameters
+    # -----------------------------------------------
+    #
+    groups:
+      - name: platform-admins
+        groupName: PlatformAdmins
+        namespace: keycloak
+        labels: {}
+        annotations: {}
+
+    # -----------------------------------------------
     # @subsection clientScopes parameters
     # -----------------------------------------------
     #
     clientScopes:
-      - name: groups 
+      # Groups assigned to the user
+      - name: groups
         enabled: true
-        protocol: openid-connect 
+        protocol: openid-connect
         protocolMappers:
           - name: groups
             protocol: openid-connect
