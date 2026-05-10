@@ -77,7 +77,7 @@ phpldapadmin:
         host: openldap.openldap.svc.cluster.local
         port: 389
         tls: True
-        base: "array('dc=anykey,dc=pl')"
+        base: dc=anykey,dc=pl
       login:
         auth_type: session
         bind_id: cn=admin,dc=anykey,dc=pl
