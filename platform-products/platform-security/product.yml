@@ -51,29 +51,10 @@ applications:
         valueFiles: 
           - $values/platform-products/platform-security/applications/edp-keycloak-operator/helm/values.yml
 
-          #- type: manifests
-          #  repoURL: https://github.com/wsadza/homelab.git
-          #  targetRevision: HEAD
-          #  path: platform-products/platform-security/applications/edp-keycloak-operator/manifests
-
       - type: kustomize 
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD
         path: platform-products/platform-security/applications/edp-keycloak-operator/kustomize
-
-      - type: helm 
-        repoURL: https://github.com/wsadza/homelab.git
-        targetRevision: HEAD
-        path: platform-charts/platform/platform-auth
-        valueFiles: 
-          - $values/platform-products/platform-security/applications/edp-keycloak-operator/helm/values.yml
-
-      - type: helm 
-        repoURL: https://github.com/wsadza/homelab.git
-        targetRevision: HEAD
-        path: platform-charts/platform/platform-auth-access
-        valueFiles: 
-          - $values/platform-products/platform-security/applications/edp-keycloak-operator/helm/values.yml
 
   # ------------------
   # keycloak (instance)
@@ -151,3 +132,30 @@ applications:
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD
         path: platform-products/platform-security/applications/openldap/kustomize
+
+  # ------------------
+  # platform-auth  
+  # ------------------
+  
+  - name: platform-auth 
+    namespace: keycloak 
+
+    enabled: true
+    priority: 10 
+
+    syncPolicy:
+      automated: false
+
+    sources:
+
+      - type: values
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        ref: values
+
+      - type: helm 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-charts/platform/auth-platform
+        valueFiles: 
+          - $values/platform-products/platform-security/applications/platform-auth/helm/values.yml
