@@ -129,12 +129,9 @@ platformAuth:
       passwordSecret:
         name: john-doe-password
         key: password
-      requiredUserActions:
-      - UPDATE_PASSWORD
-      roles:
-      - offline_access
-      groups:
-      - PlatformAdmins
+      requiredUserActions: []
+      roles: []
+      groups: []
       reconciliationStrategy: full
       keepResource: true       
 
@@ -147,12 +144,9 @@ platformAuth:
       passwordSecret:
         name: jan-kowalski-password
         key: password
-      requiredUserActions:
-      - UPDATE_PASSWORD
-      roles:
-      - offline_access
-      groups:
-      - PlatformAdmins
+      requiredUserActions: []
+      roles: []
+      groups: []
       reconciliationStrategy: full
       keepResource: true       
 
