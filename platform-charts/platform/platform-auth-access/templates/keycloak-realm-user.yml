@@ -32,11 +32,11 @@ spec:
   {{- end }}
 
   {{- if hasKey $user "emailVerified" }}
-  emailVerified: {{ .emailVerified }}
+  emailVerified: {{ $user.emailVerified }}
   {{- end }}
 
   {{- if hasKey $user "enabled" }}
-  enabled: {{ .enabled }}
+  enabled: {{ $user.enabled }}
   {{- end }}
 
   {{- with $user.reconciliationStrategy }}
@@ -44,7 +44,7 @@ spec:
   {{- end }}
 
   {{- if hasKey $user "keepResource" }}
-  keepResource: {{ .keepResource }}
+  keepResource: {{ $user.keepResource }}
   {{- end }}
 
   passwordSecret:
