@@ -8,7 +8,7 @@ volume:
   dataDirs:
     - name: data1
       type: persistentVolumeClaim
-      #      storageClass: "your-zfs-storage-class"
+      storageClass: ""
       size: "100Gi"
       maxVolumes: 0
 
