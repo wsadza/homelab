@@ -120,18 +120,8 @@ openldap:
             description: LDAP administrator
             userPassword: ${LDAP_ADMIN_PASSWORD}
 
-        - enabled: false 
-          name: 01-base.ldif.tpl
-          data: |
-            dn: ${LDAP_BASE_DN}
-            objectClass: top
-            objectClass: dcObject
-            objectClass: organization
-            o: Anykey
-            dc: anykey
-
         - enabled: true
-          name: 02-users-groups.ldif.tpl
+          name: 01-base.ldif.tpl
           data: |
             dn: ou=users,${LDAP_BASE_DN}
             objectClass: top

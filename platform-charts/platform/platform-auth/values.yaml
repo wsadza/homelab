@@ -81,7 +81,7 @@ platformAuth:
           importEnabled:
             - "true"
           syncRegistrations:
-            - "false"
+            - "true"
 
     # -----------------------------------------------
     # @subsection groups parameters
@@ -128,6 +128,24 @@ platformAuth:
       emailVerified: true
       passwordSecret:
         name: john-doe-password
+        key: password
+      requiredUserActions:
+      - UPDATE_PASSWORD
+      roles:
+      - offline_access
+      groups:
+      - PlatformAdmins
+      reconciliationStrategy: full
+      keepResource: true       
+
+    - username: jan.kowalski 
+      enabled: true
+      firstName: Igor
+      lastName: Sadza
+      email: jan.kowalski@example.com
+      emailVerified: true
+      passwordSecret:
+        name: jan-kowalski-password
         key: password
       requiredUserActions:
       - UPDATE_PASSWORD
