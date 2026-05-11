@@ -8,7 +8,7 @@ volume:
   dataDirs:
     - name: data1
       type: persistentVolumeClaim
-      storageClass: ""
+      storageClass: "storage-local-retain"
       size: "100Gi"
       maxVolumes: 0
 
