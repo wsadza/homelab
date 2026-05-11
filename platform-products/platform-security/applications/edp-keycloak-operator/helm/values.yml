@@ -129,7 +129,7 @@ platformAuthAccess:
       name: platform
 
     # -----------------------------------------------
-    # @subsection userDefaults parameters
+    # @subsection users parameters
     # -----------------------------------------------
     #
     users:
