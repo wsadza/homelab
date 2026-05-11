@@ -6,10 +6,10 @@ volume:
   enabled: true
   replicas: 1
   dataDirs:
-    - name: data1
+    - name: data
       type: persistentVolumeClaim
       storageClass: "storage-local-retain"
-      size: "100Gi"
+      size: "50Gi"
       maxVolumes: 0
 
 filer:
@@ -21,3 +21,4 @@ s3:
   createBuckets:
     - name: app-bucket
       anonymousRead: false
+  enableAuth: true
