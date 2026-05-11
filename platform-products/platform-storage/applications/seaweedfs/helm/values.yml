@@ -22,7 +22,7 @@ s3:
   bindAddress: 0.0.0.0
   port: 8333
   httpsPort: 0
-  existingConfigSecret: seaweedfs-s3-config
+  existingConfigSecret: seaweedfs-s3-secret
   createBuckets:
     - name: nextcloud
       anonymousRead: false
