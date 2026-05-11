@@ -1,0 +1,56 @@
+nextcloud:
+  host: nextcloud.anykey.pl 
+
+  existingSecret:
+    enabled: true
+    secretName: nextcloud-admin-secret
+    usernameKey: username
+    passwordKey: password
+
+  trustedDomains:
+    - nextcloud.anykey.pl 
+    - nextcloud.nextcloud.svc.cluster.local
+
+  objectStore:
+    s3:
+      enabled: true
+      host: seaweedfs-s3.seaweedfs.svc.cluster.local
+      port: "8333"
+      ssl: false
+      region: us-east-1
+      bucket: nextcloud
+      usePathStyle: true
+      autoCreate: false
+      existingSecret: nextcloud-s3-secret
+      secretKeys:
+        accessKey: accessKey
+        secretKey: secretKey
+        bucket: bucket
+        host: host
+
+persistence:
+  enabled: true
+  size: 10Gi
+
+internalDatabase:
+  enabled: false
+
+postgresql:
+  enabled: false
+
+mariadb:
+  enabled: false
+
+externalDatabase:
+  enabled: true
+  type: postgresql
+  host: nextcloud-postgresql-rw.nextcloud.svc.cluster.local:5432
+  database: nextcloud
+  existingSecret:
+    enabled: true
+    secretName: nextcloud-database-secret
+    usernameKey: username
+    passwordKey: password
+
+cronjob:
+  enabled: true
