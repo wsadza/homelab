@@ -1,0 +1,23 @@
+master:
+  enabled: true
+  replicas: 1
+
+volume:
+  enabled: true
+  replicas: 1
+  dataDirs:
+    - name: data1
+      type: persistentVolumeClaim
+      storageClass: "your-zfs-storage-class"
+      size: "100Gi"
+      maxVolumes: 0
+
+filer:
+  enabled: true
+  replicas: 1
+
+s3:
+  enabled: true
+  createBuckets:
+    - name: app-bucket
+      anonymousRead: false

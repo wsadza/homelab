@@ -1,0 +1,56 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: rook-ceph
+  namespace: rook-ceph
+spec:
+  cephVersion:
+    image: quay.io/ceph/ceph:v19
+  dataDirHostPath: /var/lib/rook
+
+  mon:
+    count: 3
+    allowMultiplePerNode: false
+
+  mgr:
+    count: 1
+
+  dashboard:
+    enabled: false
+
+  crashCollector:
+    disable: true
+
+  resources:
+    mon:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        memory: "1Gi"
+    mgr:
+      requests:
+        cpu: "100m"
+        memory: "512Mi"
+      limits:
+        memory: "1Gi"
+    osd:
+      requests:
+        cpu: "250m"
+        memory: "1Gi"
+      limits:
+        memory: "2Gi"
+
+  storage:
+    useAllNodes: false
+    useAllDevices: false
+    nodes:
+      - name: worker-1
+        devices:
+          - name: /dev/sdb
+      - name: worker-2
+        devices:
+          - name: /dev/sdb
+      - name: worker-3
+        devices:
+          - name: /dev/sdb

@@ -52,20 +52,49 @@ applications:
           valueFiles: 
             - $values/platform-products/platform-storage/applications/cloudnative-pg/helm/values.yml
 
+
   # ------------------
-  # RookCeph (3s-only)
+  # SeaweedFS (3s-only)
   # ------------------
 
-    - name: rook-ceph 
-      namespace: rook-ceph 
+    - name: seaweedfs 
+      namespace: seaweedfs 
 
       enabled: true
       priority: 0
 
       syncPolicy:
         automated: false
-        syncOptions:
-          - ServerSideApply=true
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://seaweedfs.github.io/seaweedfs/helm 
+          targetRevision: 4.23.0
+          chart: seaweedfs
+          valueFiles: 
+            - $values/platform-products/platform-storage/applications/seaweedfs/helm/values.yml
+
+
+  # ------------------
+  # RookCeph (3s-only) / DISABLED
+  # TIP:
+  #   - we need here 3 nodes to properly configure MON monitor
+  # ------------------
+
+    - name: rook-ceph 
+      namespace: rook-ceph 
+
+      enabled: false
+      priority: 0
+
+      syncPolicy:
+        automated: false
 
       sources:
 
@@ -78,5 +107,5 @@ applications:
           repoURL: https://charts.rook.io/release
           targetRevision: v1.19.5
           chart: rook-ceph
-          #valueFiles: 
-          #  - $values/platform-products/platform-storage/applications/cloudnative-pg/helm/values.yml
+          valueFiles: 
+            - $values/platform-products/platform-storage/applications/rook-ceph/helm/values.yml
