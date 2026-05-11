@@ -31,7 +31,7 @@ appAuth:
     # -----------------------------------------------
     #
     realmRef:
-      name: keycloak-realm 
+      name: platform 
       kind: KeycloakRealm
 
     # -----------------------------------------------
