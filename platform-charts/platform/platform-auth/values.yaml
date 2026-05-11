@@ -1,6 +1,6 @@
 # ===============================================
-# Author: Igor Sadza 
-# Purpose: Manage keycloak instacne 
+# Author: Igor Sadza
+# Purpose: Manage Keycloak instance
 # ===============================================
 
 # -----------------------------------------------
@@ -21,132 +21,71 @@ commonAnnotations: {}
 # ===============================================
 # : platformAuth (wrapper)
 # ===============================================
+#
+# @param platformAuth : Platform authentication wrapper configuration
 
 platformAuth:
 
   # ===============================================
   # @section Keycloak parameters
-  # =============================================== 
+  # ===============================================
   #
+  # @param platformAuth.keycloak.enabled : Enable Keycloak resource management
   keycloak:
-    enabled: true 
+    enabled: false
 
     # -----------------------------------------------
     # @subsection endpoint parameters
     # -----------------------------------------------
     #
+    # @param platformAuth.keycloak.endpoint.url    : Keycloak service URL
+    # @param platformAuth.keycloak.endpoint.secret : Secret containing Keycloak admin credentials
     endpoint:
-      url: http://keycloak-service.keycloak.svc.cluster.local:8080 
-      secret: keycloak-admin-secret
+      url: ""
+      secret: ""
 
     # -----------------------------------------------
-    # @subsection relam parameters
+    # @subsection realm parameters
     # -----------------------------------------------
     #
+    # @param platformAuth.keycloak.realm.name : Keycloak realm name
     realm:
-      name: platform
+      name: "" 
 
     # -----------------------------------------------
-    # @subsection relamComponent parameters
+    # @subsection realmComponent parameters
     # -----------------------------------------------
     #
-    realmComponents:
-      - name: openldap
-        enabled: true
-        providerId: ldap
-        providerType: org.keycloak.storage.UserStorageProvider
-        config:
-          enabled:
-            - "true"
-          vendor:
-            - "other"
-          connectionUrl:
-            - "ldaps://openldap.anykey.pl"
-          bindDn:
-            - "cn=admin,dc=anykey,dc=pl"
-          bindCredential:
-            - "$openldap-admin-secret:LDAP_ADMIN_PASSWORD"
-          usersDn:
-            - "ou=users,dc=anykey,dc=pl"
-          usernameLDAPAttribute:
-            - "uid"
-          rdnLDAPAttribute:
-            - "uid"
-          uuidLDAPAttribute:
-            - "entryUUID"
-          userObjectClasses:
-            - "inetOrgPerson, organizationalPerson"
-          editMode:
-            - "WRITABLE"
-          importEnabled:
-            - "true"
-          syncRegistrations:
-            - "true"
+    # @param platformAuth.keycloak.realmComponents                : List of Keycloak realm components
+    # @param platformAuth.keycloak.realmComponents[].name         : Realm component name
+    # @param platformAuth.keycloak.realmComponents[].enabled      : Enable realm component
+    # @param platformAuth.keycloak.realmComponents[].providerId   : Keycloak provider ID
+    # @param platformAuth.keycloak.realmComponents[].providerType : Keycloak provider type
+    # @param platformAuth.keycloak.realmComponents[].config       : Realm component provider configuration
+    realmComponents: []
 
     # -----------------------------------------------
     # @subsection groups parameters
     # -----------------------------------------------
     #
-    groups:
-      - name: platform-admins
-        enabled: true
-        groupName: PlatformAdmins
-        namespace: keycloak
-        labels: {}
-        annotations: {}
+    # @param platformAuth.keycloak.groups               : List of Keycloak groups
+    # @param platformAuth.keycloak.groups[].name        : Kubernetes resource name for the group
+    # @param platformAuth.keycloak.groups[].enabled     : Enable group management
+    # @param platformAuth.keycloak.groups[].groupName   : Keycloak group name
+    # @param platformAuth.keycloak.groups[].namespace   : Namespace for group resource
+    # @param platformAuth.keycloak.groups[].labels      : Labels for group resource
+    # @param platformAuth.keycloak.groups[].annotations : Annotations for group resource
+    groups: []
 
     # -----------------------------------------------
     # @subsection clientScopes parameters
     # -----------------------------------------------
     #
-    clientScopes:
-      # Groups assigned to the user
-      - name: groups
-        enabled: true
-        protocol: openid-connect
-        protocolMappers:
-          - name: groups
-            protocol: openid-connect
-            protocolMapper: oidc-group-membership-mapper
-            config:
-              claim.name: groups
-              full.path: "false"
-              id.token.claim: "true"
-              access.token.claim: "true"
-              userinfo.token.claim: "true"
-
-    # -----------------------------------------------
-    # @subsection users reference parameters
-    # -----------------------------------------------
-    #
-    users:
-    - username: john.doe
-      enabled: true
-      firstName: John
-      lastName: Doe 
-      email: john.doe@example.com
-      emailVerified: true
-      passwordSecret:
-        name: john-doe-password
-        key: password
-      requiredUserActions: []
-      roles: []
-      groups: []
-      reconciliationStrategy: full
-      keepResource: true       
-
-    - username: jan.kowalski 
-      enabled: true
-      firstName: Igor
-      lastName: Sadza
-      email: jan.kowalski@example.com
-      emailVerified: true
-      passwordSecret:
-        name: jan-kowalski-password
-        key: password
-      requiredUserActions: []
-      roles: []
-      groups: []
-      reconciliationStrategy: full
-      keepResource: true       
-
+    # @param platformAuth.keycloak.clientScopes                           : List of Keycloak client scopes
+    # @param platformAuth.keycloak.clientScopes[].name                    : Client scope name
+    # @param platformAuth.keycloak.clientScopes[].enabled                 : Enable client scope
+    # @param platformAuth.keycloak.clientScopes[].protocol                : Client scope protocol
+    # @param platformAuth.keycloak.clientScopes[].protocolMappers         : List of protocol mappers
+    # @param platformAuth.keycloak.clientScopes[].protocolMappers[].name  : Protocol mapper name
+    # @param platformAuth.keycloak.clientScopes[].protocolMappers[].config: Protocol mapper configuration
+    clientScopes: []

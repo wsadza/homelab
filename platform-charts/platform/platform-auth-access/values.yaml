@@ -1,0 +1,59 @@
+# ===============================================
+# Author: Igor Sadza 
+# Purpose: Manage keycloak instacne users
+# ===============================================
+
+# -----------------------------------------------
+# @section common parameters
+# -----------------------------------------------
+#
+# @param nameOverride      : String to partially override common.names.name
+# @param fullnameOverride  : String to fully override common.names.fullname
+# @param namespaceOverride : String to fully override common.names.namespace
+# @param commonLabels      : Labels to add to all deployed objects
+# @param commonAnnotations : Annotations to add to all deployed objects
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+commonLabels: {}
+commonAnnotations: {}
+
+# ===============================================
+# : platformAuthAccess (wrapper)
+# ===============================================
+
+platformAuthAccess:
+
+  keycloak:
+    enabled: true 
+
+    # -----------------------------------------------
+    # @subsection relam parameters
+    # -----------------------------------------------
+    #
+    realm:
+      name: platform
+
+
+    # -----------------------------------------------
+    # @subsection userDefaults parameters
+    # -----------------------------------------------
+    #
+    userDefaults:
+      enabled: true
+      emailVerified: false
+      passwordSecret:
+        key: password
+      requiredUserActions: []
+      roles: []
+      groups: []
+      reconciliationStrategy: full
+      keepResource: true
+
+    # -----------------------------------------------
+    # @subsection userDefaults parameters
+    # -----------------------------------------------
+    #
+    users:
+      - username: john.doe
+      - username: jan.kowalski

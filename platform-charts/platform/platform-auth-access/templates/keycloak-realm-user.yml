@@ -1,0 +1,70 @@
+{{- if and .Values.platformAuthAccess.keycloak.enabled .Values.platformAuthAccess.keycloak.users }}
+{{- $root := . -}}
+{{- range $u := .Values.platformAuthAccess.keycloak.users }}
+{{- $user := mergeOverwrite (deepCopy $root.Values.platformAuthAccess.keycloak.userDefaults) $u }}
+{{- $userResourceName := $user.username | replace "." "-" | trunc 63 | trimSuffix "-" }}
+{{- if $user.enabled }}
+---
+apiVersion: v1.edp.epam.com/v1
+kind: KeycloakRealmUser
+metadata:
+  name: {{ $userResourceName | quote }}
+  namespace: {{ include "common.names.namespace" $root }}
+  labels:
+    {{- include "common.labels.standard" $root | nindent 4 }}
+spec:
+  realmRef:
+    name: {{ $root.Values.platformAuthAccess.keycloak.realm.name | quote }}
+    kind: "KeycloakRealm"
+
+  username: {{ $user.username | quote }}
+
+  {{- with $user.firstName }}
+  firstName: {{ . | quote }}
+  {{- end }}
+
+  {{- with $user.lastName }}
+  lastName: {{ . | quote }}
+  {{- end }}
+
+  {{- with $user.email }}
+  email: {{ . | quote }}
+  {{- end }}
+
+  {{- if hasKey $user "emailVerified" }}
+  emailVerified: {{ .emailVerified }}
+  {{- end }}
+
+  {{- if hasKey $user "enabled" }}
+  enabled: {{ .enabled }}
+  {{- end }}
+
+  {{- with $user.reconciliationStrategy }}
+  reconciliationStrategy: {{ . | quote }}
+  {{- end }}
+
+  {{- if hasKey $user "keepResource" }}
+  keepResource: {{ .keepResource }}
+  {{- end }}
+
+  passwordSecret:
+    name: {{ default (printf "%s-secret" $userResourceName) $user.passwordSecret.name | quote }}
+    key: {{ default "password" $user.passwordSecret.key | quote }}
+
+  {{- with $user.requiredUserActions }}
+  requiredUserActions:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+  {{- with $user.roles }}
+  roles:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+  {{- with $user.groups }}
+  groups:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

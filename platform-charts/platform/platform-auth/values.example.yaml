@@ -1,5 +1,7 @@
-name: keycloak-operator-edp
-
+# ===============================================
+# Author: Igor Sadza 
+# Purpose: Manage keycloak instacne 
+# ===============================================
 
 # -----------------------------------------------
 # @section common parameters
@@ -10,7 +12,6 @@ name: keycloak-operator-edp
 # @param namespaceOverride : String to fully override common.names.namespace
 # @param commonLabels      : Labels to add to all deployed objects
 # @param commonAnnotations : Annotations to add to all deployed objects
-
 nameOverride: ""
 fullnameOverride: ""
 namespaceOverride: ""
@@ -91,6 +92,8 @@ platformAuth:
         enabled: true
         groupName: PlatformAdmins
         namespace: keycloak
+        labels: {}
+        annotations: {}
 
     # -----------------------------------------------
     # @subsection clientScopes parameters
@@ -112,26 +115,44 @@ platformAuth:
               access.token.claim: "true"
               userinfo.token.claim: "true"
 
-# ===============================================
-# : platformAuthAccess (wrapper)
-# ===============================================
-
-platformAuthAccess:
-
-  keycloak:
-    enabled: true 
-
     # -----------------------------------------------
-    # @subsection relam parameters
-    # -----------------------------------------------
-    #
-    realm:
-      name: platform
-
-    # -----------------------------------------------
-    # @subsection userDefaults parameters
+    # @subsection users reference parameters
     # -----------------------------------------------
     #
     users:
-      - username: john.doe
-      - username: jan.kowalski
+    - username: john.doe
+      enabled: true
+      firstName: John
+      lastName: Doe 
+      email: john.doe@example.com
+      emailVerified: true
+      passwordSecret:
+        name: john-doe-password
+        key: password
+      requiredUserActions:
+      - UPDATE_PASSWORD
+      roles:
+      - offline_access
+      groups:
+      - PlatformAdmins
+      reconciliationStrategy: full
+      keepResource: true       
+
+    - username: jan.kowalski 
+      enabled: true
+      firstName: Igor
+      lastName: Sadza
+      email: jan.kowalski@example.com
+      emailVerified: true
+      passwordSecret:
+        name: jan-kowalski-password
+        key: password
+      requiredUserActions:
+      - UPDATE_PASSWORD
+      roles:
+      - offline_access
+      groups:
+      - PlatformAdmins
+      reconciliationStrategy: full
+      keepResource: true       
+
