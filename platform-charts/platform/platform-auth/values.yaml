@@ -81,11 +81,56 @@ platformAuth:
     # @subsection clientScopes parameters
     # -----------------------------------------------
     #
-    # @param platformAuth.keycloak.clientScopes                           : List of Keycloak client scopes
-    # @param platformAuth.keycloak.clientScopes[].name                    : Client scope name
-    # @param platformAuth.keycloak.clientScopes[].enabled                 : Enable client scope
-    # @param platformAuth.keycloak.clientScopes[].protocol                : Client scope protocol
-    # @param platformAuth.keycloak.clientScopes[].protocolMappers         : List of protocol mappers
-    # @param platformAuth.keycloak.clientScopes[].protocolMappers[].name  : Protocol mapper name
-    # @param platformAuth.keycloak.clientScopes[].protocolMappers[].config: Protocol mapper configuration
+    # @param platformAuth.keycloak.clientScopes                            : List of Keycloak client scopes
+    # @param platformAuth.keycloak.clientScopes[].name                     : Client scope name
+    # @param platformAuth.keycloak.clientScopes[].enabled                  : Enable client scope
+    # @param platformAuth.keycloak.clientScopes[].protocol                 : Client scope protocol
+    # @param platformAuth.keycloak.clientScopes[].protocolMappers          : List of protocol mappers
+    # @param platformAuth.keycloak.clientScopes[].protocolMappers[].name   : Protocol mapper name
+    # @param platformAuth.keycloak.clientScopes[].protocolMappers[].config : Protocol mapper configuration
     clientScopes: []
+
+
+    # -----------------------------------------------
+    # @subsection userDefaults parameters
+    # -----------------------------------------------
+    #
+    # @param platformAuth.keycloak.userDefaults                        : Default values applied to Keycloak users
+    # @param platformAuth.keycloak.userDefaults.enabled                : Default user enabled state
+    # @param platformAuth.keycloak.userDefaults.emailVerified          : Default email verification state
+    # @param platformAuth.keycloak.userDefaults.passwordSecret.key     : Default Secret key containing user password
+    # @param platformAuth.keycloak.userDefaults.requiredUserActions    : Default required Keycloak user actions
+    # @param platformAuth.keycloak.userDefaults.roles                  : Default roles assigned to users
+    # @param platformAuth.keycloak.userDefaults.groups                 : Default groups assigned to users
+    # @param platformAuth.keycloak.userDefaults.reconciliationStrategy : Default user reconciliation strategy
+    # @param platformAuth.keycloak.userDefaults.keepResource           : Default keep-resource behavior after Helm release deletion
+    userDefaults:
+      enabled: true
+      emailVerified: false
+      passwordSecret:
+        key: password
+      requiredUserActions: []
+      roles: []
+      groups: []
+      reconciliationStrategy: full
+      keepResource: true
+
+    # -----------------------------------------------
+    # @subsection users parameters
+    # -----------------------------------------------
+    #
+    # @param platformAuth.keycloak.users                          : List of Keycloak users
+    # @param platformAuth.keycloak.users[].username               : Username
+    # @param platformAuth.keycloak.users[].enabled                : Enable user management
+    # @param platformAuth.keycloak.users[].firstName              : User first name
+    # @param platformAuth.keycloak.users[].lastName               : User last name
+    # @param platformAuth.keycloak.users[].email                  : User email address
+    # @param platformAuth.keycloak.users[].emailVerified          : Mark user email as verified
+    # @param platformAuth.keycloak.users[].passwordSecret.name    : Secret name containing user password
+    # @param platformAuth.keycloak.users[].passwordSecret.key     : Secret key containing user password
+    # @param platformAuth.keycloak.users[].requiredUserActions    : Required Keycloak user actions
+    # @param platformAuth.keycloak.users[].roles                  : Roles assigned to the user
+    # @param platformAuth.keycloak.users[].groups                 : Groups assigned to the user
+    # @param platformAuth.keycloak.users[].reconciliationStrategy : User reconciliation strategy
+    # @param platformAuth.keycloak.users[].keepResource           : Keep resource after Helm release deletion
+    users: []

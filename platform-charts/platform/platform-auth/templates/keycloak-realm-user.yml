@@ -1,8 +1,9 @@
 {{- if and .Values.platformAuth.keycloak.enabled .Values.platformAuth.keycloak.users }}
 {{- $root := . -}}
-{{- range .Values.platformAuth.keycloak.users }}
-{{- $userResourceName := .username | replace "." "-" | trunc 63 | trimSuffix "-" }}
-{{- if .enabled }}
+{{- range $u := .Values.platformAuth.keycloak.users }}
+{{- $user := mergeOverwrite (deepCopy $root.Values.platformAuth.keycloak.userDefaults) $u }}
+{{- $userResourceName := $user.username | replace "." "-" | trunc 63 | trimSuffix "-" }}
+{{- if $user.enabled }}
 ---
 apiVersion: v1.edp.epam.com/v1
 kind: KeycloakRealmUser
@@ -16,51 +17,51 @@ spec:
     name: {{ $root.Values.platformAuth.keycloak.realm.name | quote }}
     kind: "KeycloakRealm"
 
-  username: {{ .username | quote }}
+  username: {{ $user.username | quote }}
 
-  {{- with .firstName }}
+  {{- with $user.firstName }}
   firstName: {{ . | quote }}
   {{- end }}
 
-  {{- with .lastName }}
+  {{- with $user.lastName }}
   lastName: {{ . | quote }}
   {{- end }}
 
-  {{- with .email }}
+  {{- with $user.email }}
   email: {{ . | quote }}
   {{- end }}
 
-  {{- if hasKey . "emailVerified" }}
-  emailVerified: {{ .emailVerified }}
+  {{- if hasKey $user "emailVerified" }}
+  emailVerified: {{ $user.emailVerified }}
   {{- end }}
 
-  {{- if hasKey . "enabled" }}
-  enabled: {{ .enabled }}
+  {{- if hasKey $user "enabled" }}
+  enabled: {{ $user.enabled }}
   {{- end }}
 
-  {{- with .reconciliationStrategy }}
+  {{- with $user.reconciliationStrategy }}
   reconciliationStrategy: {{ . | quote }}
   {{- end }}
 
-  {{- if hasKey . "keepResource" }}
-  keepResource: {{ .keepResource }}
+  {{- if hasKey $user "keepResource" }}
+  keepResource: {{ $user.keepResource }}
   {{- end }}
 
   passwordSecret:
-    name: {{ default (printf "%s-secret" (.username | trunc 56 | trimSuffix "-")) .passwordSecret.name | quote }}
-    key: {{ default "password" .passwordSecret.key | quote }}
+    name: {{ default (printf "%s-secret" $userResourceName) $user.passwordSecret.name | quote }}
+    key: {{ default "password" $user.passwordSecret.key | quote }}
 
-  {{- with .requiredUserActions }}
+  {{- with $user.requiredUserActions }}
   requiredUserActions:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 
-  {{- with .roles }}
+  {{- with $user.roles }}
   roles:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 
-  {{- with .groups }}
+  {{- with $user.groups }}
   groups:
     {{- toYaml . | nindent 4 }}
   {{- end }}

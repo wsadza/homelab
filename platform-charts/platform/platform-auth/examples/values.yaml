@@ -116,32 +116,32 @@ platformAuth:
               userinfo.token.claim: "true"
 
     # -----------------------------------------------
+    # @subsection userDefaults parameters
+    # -----------------------------------------------
+    #
+    userDefaults: 
+      enabled: true
+      emailVerified: false
+      passwordSecret:
+        key: password
+      requiredUserActions: []
+      roles: []
+      groups: []
+      reconciliationStrategy: full
+      keepResource: true
+
+    # -----------------------------------------------
     # @subsection users reference parameters
     # -----------------------------------------------
     #
     users:
+    # 1: Consuming defaults
     - username: john.doe
-      enabled: true
-      firstName: John
-      lastName: Doe 
-      email: john.doe@example.com
-      emailVerified: true
-      passwordSecret:
-        name: john-doe-password
-        key: password
-      requiredUserActions:
-      - UPDATE_PASSWORD
-      roles:
-      - offline_access
-      groups:
-      - PlatformAdmins
-      reconciliationStrategy: full
-      keepResource: true       
-
+    # 2: Overriding defautlts 
     - username: jan.kowalski 
       enabled: true
-      firstName: Igor
-      lastName: Sadza
+      firstName: john
+      lastName: doe 
       email: jan.kowalski@example.com
       emailVerified: true
       passwordSecret:
@@ -155,4 +155,5 @@ platformAuth:
       - PlatformAdmins
       reconciliationStrategy: full
       keepResource: true       
+
 

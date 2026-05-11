@@ -114,7 +114,7 @@ applications:
 
 
   # ------------------
-  # openldap (manage clients) 
+  # openldap
   # ------------------
   
   - name: openldap
