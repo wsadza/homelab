@@ -1,0 +1,41 @@
+# ===============================================
+# Author: Igor Sadza 
+# Purpose: Manage Cluster Security
+# ===============================================
+
+platformSecurity:
+  enabled: true
+
+  # ===============================================
+  # @section NetworkPolicy parameters
+  # ===============================================
+
+  # @param platformSecurity.networkPolicies List of NetworkPolicy resources to generate.
+  networkPolicies:
+    enabled: true
+
+    policies:
+      - name: 00-allow-dns
+        enabled: true
+        endpointSelector: {}
+        egress:
+          - toEndpoints:
+              - matchLabels:
+                  k8s:io.kubernetes.pod.namespace: kube-system
+                  k8s:k8s-app: kube-dns
+            toPorts:
+              - ports:
+                  - port: "53"
+                    protocol: UDP
+                  - port: "53"
+                    protocol: TCP
+                rules:
+                  dns:
+                    - matchPattern: "*"          
+
+      - name: 01-allow-kube-apiserver
+        enabled: true
+        endpointSelector: {}
+        egress:
+          - toEntities:
+              - kube-apiserver        
