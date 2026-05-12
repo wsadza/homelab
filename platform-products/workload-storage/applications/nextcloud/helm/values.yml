@@ -1,3 +1,7 @@
+# ===============================================================
+# : Nextcloud (external application)
+# ===============================================================
+
 nextcloud:
   host: nextcloud.anykey.pl 
 
@@ -7,9 +11,50 @@ nextcloud:
     usernameKey: username
     passwordKey: password
 
+  extraEnv:
+    - name: OIDC_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: nextcloud-keycloak-client-secret
+          key: client-secret
+
   trustedDomains:
     - nextcloud.anykey.pl 
     - nextcloud.nextcloud.svc.cluster.local
+
+  hooks:
+    post-installation: |
+      #!/bin/bash
+      set -eu
+
+      php occ app:install user_oidc || true
+      php occ app:enable user_oidc
+
+      php occ user_oidc:provider Keycloak \
+        --clientid="nextcloud" \
+        --clientsecret="${OIDC_CLIENT_SECRET}" \
+        --discoveryuri="https://keycloak.anykey.pl/realms/platform/.well-known/openid-configuration" \
+        --scope="openid profile email groups" \
+        --unique-uid=1 \
+        --group-provisioning=1 || true
+
+      # Optional: keep normal Nextcloud login button.
+      php occ config:app:set user_oidc allow_multiple_user_backends --value=1
+
+    post-upgrade: |
+      #!/bin/bash
+      set -eu
+
+      php occ app:install user_oidc || true
+      php occ app:enable user_oidc
+
+      php occ user_oidc:provider Keycloak \
+        --clientid="nextcloud" \
+        --clientsecret="${OIDC_CLIENT_SECRET}" \
+        --discoveryuri="https://keycloak.anykey.pl/realms/platform/.well-known/openid-configuration" \
+        --scope="openid profile email groups" \
+        --unique-uid=1 \
+        --group-provisioning=1 || true
 
   objectStore:
     s3:
@@ -237,4 +282,61 @@ appPlatform:
               kind: Gateway
               name: gateway-nextcloud
               namespace: envoy-gateway-system 
-          
+
+
+# ===============================================================
+#    ___             ___       __  __ 
+#   / _ | ___  ___  / _ |__ __/ /_/ / 
+#  / __ |/ _ \/ _ \/ __ / // / __/ _ \
+# /_/ |_/ .__/ .__/_/ |_\_,_/\__/_//_/
+#      /_/  /_/
+#
+# : AppAuth (wrapper chart)
+# ===============================================================
+
+appAuth:
+
+  # ===============================================
+  # @section Keycloak parameters
+  # ===============================================
+  
+  keycloak:
+    enabled: true
+
+    # -----------------------------------------------
+    # @subsection relam reference parameters
+    # -----------------------------------------------
+    #
+    realmRef:
+      name: platform 
+      kind: KeycloakRealm
+
+    # -----------------------------------------------
+    # @subsection client parameters
+    # -----------------------------------------------
+    #
+    client:
+      enabled: true
+     
+      name: nextcloud
+      namespace: keycloak 
+      labels: []
+      annotations: []
+
+      clientId: nextcloud 
+      secretName: nextcloud-keycloak-client-secret
+      secretKey: client-secret
+      secretNamespaces:
+        - keycloak
+        - nextcloud
+
+      public: false
+      directAccess: true
+      advancedProtocolMappers: true
+      webUrl: https://nextcloud.anykey.pl
+      adminUrl: https://nextcloud.anykey.pl
+      homeUrl: /
+      redirectUris:
+        - https://nextcloud.anykey.pl/oauth2/callback
+      defaultClientScopes:
+        - groups
