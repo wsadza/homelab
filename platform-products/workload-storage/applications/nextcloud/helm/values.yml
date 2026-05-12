@@ -21,7 +21,7 @@ nextcloud:
       bucket: nextcloud
       usePathStyle: true
       autoCreate: false
-      existingSecret: nextcloud-s3-secret
+      existingSecret: seaweedfs-s3-secret
       secretKeys:
         accessKey: accessKey
         secretKey: secretKey
