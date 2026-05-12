@@ -65,7 +65,7 @@ cronjob:
 # @param commonLabels      : Labels to add to all deployed objects
 # @param commonAnnotations : Annotations to add to all deployed objects
 nameOverride: ""
-fullnameOverride: ""
+fullnameOverride: "nextcloud"
 namespaceOverride: ""
 commonLabels: {}
 commonAnnotations: {}
