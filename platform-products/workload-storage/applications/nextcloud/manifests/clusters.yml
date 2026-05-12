@@ -13,7 +13,7 @@ spec:
       secret:
         name: nextcloud-database-secret
   storage:
-    size: 100Gi
+    size: 20Gi
     storageClass: storage-local-retain
   monitoring:
     enablePodMonitor: true
