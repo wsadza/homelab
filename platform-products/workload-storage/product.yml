@@ -17,12 +17,14 @@ applications:
         automated: false
 
       sources:
-
+        
+        # Helper
         - type: values
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
           ref: values
 
+        # Application
         - type: helm
           repoURL: https://nextcloud.github.io/helm/
           targetRevision: 9.0.6
@@ -30,12 +32,22 @@ applications:
           valueFiles: 
             - $values/platform-products/workload-storage/applications/nextcloud/helm/values.yml
 
+        # Secrets
         - type: kustomize 
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
           path: platform-products/workload-storage/applications/nextcloud/kustomize
 
+        # Extra Manifests 
         - type: manifests
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
           path: platform-products/workload-storage/applications/nextcloud/manifests
+
+        # Wrapper (expousure)
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-platform
+          valueFiles: 
+            - $values/platform-products/workload-storage/applications/nextcloud/helm/values.yml
