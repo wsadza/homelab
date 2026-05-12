@@ -51,3 +51,11 @@ applications:
           path: platform-charts/wrappers/app-platform
           valueFiles: 
             - $values/platform-products/workload-storage/applications/nextcloud/helm/values.yml
+
+        # Wrapper (auth)
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-auth
+          valueFiles: 
+            - $values/platform-products/workload-storage/applications/nextcloud/helm/values.yml
