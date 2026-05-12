@@ -33,9 +33,9 @@ applications:
         - type: kustomize 
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
-          path: platform-products/platform-storage/applications/nextcloud/kustomize
+          path: platform-products/workload-storage/applications/nextcloud/kustomize
 
         - type: manifests
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
-          path: platform-products/platform-storage/applications/nextcloud/manifests
+          path: platform-products/workload-storage/applications/nextcloud/manifests
