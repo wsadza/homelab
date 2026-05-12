@@ -22,6 +22,24 @@ nextcloud:
     - nextcloud.anykey.pl 
     - nextcloud.nextcloud.svc.cluster.local
 
+  configs:
+    proxy.config.php: |-
+      <?php
+      $CONFIG = array (
+        'trusted_proxies' =>
+        array (
+          0 => '127.0.0.1',
+          1 => '::1',
+          2 => '10.0.0.0/8',
+          3 => '172.16.0.0/12',
+          4 => '192.168.0.0/16',
+        ),
+        'forwarded_for_headers' =>
+        array (
+          0 => 'HTTP_X_FORWARDED_FOR',
+        ),
+      );
+
   hooks:
     post-installation: |
       #!/bin/bash
@@ -36,7 +54,7 @@ nextcloud:
         --discoveryuri="https://keycloak.anykey.pl/realms/platform/.well-known/openid-configuration" \
         --scope="openid profile email groups" \
         --unique-uid=1 \
-        --group-provisioning=1 || true
+        --group-provisioning=1
 
       # Optional: keep normal Nextcloud login button.
       php occ config:app:set user_oidc allow_multiple_user_backends --value=1
@@ -54,7 +72,7 @@ nextcloud:
         --discoveryuri="https://keycloak.anykey.pl/realms/platform/.well-known/openid-configuration" \
         --scope="openid profile email groups" \
         --unique-uid=1 \
-        --group-provisioning=1 || true
+        --group-provisioning=1
 
   objectStore:
     s3:
@@ -337,6 +355,6 @@ appAuth:
       adminUrl: https://nextcloud.anykey.pl
       homeUrl: /
       redirectUris:
-        - https://nextcloud.anykey.pl/oauth2/callback
+        - https://nextcloud.anykey.pl/apps/user_oidc/code
       defaultClientScopes:
         - groups
