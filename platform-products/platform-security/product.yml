@@ -149,7 +149,7 @@ applications:
     priority: 10 
 
     syncPolicy:
-      automated: false
+      automated: true
 
     sources:
 

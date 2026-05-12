@@ -110,19 +110,3 @@ Allow the release namespace to be overridden for multi-namespace deployments in 
   Application - Extras 
 ============================================
 */}}
-
-{{/*
---------------------------------------------
-Generate replication hosts list for LDAP_REPLICATION_HOSTS
---------------------------------------------
-*/}}
-{{- define "extras.openldap.replicationHosts" -}}
-{{- $replicas := int .Values.openldap.configuration.replication.replicas }}
-{{- $namespace := default (include "common.names.namespace" . ) .Values.openldap.namespace }}
-{{- $fullname := include "common.names.fullname" . }}
-{{- $hosts := list }}
-{{- range $i := until $replicas }}
-{{- $hosts = append $hosts (printf "ldap://%s-%d.%s-headless.%s.svc.cluster.local" $fullname $i $fullname $namespace) }}
-{{- end }}
-{{- printf "#PYTHON2BASH:%s" (toJson $hosts) }}
-{{- end }}

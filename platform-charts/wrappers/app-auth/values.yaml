@@ -6,15 +6,6 @@
 #      /_/  /_/
 #
 # : AppAuth (wrapper chart)
-# -------------------------------
-#
-# Purpose:
-# - Extend existing community chart  
-#
-# Supports:
-# - keycloak-edp 
-# - gateway-api
-#
 # ===============================================================
 
 appAuth:
@@ -22,94 +13,120 @@ appAuth:
   # ===============================================
   # @section Keycloak parameters
   # ===============================================
-  
+  #
   keycloak:
+
+    # @param appAuth.keycloak.enabled Enable Keycloak integration resources
     enabled: true
 
     # -----------------------------------------------
-    # @subsection relam reference parameters
+    # @subsection Realm reference parameters
     # -----------------------------------------------
     #
+    # @param appAuth.keycloak.realmRef.name Name of the Keycloak realm resource
+    # @param appAuth.keycloak.realmRef.kind Kind of the Keycloak realm resource
     realmRef:
-      name: platform 
+      name: platform
       kind: KeycloakRealm
 
     # -----------------------------------------------
-    # @subsection client parameters
+    # @subsection Client parameters
     # -----------------------------------------------
     #
+    # @param appAuth.keycloak.client.enabled Enable Keycloak client creation
+    # @param appAuth.keycloak.client.name Name of the Keycloak client resource
+    # @param appAuth.keycloak.client.namespace Namespace where the Keycloak client resource is created
+    # @param appAuth.keycloak.client.labels Additional labels for the Keycloak client resource
+    # @param appAuth.keycloak.client.annotations Additional annotations for the Keycloak client resource
+    # @param appAuth.keycloak.client.clientId Keycloak client ID
+    # @param appAuth.keycloak.client.secretName Name of the Kubernetes Secret containing the Keycloak client secret
+    # @param appAuth.keycloak.client.secretKey Key inside the Kubernetes Secret containing the Keycloak client secret
+    # @param appAuth.keycloak.client.secretNamespaces Namespaces where the client secret should be replicated or made available
+    # @param appAuth.keycloak.client.public Whether the Keycloak client is public
+    # @param appAuth.keycloak.client.directAccess Enable direct access grants for the client
+    # @param appAuth.keycloak.client.advancedProtocolMappers Enable advanced protocol mappers
+    # @param appAuth.keycloak.client.webUrl Web URL for the Keycloak client
+    # @param appAuth.keycloak.client.adminUrl Admin URL for the Keycloak client
+    # @param appAuth.keycloak.client.homeUrl Home URL for the Keycloak client
+    # @param appAuth.keycloak.client.redirectUris Allowed redirect URIs for the Keycloak client
+    # @param appAuth.keycloak.client.defaultClientScopes Default client scopes assigned to the Keycloak client
     client:
       enabled: true
-     
-      name: podinfo
-      namespace: keycloak 
-      labels: []
-      annotations: []
-
-      clientId: podinfo 
-      secretName: podinfo-keycloak-client-secret
+      name: ""
+      namespace: ""
+      labels: {}
+      annotations: {}
+      clientId: ""
+      secretName: ""
       secretKey: client-secret
-      secretNamespaces:
-        - keycloak
-        - podinfo
-
+      secretNamespaces: []
       public: false
-      directAccess: true
-      advancedProtocolMappers: true
-      webUrl: https://podinfo.anykey.pl
-      adminUrl: https://podinfo.anykey.pl
+      directAccess: false
+      advancedProtocolMappers: false
+      webUrl: ""
+      adminUrl: ""
       homeUrl: /
-      redirectUris:
-        - https://podinfo.anykey.pl/oauth2/callback
-      defaultClientScopes:
-        - groups
+      redirectUris: []
+      defaultClientScopes: []
 
     # -----------------------------------------------
-    # @subsection groups parameters
+    # @subsection Groups parameters
     # -----------------------------------------------
-    #
     groups:
-      - name: podinfo-admins
-        groupName: PodInfoAdmins
-        namespace: keycloak
-        labels: []
-        annotations: []
-      - name: podinfo-developers
-        groupName: PodInfoDevelopers
-        namespace: keycloak
-        labels: []
-        annotations: []
+      # @param appAuth.keycloak.groups[0].name        : Name of the Kubernetes group resource
+      # @param appAuth.keycloak.groups[0].groupName   : Name of the Keycloak group
+      # @param appAuth.keycloak.groups[0].namespace   : Namespace where the group resource is created
+      # @param appAuth.keycloak.groups[0].labels      : Additional labels for the group resource
+      # @param appAuth.keycloak.groups[0].annotations : Additional annotations for the group resource
+      - name: ""
+        groupName: ""
+        namespace: ""
+        labels: {}
+        annotations: {}
 
   # ===============================================
-  # @section Gateway API parameters
+  # @section Envoy Gateway parameters
   # ===============================================
-
+  #
   envoyGateway:
 
+    # -----------------------------------------------
+    # @subsection OIDC parameters
+    # -----------------------------------------------
+    #
+    # @param appAuth.envoyGateway.oidc.enabled            : Enable Envoy Gateway OIDC authentication
+    # @param appAuth.envoyGateway.oidc.name               : Name of the OIDC security policy resource
+    # @param appAuth.envoyGateway.oidc.namespace          : Namespace where the OIDC security policy resource is created
+    # @param appAuth.envoyGateway.oidc.labels             : Additional labels for the OIDC security policy resource
+    # @param appAuth.envoyGateway.oidc.annotations        : Additional annotations for the OIDC security policy resource
+    # @param appAuth.envoyGateway.oidc.targetRefs         : Gateway API target references protected by OIDC
+    # @param appAuth.envoyGateway.oidc.issuer             : OIDC issuer URL
+    # @param appAuth.envoyGateway.oidc.clientId           : OIDC client ID
+    # @param appAuth.envoyGateway.oidc.clientSecret.name  : Name of the Kubernetes Secret containing the OIDC client secret
+    # @param appAuth.envoyGateway.oidc.clientSecret.key   : Key inside the Kubernetes Secret containing the OIDC client secret
+    # @param appAuth.envoyGateway.oidc.redirectURL        : OIDC callback URL
+    # @param appAuth.envoyGateway.oidc.logoutPath         : Path used to trigger logout
+    # @param appAuth.envoyGateway.oidc.scopes             : OIDC scopes requested during authentication
+    # @param appAuth.envoyGateway.oidc.forwardAccessToken : Forward the access token to the upstream service
     oidc:
       enabled: true
+      name: ""
+      namespace: ""
+      labels: {}
+      annotations: {}
+      targetRefs: []
+      issuer: ""
+      clientId: ""
 
-      name: podinfo-oidc
-      namespace: podinfo
-      labels: []
-      annotations: []
-
-      targetRefs:
-        - group: gateway.networking.k8s.io
-          kind: HTTPRoute
-          name: podinfo-host
-
-      issuer: https://keycloak.anykey.pl/realms/platform
-      clientId: podinfo 
       clientSecret:
-        name: podinfo-keycloak-client-secret
-        key: clientSecret
-      redirectURL: https://podinfo.anykey.pl/oauth2/callback
+        name: ""
+        key: client-secret
 
+      redirectURL: ""
       logoutPath: /logout
-
       scopes:
         - openid
         - profile
         - email
+
       forwardAccessToken: true

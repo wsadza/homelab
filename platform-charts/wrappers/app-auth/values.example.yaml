@@ -1,0 +1,115 @@
+# ===============================================================
+#    ___             ___       __  __ 
+#   / _ | ___  ___  / _ |__ __/ /_/ / 
+#  / __ |/ _ \/ _ \/ __ / // / __/ _ \
+# /_/ |_/ .__/ .__/_/ |_\_,_/\__/_//_/
+#      /_/  /_/
+#
+# : AppAuth (wrapper chart)
+# -------------------------------
+#
+# Purpose:
+# - Extend existing community chart  
+#
+# Supports:
+# - keycloak-edp 
+# - gateway-api
+#
+# ===============================================================
+
+appAuth:
+
+  # ===============================================
+  # @section Keycloak parameters
+  # ===============================================
+  
+  keycloak:
+    enabled: true
+
+    # -----------------------------------------------
+    # @subsection relam reference parameters
+    # -----------------------------------------------
+    #
+    realmRef:
+      name: platform 
+      kind: KeycloakRealm
+
+    # -----------------------------------------------
+    # @subsection client parameters
+    # -----------------------------------------------
+    #
+    client:
+      enabled: true
+     
+      name: podinfo
+      namespace: keycloak 
+      labels: []
+      annotations: []
+
+      clientId: podinfo 
+      secretName: podinfo-keycloak-client-secret
+      secretKey: client-secret
+      secretNamespaces:
+        - keycloak
+        - podinfo
+
+      public: false
+      directAccess: true
+      advancedProtocolMappers: true
+      webUrl: https://podinfo.anykey.pl
+      adminUrl: https://podinfo.anykey.pl
+      homeUrl: /
+      redirectUris:
+        - https://podinfo.anykey.pl/oauth2/callback
+      defaultClientScopes:
+        - groups
+
+    # -----------------------------------------------
+    # @subsection groups parameters
+    # -----------------------------------------------
+    #
+    groups:
+      - name: podinfo-admins
+        groupName: PodInfoAdmins
+        namespace: keycloak
+        labels: []
+        annotations: []
+      - name: podinfo-developers
+        groupName: PodInfoDevelopers
+        namespace: keycloak
+        labels: []
+        annotations: []
+
+  # ===============================================
+  # @section Gateway API parameters
+  # ===============================================
+
+  envoyGateway:
+
+    oidc:
+      enabled: true
+
+      name: podinfo-oidc
+      namespace: podinfo
+      labels: []
+      annotations: []
+
+      targetRefs:
+        - group: gateway.networking.k8s.io
+          kind: HTTPRoute
+          name: podinfo-host
+
+      issuer: https://keycloak.anykey.pl/realms/platform
+      clientId: podinfo 
+      clientSecret:
+        name: podinfo-keycloak-client-secret
+        key: clientSecret
+      redirectURL: https://podinfo.anykey.pl/oauth2/callback
+
+      logoutPath: /logout
+
+      scopes:
+        - openid
+        - profile
+        - email
+      forwardAccessToken: true
