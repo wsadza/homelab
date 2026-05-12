@@ -116,10 +116,7 @@ appPlatform:
           hostname: nextcloud.anykey.pl 
           allowedRoutes:
             namespaces:
-              from: Selector
-              selector:
-                matchLabels:
-                  kubernetes.io/metadata.name: nextcloud 
+              from: All
 
         - name: listener-https
           protocol: HTTPS
