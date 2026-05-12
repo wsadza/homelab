@@ -1,0 +1,40 @@
+# ===============================
+# 
+# ===============================
+applications:
+
+  # ------------------
+  # Podinfo
+  # ------------------
+
+    - name: nextcloud 
+      namespace: nextcloud 
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://stefanprodan.github.io/podinfo
+          targetRevision: 6.9.1
+          chart: podinfo 
+          valueFiles: 
+            - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
+        - type: kustomize 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-products/platform-storage/applications/seaweedfs/kustomize
+
+        - type: manifests
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-products/platform-storage/applications/seaweedfs/manifests
