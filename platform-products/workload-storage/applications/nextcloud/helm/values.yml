@@ -27,7 +27,7 @@ nextcloud:
       #!/bin/bash
       set -eu
 
-      php occ app:install user_oidc || true
+      php occ app:install user_oidc
       php occ app:enable user_oidc
 
       php occ user_oidc:provider Keycloak \
@@ -45,7 +45,7 @@ nextcloud:
       #!/bin/bash
       set -eu
 
-      php occ app:install user_oidc || true
+      php occ app:install user_oidc || php occ app:enable user_oidc
       php occ app:enable user_oidc
 
       php occ user_oidc:provider Keycloak \
