@@ -109,7 +109,7 @@ appAuth:
     # @param appAuth.envoyGateway.oidc.scopes             : OIDC scopes requested during authentication
     # @param appAuth.envoyGateway.oidc.forwardAccessToken : Forward the access token to the upstream service
     oidc:
-      enabled: true
+      enabled: false
       name: ""
       namespace: ""
       labels: {}
