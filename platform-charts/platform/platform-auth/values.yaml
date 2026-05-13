@@ -108,7 +108,10 @@ platformAuth:
       enabled: true
       emailVerified: false
       passwordSecret:
+        mode: create
+        name: ""
         key: password
+        value: "changeme"
       requiredUserActions: []
       roles: []
       groups: []

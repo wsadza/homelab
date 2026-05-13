@@ -1,15 +1,29 @@
 {{- if and .Values.platformAuth.keycloak.enabled .Values.platformAuth.keycloak.users }}
 {{- $root := . -}}
-{{- range $u := .Values.platformAuth.keycloak.users }}
-{{- $user := mergeOverwrite (deepCopy $root.Values.platformAuth.keycloak.userDefaults) $u }}
-{{- $userResourceName := $user.username | replace "." "-" | trunc 63 | trimSuffix "-" }}
-{{- $requiredUserActions := $user.requiredUserActions | default list }}
-{{- $passwordSecretNameProvided := and $user.passwordSecret (hasKey $user.passwordSecret "name") $user.passwordSecret.name }}
-{{- if not $passwordSecretNameProvided }}
-{{- $requiredUserActions = append $requiredUserActions "UPDATE_PASSWORD" | uniq
-}}
+{{- range $user := .Values.platformAuth.keycloak.users }}
+{{- $userDetails := mergeOverwrite (deepCopy $root.Values.platformAuth.keycloak.userDefaults) $user }}
+{{- if $userDetails.enabled }}
+
+{{- $userResourceName := $user.username | replace "." "-" | trunc 56 | trimSuffix "-" }}
+{{- $passwordSecret := $userDetails.passwordSecret | default dict }}
+
+{{- $secretMode := $passwordSecret.mode }}
+{{- $secretKey := $passwordSecret.key }}
+{{- $secretName := default (printf "%s-secret" $userResourceName) $passwordSecret.name }}
+
+{{- if not (has $secretMode (list "existing" "create" "none")) }}
+{{- fail (printf "Invalid passwordSecret.mode for user %s. Allowed values: existing, create, none" $userDetails.username) }}
 {{- end }}
-{{- if $user.enabled }}
+
+{{- if and (eq $secretMode "existing") (not $passwordSecret.name) }}
+{{- fail (printf "User %s has passwordSecret.mode=existing but passwordSecret.name is empty" $userDetails.username) }}
+{{- end }}
+
+{{- $requiredUserActions := $userDetails.requiredUserActions | default list }}
+{{- if eq $passwordSecret.mode "create" }}
+{{- $requiredUserActions = append $requiredUserActions "UPDATE_PASSWORD" | uniq }}
+{{- end }}
+
 ---
 apiVersion: v1.edp.epam.com/v1
 kind: KeycloakRealmUser
@@ -23,52 +37,53 @@ spec:
     name: {{ $root.Values.platformAuth.keycloak.realm.name | quote }}
     kind: "KeycloakRealm"
 
-  username: {{ $user.username | quote }}
+  username: {{ $userDetails.username | quote }}
 
-  {{- with $user.firstName }}
+  {{- with $userDetails.firstName }}
   firstName: {{ . | quote }}
   {{- end }}
 
-  {{- with $user.lastName }}
+  {{- with $userDetails.lastName }}
   lastName: {{ . | quote }}
   {{- end }}
 
-  {{- with $user.email }}
+  {{- with $userDetails.email }}
   email: {{ . | quote }}
   {{- end }}
 
   {{- if hasKey $user "emailVerified" }}
-  emailVerified: {{ $user.emailVerified }}
+  emailVerified: {{ $userDetails.emailVerified }}
   {{- end }}
 
   {{- if hasKey $user "enabled" }}
-  enabled: {{ $user.enabled }}
+  enabled: {{ $userDetails.enabled }}
   {{- end }}
 
-  {{- with $user.reconciliationStrategy }}
+  {{- with $userDetails.reconciliationStrategy }}
   reconciliationStrategy: {{ . | quote }}
   {{- end }}
 
   {{- if hasKey $user "keepResource" }}
-  keepResource: {{ $user.keepResource }}
+  keepResource: {{ $userDetails.keepResource }}
   {{- end }}
 
-  {{- if hasKey $user "keepResource" }}
+  {{- if ne $secretMode "none" }}
   passwordSecret:
-    name: {{ default (printf "%s-secret" $userResourceName) $user.passwordSecret.name | quote }}
-    key: {{ default "password" $user.passwordSecret.key | quote }}
+    name: {{ $secretName | quote }}
+    key: {{ $secretKey | quote }}
+  {{- end }}
 
   {{- with $requiredUserActions }}
   requiredUserActions:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 
-  {{- with $user.roles }}
+  {{- with $userDetails.roles }}
   roles:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 
-  {{- with $user.groups }}
+  {{- with $userDetails.groups }}
   groups:
     {{- toYaml . | nindent 4 }}
   {{- end }}
