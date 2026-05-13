@@ -18,11 +18,14 @@ nextcloud:
           name: keycloak-client-secret-nextcloud
           key: client-secret
 
+    - name: KEYCLOAK_BASE
+      value: "keycloak.anykey.pl"
+
     - name: KEYCLOAK_REALM
       value: "platform"
 
     - name: KEYCLOAK_ENDPOINT 
-      value: "https://keycloak.anykey.pl/realms/$(KEYCLOAK_REALM)/.well-known/openid-configuration"
+      value: "https://$(KEYCLOAK_BASE)/realms/$(KEYCLOAK_REALM)/.well-known/openid-configuration"
 
   trustedDomains:
     - nextcloud.anykey.pl 
