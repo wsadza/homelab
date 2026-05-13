@@ -149,8 +149,10 @@ platformAuth:
       emailVerified: true
       passwordSecret:
         mode: existing
-        name: jan-kowalski-password
-        key: password
+        # jan-kowalski-password is default one
+        name: my-custom-password 
+        # password is default one
+        key: password-123 
       requiredUserActions:
       - UPDATE_PASSWORD
       roles:
