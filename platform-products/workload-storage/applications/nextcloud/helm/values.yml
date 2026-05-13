@@ -19,7 +19,7 @@ nextcloud:
           key: client-secret
 
     - name: KEYCLOAK_ENDPOINT 
-      value: http://keycloak-service.keycloak.svc.cluster.local/realms/platform/.well-known/openid-configuration
+      value: "http://keycloak-service.keycloak.svc.cluster.local:8080/realms/platform/.well-known/openid-configuration"
 
   trustedDomains:
     - nextcloud.anykey.pl 
