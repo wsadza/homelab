@@ -3,6 +3,12 @@
 {{- range $u := .Values.platformAuth.keycloak.users }}
 {{- $user := mergeOverwrite (deepCopy $root.Values.platformAuth.keycloak.userDefaults) $u }}
 {{- $userResourceName := $user.username | replace "." "-" | trunc 63 | trimSuffix "-" }}
+{{- $requiredUserActions := $user.requiredUserActions | default list }}
+{{- $passwordSecretNameProvided := and $user.passwordSecret (hasKey $user.passwordSecret "name") $user.passwordSecret.name }}
+{{- if not $passwordSecretNameProvided }}
+{{- $requiredUserActions = append $requiredUserActions "UPDATE_PASSWORD" | uniq
+}}
+{{- end }}
 {{- if $user.enabled }}
 ---
 apiVersion: v1.edp.epam.com/v1
@@ -47,11 +53,12 @@ spec:
   keepResource: {{ $user.keepResource }}
   {{- end }}
 
+  {{- if hasKey $user "keepResource" }}
   passwordSecret:
     name: {{ default (printf "%s-secret" $userResourceName) $user.passwordSecret.name | quote }}
     key: {{ default "password" $user.passwordSecret.key | quote }}
 
-  {{- with $user.requiredUserActions }}
+  {{- with $requiredUserActions }}
   requiredUserActions:
     {{- toYaml . | nindent 4 }}
   {{- end }}

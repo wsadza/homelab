@@ -51,7 +51,7 @@ appAuth:
     # @param appAuth.keycloak.client.redirectUris Allowed redirect URIs for the Keycloak client
     # @param appAuth.keycloak.client.defaultClientScopes Default client scopes assigned to the Keycloak client
     client:
-      enabled: true
+      enabled: false
       name: ""
       namespace: ""
       labels: {}

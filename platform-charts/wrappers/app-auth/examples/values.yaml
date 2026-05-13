@@ -47,11 +47,9 @@ appAuth:
       annotations: []
 
       clientId: podinfo 
-      secretName: podinfo-keycloak-client-secret
-      secretKey: client-secret
-      secretNamespaces:
-        - keycloak
-        - podinfo
+      clientSecret:
+        name: podinfo-keycloak-client-secret
+        key: clientSecret
 
       public: false
       directAccess: true

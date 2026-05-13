@@ -123,7 +123,10 @@ platformAuth:
       enabled: true
       emailVerified: false
       passwordSecret:
+        mode: create # existing | create | none
+        name: ""
         key: password
+        value: "changeme"
       requiredUserActions: []
       roles: []
       groups: []
@@ -137,7 +140,7 @@ platformAuth:
     users:
     # 1: Consuming defaults
     - username: john.doe
-    # 2: Overriding defautlts 
+    # 2: Overriding defaults
     - username: jan.kowalski 
       enabled: true
       firstName: john
@@ -145,6 +148,7 @@ platformAuth:
       email: jan.kowalski@example.com
       emailVerified: true
       passwordSecret:
+        mode: existing
         name: jan-kowalski-password
         key: password
       requiredUserActions:
@@ -155,5 +159,3 @@ platformAuth:
       - PlatformAdmins
       reconciliationStrategy: full
       keepResource: true       
-
-
