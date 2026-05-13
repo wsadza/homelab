@@ -15,7 +15,7 @@ nextcloud:
     - name: OIDC_CLIENT_SECRET
       valueFrom:
         secretKeyRef:
-          name: nextcloud-keycloak-client-secret
+          name: keycloak-client-secret-nextcloud
           key: client-secret
 
   trustedDomains:
