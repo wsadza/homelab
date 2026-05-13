@@ -164,3 +164,8 @@ applications:
         path: platform-charts/platform/platform-auth
         valueFiles: 
           - $values/platform-products/platform-security/applications/platform-auth/helm/values.yml
+
+      - type: kustomize 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-products/platform-security/applications/platform-auth/kustomize
