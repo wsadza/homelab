@@ -22,7 +22,7 @@ nextcloud:
       value: "platform"
 
     - name: KEYCLOAK_ENDPOINT 
-      value: "https://keycloak.anykey.pl/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration"
+      value: "https://keycloak.anykey.pl/realms/$${KEYCLOAK_REALM}/.well-known/openid-configuration"
 
   trustedDomains:
     - nextcloud.anykey.pl 
@@ -47,24 +47,15 @@ nextcloud:
       );
 
   hooks:
-    post-installation: |
-      #!/bin/bash
-      set -eu
-  
-      php occ app:install user_oidc || true
-      php occ app:enable user_oidc
-  
-    post-upgrade: |
-      #!/bin/bash
-      set -eu
-  
-      php occ app:install user_oidc || true
-      php occ app:enable user_oidc
-  
     before-starting: |
       #!/bin/bash
       set -eu
-  
+
+      if OIDC_CLIENT_SECRET == ""; then
+        echo "Skiping OIDC initialization..."
+        return 0;
+      fi
+
       # Ensure app is available/enabled.
       echo "Ensuring user_oidc app is enabled..."
       php occ app:enable user_oidc || {
