@@ -78,17 +78,12 @@ appAuth:
     # -----------------------------------------------
     # @subsection Groups parameters
     # -----------------------------------------------
-    groups:
+    groups: []
       # @param appAuth.keycloak.groups[0].name        : Name of the Kubernetes group resource
       # @param appAuth.keycloak.groups[0].groupName   : Name of the Keycloak group
       # @param appAuth.keycloak.groups[0].namespace   : Namespace where the group resource is created
       # @param appAuth.keycloak.groups[0].labels      : Additional labels for the group resource
       # @param appAuth.keycloak.groups[0].annotations : Additional annotations for the group resource
-      - name: ""
-        groupName: ""
-        namespace: ""
-        labels: {}
-        annotations: {}
 
   # ===============================================
   # @section Envoy Gateway parameters
