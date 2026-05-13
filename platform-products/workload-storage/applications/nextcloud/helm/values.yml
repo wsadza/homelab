@@ -18,6 +18,9 @@ nextcloud:
           name: keycloak-client-secret-nextcloud
           key: client-secret
 
+    - name: KEYCLOAK_ENDPOINT 
+      value: http://keycloak-service.keycloak.svc.cluster.local/realms/platform/.well-known/openid-configuration
+
   trustedDomains:
     - nextcloud.anykey.pl 
     - nextcloud.nextcloud.svc.cluster.local
@@ -51,7 +54,7 @@ nextcloud:
       php occ user_oidc:provider Keycloak \
         --clientid="nextcloud" \
         --clientsecret="${OIDC_CLIENT_SECRET}" \
-        --discoveryuri="https://keycloak.anykey.pl/realms/platform/.well-known/openid-configuration" \
+        --discoveryuri="${KEYCLOAK_ENDPOINT}" \
         --scope="openid profile email groups" \
         --unique-uid=1 \
         --group-provisioning=1
@@ -69,7 +72,7 @@ nextcloud:
       php occ user_oidc:provider Keycloak \
         --clientid="nextcloud" \
         --clientsecret="${OIDC_CLIENT_SECRET}" \
-        --discoveryuri="https://keycloak.anykey.pl/realms/platform/.well-known/openid-configuration" \
+        --discoveryuri="${KEYCLOAK_ENDPOINT}" \
         --scope="openid profile email groups" \
         --unique-uid=1 \
         --group-provisioning=1
