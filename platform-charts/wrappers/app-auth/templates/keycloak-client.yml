@@ -21,11 +21,11 @@ spec:
     name: {{ .name }}
     kind: {{ default "KeycloakRealm" .kind }}
   {{- end }}
-  clientId: {{ required "appAuth.keycloak.client.clientId is required" .clientId | quote }}
+  clientId: {{ .clientId | quote }}
   public: {{ default false .public }}
   directAccess: {{ default true .directAccess }}
   advancedProtocolMappers: {{ default true .advancedProtocolMappers }}
-  secret: {{ printf "$%s:%s" .secretName .secretKey | quote }}
+  secret: {{ printf "$%s:%s" .clientSecret.name .clientSecret.key | quote }}
   webUrl: {{ .webUrl | quote }}
   adminUrl: {{ .adminUrl | quote }}
   homeUrl: {{ default "/" .homeUrl | quote }}

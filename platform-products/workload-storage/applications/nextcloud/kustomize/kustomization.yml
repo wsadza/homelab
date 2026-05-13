@@ -4,4 +4,4 @@ kind: Kustomization
 resources: []
 
 generators:
-  - ksops.yml
+  - ksops-secret-generator.yml

@@ -57,9 +57,15 @@ appAuth:
       labels: {}
       annotations: {}
       clientId: ""
-      secretName: ""
-      secretKey: client-secret
-      secretNamespaces: []
+
+      clientSecret:
+        name: ""
+        key: client-secret
+
+        #secretName: ""
+        #secretKey: client-secret
+        #secretNamespaces: []
+
       public: false
       directAccess: false
       advancedProtocolMappers: false
@@ -103,7 +109,6 @@ appAuth:
     # @param appAuth.envoyGateway.oidc.issuer             : OIDC issuer URL
     # @param appAuth.envoyGateway.oidc.clientId           : OIDC client ID
     # @param appAuth.envoyGateway.oidc.clientSecret.name  : Name of the Kubernetes Secret containing the OIDC client secret
-    # @param appAuth.envoyGateway.oidc.clientSecret.key   : Key inside the Kubernetes Secret containing the OIDC client secret
     # @param appAuth.envoyGateway.oidc.redirectURL        : OIDC callback URL
     # @param appAuth.envoyGateway.oidc.logoutPath         : Path used to trigger logout
     # @param appAuth.envoyGateway.oidc.scopes             : OIDC scopes requested during authentication
@@ -120,7 +125,6 @@ appAuth:
 
       clientSecret:
         name: ""
-        key: client-secret
 
       redirectURL: ""
       logoutPath: /logout

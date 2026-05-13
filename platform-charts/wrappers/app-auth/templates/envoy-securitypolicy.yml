@@ -19,21 +19,21 @@ metadata:
 spec:
   targetRefs:
     {{- range $oidc.targetRefs }}
-    - group: {{ default "gateway.networking.k8s.io" .group }}
-      kind: {{ required "targetRefs.kind is required" .kind }}
-      name: {{ required "targetRefs.name is required" .name }}
+    - group: {{ default "gateway.networking.k8s.io" .group | quote }}
+      kind: {{ .kind | quote }}
+      name: {{ .name | quote }}
       {{- if .namespace }}
-      namespace: {{ .namespace }}
+      namespace: {{ .namespace | quote }}
       {{- end }}
     {{- end }}
   oidc:
     provider:
-      issuer: {{ required "appAuth.gatewayApi.oidc.issuer is required" $oidc.issuer | quote }}
-    clientID: {{ default $client.clientId $oidc.clientId | quote }}
+      issuer: {{ $oidc.issuer | quote }}
+    clientID: {{ $oidc.clientId | quote }}
     clientSecret:
-      name: {{ required "clientSecret.name is required" $oidc.clientSecret.name }}
-    redirectURL: {{ required "appAuth.gatewayApi.oidc.redirectURL is required" $oidc.redirectURL | quote }}
-    logoutPath: {{ default "/logout" $oidc.logoutPath | quote }}
+      name: {{ $oidc.clientSecret.name | quote }}
+    redirectURL: {{ $oidc.redirectURL | quote }}
+    logoutPath: {{ $oidc.logoutPath | quote }}
     {{- with $oidc.scopes }}
     scopes:
       {{- toYaml . | nindent 6 }}

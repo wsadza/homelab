@@ -342,11 +342,9 @@ appAuth:
       annotations: []
 
       clientId: nextcloud 
-      secretName: nextcloud-keycloak-client-secret
-      secretKey: client-secret
-      secretNamespaces:
-        - keycloak
-        - nextcloud
+      clientSecret:
+        name: keycloak-client-secret-nextcloud 
+        key: client-secret
 
       public: false
       directAccess: true
