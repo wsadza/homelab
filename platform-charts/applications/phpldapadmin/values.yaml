@@ -85,11 +85,11 @@ phpldapadmin:
       server:
         host: openldap.openldap.svc.cluster.local
         port: 389
-        tls: True
-        base: dc=anykey,dc=pl
+        tls: False
+        base: dc=example,dc=org
       login:
         auth_type: session
-        bind_id: cn=admin,dc=anykey,dc=pl
+        bind_id: cn=admin,dc=example,dc=org
   
     tls:
       enabled: false
