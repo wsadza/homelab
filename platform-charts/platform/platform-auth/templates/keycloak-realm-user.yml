@@ -51,11 +51,11 @@ spec:
   email: {{ . | quote }}
   {{- end }}
 
-  {{- if hasKey $user "emailVerified" }}
+  {{- if hasKey $userDetails "emailVerified" }}
   emailVerified: {{ $userDetails.emailVerified }}
   {{- end }}
 
-  {{- if hasKey $user "enabled" }}
+  {{- if hasKey $userDetails "enabled" }}
   enabled: {{ $userDetails.enabled }}
   {{- end }}
 
