@@ -116,7 +116,7 @@ platformAuth:
     users:
       - username: john.doe
       - username: jan.kowalski
-      - username: igor-sadza
+      - username: igor.sadza
         passwordSecret:
           mode: existing
           name: igor-sadza-secret
