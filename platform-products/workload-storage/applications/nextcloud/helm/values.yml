@@ -22,7 +22,7 @@ nextcloud:
       value: "platform"
 
     - name: KEYCLOAK_ENDPOINT 
-      value: "https://keycloak.anykey.pl/realms/$${KEYCLOAK_REALM}/.well-known/openid-configuration"
+      value: "https://keycloak.anykey.pl/realms/$(KEYCLOAK_REALM)/.well-known/openid-configuration"
 
   trustedDomains:
     - nextcloud.anykey.pl 
@@ -49,11 +49,16 @@ nextcloud:
   hooks:
     before-starting: |
       #!/bin/bash
-      set -eu
+      
+      # Validate
+      if [ -z "${OIDC_CLIENT_SECRET:-}" ]; then
+        echo "Skipping OIDC initialization: OIDC_CLIENT_SECRET is empty or missing."
+        exit 0
+      fi
 
-      if OIDC_CLIENT_SECRET == ""; then
-        echo "Skiping OIDC initialization..."
-        return 0;
+      if [ -z "${KEYCLOAK_ENDPOINT:-}" ]; then
+        echo "Skipping OIDC initialization: KEYCLOAK_ENDPOINT is empty or missing."
+        exit 0
       fi
 
       # Ensure app is available/enabled.
