@@ -119,4 +119,5 @@ platformAuth:
       - username: igor-sadza
         passwordSecret:
           mode: existing
+          name: igor-sadza-password
         
