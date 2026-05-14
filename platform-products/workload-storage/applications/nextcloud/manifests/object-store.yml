@@ -9,10 +9,10 @@ spec:
     endpointURL: http://seaweedfs-s3.seaweedfs.svc.cluster.local:8333
     s3Credentials:
       accessKeyId:
-        name: seaweedfs-s3-creds
+        name: seaweedfs-s3-secret
         key: ACCESS_KEY_ID
       secretAccessKey:
-        name: seaweedfs-s3-creds
+        name: seaweedfs-s3-secret
         key: ACCESS_SECRET_KEY
     wal:
       compression: gzip
