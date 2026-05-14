@@ -113,6 +113,13 @@ applications:
           repoURL: https://seaweedfs.github.io/seaweedfs-operator
           targetRevision: 0.1.22 
           chart: seaweedfs-operator
+          valueFiles: 
+            - $values/platform-products/platform-storage/applications/seaweedfs-operator/helm/values.yml
+
+        - type: manifests
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-products/platform-storage/applications/seaweedfs-operator/manifests
 
   # ------------------
   # RookCeph (3s-only) / DISABLED

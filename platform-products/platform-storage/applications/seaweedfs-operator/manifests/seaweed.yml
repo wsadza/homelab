@@ -1,0 +1,25 @@
+apiVersion: seaweed.seaweedfs.com/v1
+kind: Seaweed
+metadata:
+  name: seaweed1
+spec:
+  image: chrislusf/seaweedfs:latest
+  volumeServerDiskCount: 1
+  hostSuffix: seaweed.anykey.pl
+
+  master:
+    replicas: 3
+    volumeSizeLimitMB: 1024
+
+  volume:
+    replicas: 1
+    requests:
+      storage: 2Gi
+    rack: "rack1"
+    dataCenter: "dc1"
+
+  filer:
+    replicas: 2
+
+  s3:
+    enabled: true
