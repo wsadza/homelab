@@ -93,7 +93,7 @@ applications:
   # SeaweedFS Operator (S3) 
   # ------------------
 
-    - name: seaweedfs 
+    - name: seaweedfs-operator
       namespace: seaweedfs 
 
       enabled: true
