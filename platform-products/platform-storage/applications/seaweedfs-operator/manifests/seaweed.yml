@@ -8,7 +8,7 @@ spec:
   hostSuffix: seaweed.anykey.pl
 
   master:
-    replicas: 3
+    replicas: 1
     volumeSizeLimitMB: 1024
 
   volume:
@@ -19,7 +19,7 @@ spec:
     dataCenter: "dc1"
 
   filer:
-    replicas: 2
+    replicas: 1
 
   s3:
     enabled: true
