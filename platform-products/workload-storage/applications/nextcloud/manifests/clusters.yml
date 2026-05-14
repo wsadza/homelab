@@ -12,6 +12,14 @@ spec:
       owner: nextcloud 
       secret:
         name: nextcloud-database-secret
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: seaweedfs-store
+        serverName: nextcloud
+
   storage:
     size: 20Gi
     storageClass: storage-local-retain

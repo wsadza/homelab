@@ -1,20 +1,10 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: dummy-db-user
-  namespace: default
-type: kubernetes.io/basic-auth
-stringData:
-  username: user
-  password: changeme-strong-password
----
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: dummy-psql-instance
+  name: psql-instance
   namespace: default
 spec:
-  instances: 1
+  instances: 2
 
   imageName: ghcr.io/cloudnative-pg/postgresql:16
 
@@ -25,8 +15,15 @@ spec:
       secret:
         name: dummy-db-user 
 
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: seaweedfs-store
+        serverName: postgresql
+
   storage:
     size: 5Gi
 
   monitoring:
-    enablePodMonitor: true
+    enablePodMonitor: false

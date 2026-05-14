@@ -1,0 +1,21 @@
+
+
+appStorage:
+  enabled: true 
+
+  psql:
+    enabled: true
+
+    configuration:
+      instances:
+      image: 
+      storage: 5Gi
+
+    plugins:
+
+      - name: barman-cloud.cloudnative-pg.io
+        enabled: true 
+
+        backup:
+          type: scheduled # scheduled | manual
+
