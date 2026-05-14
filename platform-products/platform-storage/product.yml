@@ -56,8 +56,7 @@ applications:
           repoURL: https://github.com/cloudnative-pg/plugin-barman-cloud
           targetRevision: v0.12.0
           path: .
-          directory:
-            include: manifest.yaml
+          include: manifest.yaml
 
   # ------------------
   # SeaweedFS (3s-only)
