@@ -10,10 +10,10 @@ spec:
     s3Credentials:
       accessKeyId:
         name: seaweedfs-s3-secret
-        key: ACCESS_KEY_ID
+        key: accessKey 
       secretAccessKey:
         name: seaweedfs-s3-secret
-        key: ACCESS_SECRET_KEY
+        key: secretKey 
     wal:
       compression: gzip
     data:
