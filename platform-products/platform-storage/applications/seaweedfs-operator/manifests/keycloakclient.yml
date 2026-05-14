@@ -1,0 +1,23 @@
+apiVersion: v1.edp.epam.com/v1
+kind: KeycloakClient
+metadata:
+  name: seaweedfs-s3
+  namespace: keycloak
+spec:
+  realmRef:
+    name: seaweedfs
+    kind: KeycloakRealm
+  clientId: "seaweedfs-s3"
+  public: false
+  directAccess: true
+  advancedProtocolMappers: true
+  secret: "$seaweedfs-s3-client:clientSecret"
+  webUrl: "http://seaweed1-s3.seaweedfc.svc.cluster.local"
+  adminUrl: "http://seaweed1-s3.seaweedfc.svc.cluster.local"
+  homeUrl: "/"
+  redirectUris:
+    - "http://seaweed1-s3.seaweedfc.svc.cluster.local/*"
+  defaultClientScopes:
+    - profile
+    - email
+    - groups
