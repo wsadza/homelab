@@ -6,22 +6,29 @@ metadata:
 spec:
   instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:16
+
   bootstrap:
-    initdb:
-      database: nextcloud 
-      owner: nextcloud 
-      secret:
-        name: nextcloud-database-secret
+    recovery:
+      source: origin
+
+  externalClusters:
+    - name: origin
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: seaweedfs-store
+          serverName: nextcloud-v1
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
         barmanObjectName: seaweedfs-store
-        serverName: nextcloud-v1
+        serverName: nextcloud-v2
 
   storage:
     size: 20Gi
     storageClass: storage-local-retain
+
   monitoring:
     enablePodMonitor: false

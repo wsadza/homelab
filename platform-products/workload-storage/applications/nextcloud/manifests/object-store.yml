@@ -5,7 +5,7 @@ metadata:
   namespace: nextcloud
 spec:
   configuration:
-    destinationPath: s3://app-bucket/nextcloud-postgresql
+    destinationPath: s3://app-bucket/databases
     endpointURL: http://seaweedfs-s3.seaweedfs.svc.cluster.local:8333
     s3Credentials:
       accessKeyId:

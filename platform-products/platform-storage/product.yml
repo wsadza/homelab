@@ -57,9 +57,8 @@ applications:
           targetRevision: 0.6.0
           chart: plugin-barman-cloud 
 
-
   # ------------------
-  # SeaweedFS (3s-only)
+  # SeaweedFS (S3)
   # ------------------
 
     - name: seaweedfs 
@@ -89,6 +88,31 @@ applications:
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
           path: platform-products/platform-storage/applications/seaweedfs/kustomize
+
+  # ------------------
+  # SeaweedFS Operator (S3) 
+  # ------------------
+
+    - name: seaweedfs 
+      namespace: seaweedfs 
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://seaweedfs.github.io/seaweedfs-operator
+          targetRevision: 0.1.22 
+          chart: seaweedfs-operator
 
   # ------------------
   # RookCeph (3s-only) / DISABLED

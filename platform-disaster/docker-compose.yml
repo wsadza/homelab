@@ -1,35 +1,75 @@
 services:
-  master:
-    image: chrislusf/seaweedfs:latest
-    command: "master -ip=master"
-    volumes:
-      - /srv/seaweedfs/master:/data
-    ports:
-      - "9333:9333"
 
-  volume:
-    image: chrislusf/seaweedfs:latest
-    command: "volume -mserver=master:9333 -ip=volume -dir=/data -max=0"
-    volumes:
-      - /srv/seaweedfs/volume:/data
-    depends_on:
-      - master
-
-  filer:
-    image: chrislusf/seaweedfs:latest
-    command: "filer -master=master:9333"
-    volumes:
-      - /srv/seaweedfs/filer:/data
+  rclone_rclone:
+    image: rclone/rclone
+    container_name: rclone_rclone
+    restart: always
+    command: rcd --rc-web-gui --rc-addr :5572 --rc-user jsmith --rc-pass mypassword
     ports:
-      - "8888:8888"
-    depends_on:
-      - master
-      - volume
+      - "5572:5572"
+    volumes:
+      - /rclone_rclone:/config/rclone
+      - /rclone_rclone:/logs
+    environment:
+      - PHP_TZ=Europe/London
+      - PUID=1000
+      - PGID=1000
 
-  s3:
+  seaweedfs:
     image: chrislusf/seaweedfs:latest
-    command: "s3 -filer=filer:8888 -port=8333"
+    container_name: seaweedfs-backup
+    restart: unless-stopped
+
+    command: >
+      server
+      -dir=/data
+      -s3
+      -s3.port=8333
+      -s3.config=/etc/seaweedfs/s3.json
+      -ip.bind=0.0.0.0
+
     ports:
-      - "8333:8333"
-    depends_on:
-      - filer
+      - "8333:8333"   # S3 API
+      - "9333:9333"   # master UI/API
+      - "8888:8888"   # filer UI/API, if exposed by server mode
+      - "8080:8080"   # volume server
+
+    volumes:
+      - /srv/seaweedfs-backup/data:/data
+      - /srv/seaweedfs-backup/config/s3.json:/etc/seaweedfs/s3.json:ro
+
+      #services:
+      #  master:
+      #    image: chrislusf/seaweedfs:latest
+      #    command: "master -ip=master"
+      #    volumes:
+      #      - /srv/seaweedfs/master:/data
+      #    ports:
+      #      - "9333:9333"
+      #
+      #  volume:
+      #    image: chrislusf/seaweedfs:latest
+      #    command: "volume -mserver=master:9333 -ip=volume -dir=/data -max=0"
+      #    volumes:
+      #      - /srv/seaweedfs/volume:/data
+      #    depends_on:
+      #      - master
+      #
+      #  filer:
+      #    image: chrislusf/seaweedfs:latest
+      #    command: "filer -master=master:9333"
+      #    volumes:
+      #      - /srv/seaweedfs/filer:/data
+      #    ports:
+      #      - "8888:8888"
+      #    depends_on:
+      #      - master
+      #      - volume
+      #
+      #  s3:
+      #    image: chrislusf/seaweedfs:latest
+      #    command: "s3 -filer=filer:8888 -port=8333"
+      #    ports:
+      #      - "8333:8333"
+      #    depends_on:
+      #      - filer

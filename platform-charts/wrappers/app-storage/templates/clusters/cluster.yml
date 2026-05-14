@@ -1,27 +1,29 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: nextcloud-postgresql
-  namespace: nextcloud 
+  name: psql-instance
+  namespace: default
 spec:
   instances: 1
+
   imageName: ghcr.io/cloudnative-pg/postgresql:16
+
   bootstrap:
     initdb:
-      database: nextcloud 
-      owner: nextcloud 
+      database: default
+      owner: user
       secret:
-        name: nextcloud-database-secret
+        name: dummy-db-user 
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
         barmanObjectName: seaweedfs-store
-        serverName: nextcloud-v1
+        serverName: postgresql
 
   storage:
-    size: 20Gi
-    storageClass: storage-local-retain
+    size: 5Gi
+
   monitoring:
     enablePodMonitor: false

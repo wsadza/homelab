@@ -1,0 +1,95 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: seaweedfs-s3-restore
+  namespace: seaweedfs
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: rclone
+          image: rclone/rclone:latest
+          env:
+            - name: SRC_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: seaweedfs-backup-secrets
+                  key: SRC_ACCESS_KEY
+            - name: SRC_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: seaweedfs-backup-secrets
+                  key: SRC_SECRET_KEY
+            - name: DST_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: seaweedfs-backup-secrets
+                  key: DST_ACCESS_KEY
+            - name: DST_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: seaweedfs-backup-secrets
+                  key: DST_SECRET_KEY
+
+            # Primary/original SeaweedFS
+            - name: PRIMARY_ENDPOINT
+              value: "http://seaweedfs-s3.seaweedfs.svc.cluster.local:8333"
+
+            # Backup SeaweedFS on second machine
+            - name: BACKUP_ENDPOINT
+              value: "http://192.168.1.10:8333"
+
+            - name: SOURCE_BUCKET
+              value: "nextcloud"
+            - name: BACKUP_BUCKET
+              value: "backup"
+            - name: RESTORE_DATE
+              value: "2026-05-14"
+            - name: RESTORE_BUCKET
+              value: "nextcloud-restore"
+
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -eu
+
+              mkdir -p /config/rclone
+
+              cat > /config/rclone/rclone.conf <<EOF
+              [primary]
+              type = s3
+              provider = Other
+              access_key_id = ${SRC_ACCESS_KEY}
+              secret_access_key = ${SRC_SECRET_KEY}
+              endpoint = ${PRIMARY_ENDPOINT}
+              acl = private
+              force_path_style = true
+
+              [backup]
+              type = s3
+              provider = Other
+              access_key_id = ${DST_ACCESS_KEY}
+              secret_access_key = ${DST_SECRET_KEY}
+              endpoint = ${BACKUP_ENDPOINT}
+              acl = private
+              force_path_style = true
+              EOF
+
+              echo "Restoring ${SOURCE_BUCKET} from ${RESTORE_DATE} into ${RESTORE_BUCKET}"
+
+              rclone mkdir primary:${RESTORE_BUCKET}
+
+              rclone copy \
+                backup:${BACKUP_BUCKET}/${RESTORE_DATE} \
+                primary:${RESTORE_BUCKET} \
+                --s3-no-check-bucket \
+                --checksum \
+                --fast-list \
+                --transfers 8 \
+                --checkers 16 \
+                --log-level INFO
+
+              echo "Restore finished"

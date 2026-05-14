@@ -1,0 +1,97 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: seaweedfs-s3-backup
+  namespace: seaweedfs
+spec:
+  schedule: "0 2 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: Never
+
+          containers:
+            - name: rclone
+              image: rclone/rclone:latest
+
+              env:
+                - name: SRC_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: seaweedfs-backup-secrets
+                      key: SRC_ACCESS_KEY
+                - name: SRC_SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: seaweedfs-backup-secrets
+                      key: SRC_SECRET_KEY
+                - name: DST_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: seaweedfs-backup-secrets
+                      key: DST_ACCESS_KEY
+                - name: DST_SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: seaweedfs-backup-secrets
+                      key: DST_SECRET_KEY
+
+                - name: SRC_ENDPOINT
+                  value: "http://seaweedfs-s3.seaweedfs.svc.cluster.local:8333"
+                - name: DST_ENDPOINT
+                  value: "http://192.168.1.10:8333"
+
+                - name: SRC_BUCKET
+                  value: "nextcloud"
+                - name: DST_BUCKET
+                  value: "backup"
+
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -eu
+
+                  mkdir -p /config/rclone
+
+                  cat > /config/rclone/rclone.conf <<EOF
+                  [src]
+                  type = s3
+                  provider = Other
+                  access_key_id = ${SRC_ACCESS_KEY}
+                  secret_access_key = ${SRC_SECRET_KEY}
+                  endpoint = ${SRC_ENDPOINT}
+                  acl = private
+                  force_path_style = true
+
+                  [dst]
+                  type = s3
+                  provider = Other
+                  access_key_id = ${DST_ACCESS_KEY}
+                  secret_access_key = ${DST_SECRET_KEY}
+                  endpoint = ${DST_ENDPOINT}
+                  acl = private
+                  force_path_style = true
+                  EOF
+
+                  DATE=$(date +%F)
+
+                  echo "Backing up ${SRC_BUCKET} to ${DST_BUCKET}/${DATE}"
+
+                  rclone copy \
+                    src:${SRC_BUCKET} \
+                    dst:${DST_BUCKET}/${DATE} \
+                    --s3-no-check-bucket \
+                    --checksum \
+                    --fast-list \
+                    --transfers 8 \
+                    --checkers 16 \
+                    --log-level INFO
+
+                  echo "Backup complete"
