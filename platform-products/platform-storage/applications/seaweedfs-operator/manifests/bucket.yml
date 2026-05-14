@@ -2,7 +2,6 @@ apiVersion: seaweed.seaweedfs.com/v1
 kind: Bucket
 metadata:
   name: app-data
-  namespace: seaweed 
 spec:
   clusterRef:
     name: seaweed1
