@@ -52,11 +52,11 @@ applications:
           valueFiles: 
             - $values/platform-products/platform-storage/applications/cloudnative-pg/helm/values.yml
 
-        - type: manifests
-          repoURL: https://github.com/cloudnative-pg/plugin-barman-cloud
-          targetRevision: v0.12.0
-          path: .
-          include: manifest.yaml
+        - type: helm
+          repoURL: https://cloudnative-pg.io/charts/
+          targetRevision: 0.6.0
+          chart: plugin-barman-cloud 
+
 
   # ------------------
   # SeaweedFS (3s-only)
