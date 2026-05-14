@@ -1,0 +1,25 @@
+apiVersion: seaweed.seaweedfs.com/v1
+kind: Bucket
+metadata:
+  name: app-data
+  namespace: seaweed 
+spec:
+  clusterRef:
+    name: seaweed1
+    namespace: storage
+
+  versioning: Enabled
+
+  quota:
+    enabled: true
+    size: 10Gi
+
+  owner:
+    name: app-user
+
+  access:
+    - user: app-user
+      actions:
+        - Read
+        - Write
+        - List
