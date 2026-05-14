@@ -13,8 +13,7 @@ spec:
     enabled: true
     size: 10Gi
 
-  owner:
-    name: app-user
+  owner: app-user
 
   access:
     - user: app-user
