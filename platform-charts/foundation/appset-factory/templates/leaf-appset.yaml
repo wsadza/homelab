@@ -98,6 +98,10 @@ spec:
           directory:
             recurse: {{ `{{ .recurse | default false }}` }}
         {{ `{{- end }}` }}
+        {{ `{{- if hasKey . "include" }}` }}
+          directory:
+            include: {{ `{{ .include | quote }}` }}
+        {{ `{{- end }}` }}
           
         {{ `{{- else if eq .type "kustomize"}}` }}
         - repoURL: {{ `{{ .repoURL | quote }}` }}
