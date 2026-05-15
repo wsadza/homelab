@@ -20,6 +20,16 @@ spec:
 
   filer:
     replicas: 1
-
   s3:
     enabled: true
+  iam: true
+  extraArgs:
+    - "-iam.config=/etc/seaweedfs/iam/iam.json"
+  volumes:
+    - name: iam-config
+      secret:
+        secretName: seaweed-iam-config
+  volumeMounts:
+    - name: iam-config
+      mountPath: /etc/seaweedfs/iam
+      readOnly: true
