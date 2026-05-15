@@ -89,17 +89,11 @@ applications:
           targetRevision: HEAD
           path: platform-products/platform-storage/applications/seaweedfs/kustomize
 
-        # Install COSI CRDs
-        - type: manifests
-          repoURL: https://github.com/wsadza/homelab.git
+        # Install COSI CRDs & Controller
+        - type: kustomize 
+          repoURL: https://github.com/kubernetes-sigs/container-object-storage-interface
           targetRevision: HEAD
-          path: https://github.com/kubernetes-sigs/container-object-storage-interface/client/config/crd
-        
-        # Install the COSI controller
-        - type: manifests
-          repoURL: https://github.com/wsadza/homelab.git
-          targetRevision: HEAD
-          path: https://github.com/kubernetes-sigs/container-object-storage-interface/client/config/crd
+          path: . 
 
   # ------------------
   # SeaweedFS Operator (S3) 
