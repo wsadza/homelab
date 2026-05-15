@@ -1,0 +1,130 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-app-data-s3-credentials
+  namespace: default 
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: seaweedfs-credentials-job
+
+      volumes:
+        - name: shared
+          emptyDir: {}
+
+      initContainers:
+        - name: generate-seaweedfs-key
+          image: amazon/aws-cli:2.15.40
+          env:
+            - name: AWS_DEFAULT_REGION
+              value: us-east-1
+            - name: AWS_REGION
+              value: us-east-1
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -eu
+
+              SEAWEED_ENDPOINT="http://seaweed-filer.seaweedfs-operator.svc.cluster.local:8333"
+              APP_USER="app-user"
+              REGION="us-east-1"
+
+              yum install -y jq >/dev/null 2>&1 || true
+
+              echo "Ensuring IAM user exists: ${APP_USER}"
+
+              aws --region "${REGION}" --endpoint-url "${SEAWEED_ENDPOINT}" iam get-user \
+                --user-name "${APP_USER}" >/dev/null 2>&1 || \
+              aws --region "${REGION}" --endpoint-url "${SEAWEED_ENDPOINT}" iam create-user \
+                --user-name "${APP_USER}"
+
+              echo "Creating access key for ${APP_USER}"
+
+              CREDS_JSON="$(aws --region "${REGION}" --endpoint-url "${SEAWEED_ENDPOINT}" iam create-access-key \
+                --user-name "${APP_USER}")"
+
+              ACCESS_KEY_ID="$(echo "${CREDS_JSON}" | jq -r '.AccessKey.AccessKeyId')"
+              SECRET_ACCESS_KEY="$(echo "${CREDS_JSON}" | jq -r '.AccessKey.SecretAccessKey')"
+
+              cat > /shared/credentials.env <<EOF
+              AWS_ACCESS_KEY_ID=${ACCESS_KEY_ID}
+              AWS_SECRET_ACCESS_KEY=${SECRET_ACCESS_KEY}
+              EOF
+
+              chmod 0600 /shared/credentials.env
+
+              volumeMounts:
+                - name: shared
+                  mountPath: /shared
+
+        - name: create-kubernetes-secret
+          image: bitnami/kubectl:1.30
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -eu
+
+              SECRET_NAME="app-data-s3-credentials"
+              BUCKET_NAME="app-data"
+              SEAWEED_ENDPOINT="http://seaweed-filer.seaweedfs-operator.svc.cluster.local:8333"
+
+              if kubectl get secret "${SECRET_NAME}" >/dev/null 2>&1; then
+                echo "Secret already exists: ${SECRET_NAME}"
+                exit 0
+              fi
+
+              . /shared/credentials.env
+
+              kubectl create secret generic "${SECRET_NAME}" \
+                --from-literal=ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" \
+                --from-literal=SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" \
+                --from-literal=ENDPOINT_URL="${SEAWEED_ENDPOINT}" \
+                --from-literal=S3_BUCKET="${BUCKET_NAME}"
+
+              echo "Created Secret: ${SECRET_NAME}"
+
+          volumeMounts:
+            - name: shared
+              mountPath: /shared
+
+      containers:
+        - name: done
+          image: busybox:1.36
+          command:
+            - /bin/sh
+            - -c
+            - echo "SeaweedFS S3 credentials created"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: seaweedfs-credentials-job
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: seaweedfs-credentials-job
+  namespace: default
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: seaweedfs-credentials-job
+  namespace: default
+subjects:
+  - kind: ServiceAccount
+    name: seaweedfs-credentials-job
+    namespace: default
+roleRef:
+  kind: Role
+  name: seaweedfs-credentials-job
+  apiGroup: rbac.authorization.k8s.io
