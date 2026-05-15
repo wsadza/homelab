@@ -105,6 +105,16 @@ applications:
           valueFiles: 
             - $values/platform-products/platform-storage/applications/seaweedfs/helm/values.yml
 
+        - type: kustomize 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-products/platform-storage/applications/seaweedfs/kustomize
+
+        - type: manifests
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-products/platform-storage/applications/seaweedfs/manifests 
+
   # ------------------
   # SeaweedFS Operator (S3) 
   # ------------------
