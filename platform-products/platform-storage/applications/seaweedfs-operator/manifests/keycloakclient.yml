@@ -5,7 +5,7 @@ metadata:
   namespace: keycloak
 spec:
   realmRef:
-    name: seaweedfs
+    name: platform
     kind: KeycloakRealm
   clientId: "seaweedfs-s3"
   public: false
