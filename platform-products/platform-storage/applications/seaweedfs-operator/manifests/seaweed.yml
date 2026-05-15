@@ -24,7 +24,9 @@ spec:
       enabled: true
     iam: true
     extraArgs:
-      - "-iam.config=/etc/seaweedfs/iam/iam.json"
+      - "-s3"
+      - "-s3.port=8333"
+      - "-s3.iam.config=/etc/seaweedfs/iam/iam.json"
     volumes:
       - name: iam-config
         secret:
