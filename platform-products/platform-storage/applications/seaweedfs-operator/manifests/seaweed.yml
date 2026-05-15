@@ -1,7 +1,7 @@
 apiVersion: seaweed.seaweedfs.com/v1
 kind: Seaweed
 metadata:
-  name: seaweed1
+  name: seaweed
 spec:
   image: chrislusf/seaweedfs:latest
   volumeServerDiskCount: 1
@@ -20,18 +20,18 @@ spec:
 
   filer:
     replicas: 1
-    s3:
-      enabled: true
-    iam: true
-    extraArgs:
-      - "-s3.iam.config=/etc/seaweedfs/iam/iam.json"
-      - "-s3.iam.readOnly=false"
-    volumes:
-      - name: iam-config
-        secret:
-          secretName: seaweed-iam-config
-    volumeMounts:
-      - name: iam-config
-        mountPath: /etc/seaweedfs/iam
-        readOnly: true
+    #s3:
+    #  enabled: true
+    #iam: true
+    #extraArgs:
+    #  - "-s3.iam.config=/etc/seaweedfs/iam/iam.json"
+    #  - "-s3.iam.readOnly=false"
+    #volumes:
+    #  - name: iam-config
+    #    secret:
+    #      secretName: seaweed-iam-config
+    #volumeMounts:
+    #  - name: iam-config
+    #    mountPath: /etc/seaweedfs/iam
+    #    readOnly: true
 ---

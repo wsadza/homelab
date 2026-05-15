@@ -4,8 +4,8 @@ metadata:
   name: app-data
 spec:
   clusterRef:
-    name: seaweed1
-    namespace: seaweedfs
+    name: seaweed
+    namespace: seaweedfs-operator
 
   versioning: Enabled
 

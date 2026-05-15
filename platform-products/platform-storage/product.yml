@@ -120,9 +120,9 @@ applications:
   # ------------------
 
     - name: seaweedfs-operator
-      namespace: seaweedfs 
+      namespace: seaweedfs-operator
 
-      enabled: false
+      enabled: true
       priority: 0
 
       syncPolicy:

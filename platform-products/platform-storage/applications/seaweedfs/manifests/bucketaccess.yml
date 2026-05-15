@@ -1,0 +1,10 @@
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: BucketAccess
+metadata:
+  name: test4
+  namespace: seaweedfs 
+spec:
+  bucketAccessClassName: sample-bac
+  bucketClaimName: app-bucket-v2 
+  credentialsSecretName: sample-bc-secret
+  protocol: s3

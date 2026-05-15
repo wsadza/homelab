@@ -4,6 +4,8 @@ metadata:
   name: app-bucket-v2
   namespace: seaweedfs 
 spec:
+  #existingBucketName: app-bucket-v2
   bucketClassName: seaweedfs
+  bucketName: nextcloud-app-bucket
   protocols:
     - s3
