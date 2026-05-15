@@ -130,8 +130,8 @@ applications:
   # Exteranl-Secret
   # ------------------
   
-    - name: external-secret
-      namespace: external-secret
+    - name: external-secrets
+      namespace: external-secrets
 
       enabled: true
       priority: 0
