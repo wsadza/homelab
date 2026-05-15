@@ -29,3 +29,6 @@ s3:
   enableAuth: true
   service:
     type: ClusterIP
+
+cosi:
+  enabled: true
