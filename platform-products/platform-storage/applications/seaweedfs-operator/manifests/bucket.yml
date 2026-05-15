@@ -2,7 +2,7 @@ apiVersion: seaweed.seaweedfs.com/v1
 kind: Bucket
 metadata:
   name: nextcloud-managed 
-  namespace: seaweedfs-operator
+  namespace: seaweedfs
 spec:
   clusterRef:
     name: seaweed
