@@ -75,7 +75,7 @@ applications:
         # Install COSI CRDs & Controller
         - type: kustomize 
           repoURL: https://github.com/kubernetes-sigs/container-object-storage-interface
-          targetRevision: HEAD 
+          targetRevision: v0.2.1
           path: . 
 
   # ------------------
