@@ -58,6 +58,27 @@ applications:
           chart: plugin-barman-cloud 
 
   # ------------------
+  # COSI 
+  # ------------------
+
+    - name: cosi
+      namespace: cosi 
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        # Install COSI CRDs & Controller
+        - type: kustomize 
+          repoURL: https://github.com/kubernetes-sigs/container-object-storage-interface
+          targetRevision: v0.2.2 
+          path: . 
+
+  # ------------------
   # SeaweedFS (S3)
   # ------------------
 
@@ -83,17 +104,6 @@ applications:
           chart: seaweedfs
           valueFiles: 
             - $values/platform-products/platform-storage/applications/seaweedfs/helm/values.yml
-
-        - type: kustomize 
-          repoURL: https://github.com/wsadza/homelab.git
-          targetRevision: HEAD
-          path: platform-products/platform-storage/applications/seaweedfs/kustomize
-
-        # Install COSI CRDs & Controller
-        - type: kustomize 
-          repoURL: https://github.com/kubernetes-sigs/container-object-storage-interface
-          targetRevision: v0.2.2 
-          path: . 
 
   # ------------------
   # SeaweedFS Operator (S3) 
