@@ -1,0 +1,8 @@
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: BucketClass
+metadata:
+  name: seaweedfs-bucketclass
+driverName: seaweedfs.objectstorage.k8s.io
+deletionPolicy: Delete
+protocols:
+  - s3

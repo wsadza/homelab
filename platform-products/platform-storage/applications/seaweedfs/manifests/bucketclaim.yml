@@ -1,0 +1,9 @@
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: BucketClaim
+metadata:
+  name: app-bucket-v2
+  namespace: seaweedfs 
+spec:
+  bucketClassName: seaweedfs
+  protocols:
+    - s3

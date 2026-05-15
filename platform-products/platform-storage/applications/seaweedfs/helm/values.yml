@@ -32,3 +32,4 @@ s3:
 
 cosi:
   enabled: true
+  image: "ghcr.io/seaweedfs/seaweedfs-cosi-driver:v0.3.0"
