@@ -1,11 +1,4 @@
 apiVersion: objectstorage.k8s.io/v1alpha1
-kind: BucketClass
-metadata:
-  name: seaweedfs
-driverName: seaweedfs.objectstorage.k8s.io
-deletionPolicy: Delete
----
-apiVersion: objectstorage.k8s.io/v1alpha1
 kind: BucketAccessClass
 metadata:
   name: seaweedfs-key
@@ -18,7 +11,9 @@ metadata:
   name: app-bucket
   namespace: seaweedfs
 spec:
-  bucketClassName: seaweedfs
+  #bucketClassName: seaweedfs
+  #existingBucketName: nextcloud-managed
+  existingBucketName: seaweedfs
   protocols:
     - s3
 ---
@@ -32,3 +27,32 @@ spec:
   bucketClaimName: app-bucket
   credentialsSecretName: app-bucket-secret
   protocol: s3
+---
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: Bucket
+metadata:
+  generation: 1
+  name: seaweedfs
+spec:
+  bucketClaim: {}
+  #    name: app-bucket
+  #    namespace: seaweedfs
+  bucketClassName: seaweedfs
+  deletionPolicy: Delete
+  driverName: seaweedfs.objectstorage.k8s.io
+  protocols:
+  - s3
+#apiVersion: objectstorage.k8s.io/v1alpha1
+#kind: Bucket
+#metadata:
+#  name: nextcloud-managed
+#spec:
+#  bucketClaim:
+#    name: app-bucket 
+#    namespace: seaweedfs
+#  bucketClassName: seaweedfs
+#  deletionPolicy: Delete
+#  driverName: seaweedfs.objectstorage.k8s.io
+#  #existingBucketID: nextcloud-managed
+#  protocols:
+#    - s3
