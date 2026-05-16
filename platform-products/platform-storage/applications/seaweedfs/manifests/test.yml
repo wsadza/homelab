@@ -1,0 +1,34 @@
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: BucketClass
+metadata:
+  name: seaweedfs
+driverName: seaweedfs.objectstorage.k8s.io
+deletionPolicy: Delete
+---
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: BucketAccessClass
+metadata:
+  name: seaweedfs-key
+driverName: seaweedfs.objectstorage.k8s.io
+authenticationType: KEY
+---
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: BucketClaim
+metadata:
+  name: app-bucket
+  namespace: seaweedfs
+spec:
+  bucketClassName: seaweedfs
+  protocols:
+    - s3
+---
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: BucketAccess
+metadata:
+  name: app-bucket-access
+  namespace: seaweedfs
+spec:
+  bucketAccessClassName: seaweedfs-key
+  bucketClaimName: app-bucket
+  credentialsSecretName: app-bucket-secret
+  protocol: s3

@@ -6,7 +6,7 @@ metadata:
 spec:
   clusterRef:
     name: seaweed
-    namespace: seaweedfs-operator
+    namespace: seaweedfs
   reclaimPolicy: Delete
   versioning: Enabled
 

@@ -122,7 +122,7 @@ applications:
     - name: seaweedfs-operator
       namespace: seaweedfs
 
-      enabled: true
+      enabled: false
       priority: 0
 
       syncPolicy:

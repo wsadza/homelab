@@ -2,6 +2,5 @@ kind: BucketAccessClass
 apiVersion: objectstorage.k8s.io/v1alpha1
 metadata:
   name: sample
-  namespace: seaweedfs
 driverName: seaweedfs.objectstorage.k8s.io
 authenticationType: KEY
