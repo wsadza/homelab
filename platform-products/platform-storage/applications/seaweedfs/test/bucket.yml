@@ -1,0 +1,14 @@
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: Bucket
+metadata:
+  name: nextcloud-managed
+spec:
+  bucketClaim:
+    name: app-bucket
+    namespace: seaweedfs
+  bucketClassName: seaweedfs
+  deletionPolicy: Retain
+  driverName: seaweedfs.objectstorage.k8s.io
+  existingBucketID: nextcloud-managed
+  protocols:
+    - S3

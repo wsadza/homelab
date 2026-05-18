@@ -1,0 +1,18 @@
+{{- if .Values.appStorage.psql.backupSchedule.enabled }}
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: {{ default (printf "%s-scheduled-backup" (include "common.names.fullname" .)) .Values.appStorage.psql.backupSchedule.name | quote }}
+  namespace: {{ default (include "common.names.namespace" .) .Values.appStorage.psql.namespace | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.appStorage.psql.backupSchedule.schedule | quote }}
+  immediate: {{ .Values.appStorage.psql.backupSchedule.immediate }}
+  backupOwnerReference: self
+  cluster:
+    name: {{ default (printf "%s-cnpg-cluster" (include "common.names.fullname" .)) .Values.appStorage.psql.name | quote }}
+  method: plugin
+  pluginConfiguration:
+    name: {{ .Values.appStorage.psql.backupSchedule.pluginName | quote }}
+{{- end }}

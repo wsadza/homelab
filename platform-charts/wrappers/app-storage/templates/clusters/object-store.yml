@@ -1,0 +1,26 @@
+{{- if .Values.appStorage.psql.objectStore.enabled }}
+{{- $existingSecretName := default (printf "%s-object-store-secret" (include "common.names.fullname" .)) .Values.appStorage.psql.objectStore.existingSecret.name | quote }}
+{{- $objectStore := default (printf "%s-object-store" (include "common.names.fullname" .)) .Values.appStorage.psql.objectStore.name }}
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:  
+  name: {{ $objectStore | quote }}
+  namespace: {{ default ( include "common.names.namespace" . ) .Values.appStorage.psql.objectStore.namespace  | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+spec:
+  configuration:
+    destinationPath: {{ .Values.appStorage.psql.objectStore.destinationPath | quote }} 
+    endpointURL: {{ .Values.appStorage.psql.objectStore.endpointURL | quote }}
+    s3Credentials:
+      accessKeyId:
+        name: {{ $existingSecretName }}
+        key: {{ .Values.appStorage.psql.objectStore.existingSecret.keys.accessKey | quote }}
+      secretAccessKey:
+        name: {{ $existingSecretName }}
+        key: {{ .Values.appStorage.psql.objectStore.existingSecret.keys.secretKey| quote }}
+    wal:
+      compression: {{ .Values.appStorage.psql.objectStore.wal.compression | quote }}
+    data:
+      compression: {{ .Values.appStorage.psql.objectStore.data.compression | quote }}
+{{- end }}

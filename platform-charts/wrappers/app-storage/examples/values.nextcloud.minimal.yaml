@@ -1,0 +1,43 @@
+# ===============================================
+# Author: Igor Sadza 
+# Purpose: Helm chart values for app storage resources: S3 blob storage and CNPG PostgreSQL
+# ===============================================
+
+# -----------------------------------------------
+# @section common parameters
+# -----------------------------------------------
+#
+# @param nameOverride      : String to partially override common.names.name
+# @param fullnameOverride  : String to fully override common.names.fullname
+# @param namespaceOverride : String to fully override common.names.namespace
+# @param commonLabels      : Labels to add to all deployed objects
+# @param commonAnnotations : Annotations to add to all deployed objects
+#
+nameOverride: ""
+fullnameOverride: "nextcloud"
+namespaceOverride: ""
+commonLabels: {}
+commonAnnotations: {}
+
+# ===============================================
+#    ___             ______                        
+#   / _ | ___  ___  / __/ /____  _______ ____ ____ 
+#  / __ |/ _ \/ _ \_\ \/ __/ _ \/ __/ _ `/ _ `/ -_)
+# /_/ |_/ .__/ .__/___/\__/\___/_/  \_,_/\_, /\__/ 
+#      /_/  /_/                         /___/      
+# : AppStorage
+# ===============================================
+
+appStorage:
+
+  # ===============================================
+  # @section psql parameters
+  # ===============================================
+  #
+  psql:
+    enabled: true
+    storage:
+      size: 50Gi
+    objectStore:
+      destinationPath: "s3://app-bucket/databases"
+      endpointURL: "http://seaweedfs-s3.seaweedfs.svc.cluster.local:8333"

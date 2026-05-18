@@ -25,17 +25,17 @@ spec:
       enabled: true
     iam: true
 
-    extraArgs:
-      - "-iam"
-      - "-s3.iam.config=/etc/seaweedfs/iam/iam.json"
-      - "-s3.iam.readOnly=false"
+    #extraArgs:
+    #  - "-iam"
+    #  - "-s3.iam.config=/etc/seaweedfs/iam/iam.json"
+    #  - "-s3.iam.readOnly=false"
 
-    volumes:
-      - name: iam-config
-        secret:
-          secretName: seaweed-iam-config
+    #volumes:
+    #  - name: iam-config
+    #    secret:
+    #      secretName: seaweed-iam-config
 
-    volumeMounts:
-      - name: iam-config
-        mountPath: /etc/seaweedfs/iam
-        readOnly: true
+    #volumeMounts:
+    #  - name: iam-config
+    #    mountPath: /etc/seaweedfs/iam
+    #    readOnly: true

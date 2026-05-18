@@ -4,24 +4,37 @@
 #  / __ |/ _ \/ _ \_\ \/ __/ _ \/ __/ _ `/ _ `/ -_)
 # /_/ |_/ .__/ .__/___/\__/\___/_/  \_,_/\_, /\__/ 
 #      /_/  /_/                         /___/      
-# : AppStorage (wrapper)
+# : AppStorage
 # -----------------------------------------------
 # Author: Igor Sadza 
 # Purpose: Helm chart values for app storage resources: S3 blob storage and CNPG PostgreSQL
 # ===============================================
 
 # -----------------------------------------------
-# @section appStorage parameters
+# @section common parameters
 # -----------------------------------------------
+#
+# @param nameOverride      : String to partially override common.names.name
+# @param fullnameOverride  : String to fully override common.names.fullname
+# @param namespaceOverride : String to fully override common.names.namespace
+# @param commonLabels      : Labels to add to all deployed objects
+# @param commonAnnotations : Annotations to add to all deployed objects
+#
+nameOverride: ""
+fullnameOverride: "nextcloud"
+namespaceOverride: ""
+commonLabels: {}
+commonAnnotations: {}
 
 appStorage:
+  enabled: true 
 
   # ---------------------
   # S3-Blob Storage 
   # ---------------------
   
   blob:
-    enabled: false
+    enabled: true
 
     clusterRef:
       name: seaweed
@@ -44,7 +57,7 @@ appStorage:
   # @param appStorage.psql.namespace : Override CNPG Cluster namespace; defaults to common.names.namespace
   #
   psql:
-    enabled: false
+    enabled: true
 
     name: "" # defaults to <fullname>-cnpg-cluster
     namespace: "" 
@@ -63,7 +76,7 @@ appStorage:
     image: ghcr.io/cloudnative-pg/postgresql:16
 
     storage:
-      size: 10Gi
+      size: 20Gi
       storageClass: storage-local-retain
 
     monitoring:
@@ -80,13 +93,13 @@ appStorage:
     # @param appStorage.psql.bootstrap.recovery.source    : External cluster source name used when bootstrap.mode is recovery
     #
     bootstrap:
-      mode: initdb # initdb | recovery
+      mode: initdb
 
       initdb:
-        database: "" # defaults to <fullname>
-        owner:  "" # defaults to <fullname>
+        database: "" 
+        owner:  ""
         secret:
-          name:  "" # defaults to <fullname>-database-secret
+          name:  ""
 
       recovery:
         source: origin
@@ -127,7 +140,7 @@ appStorage:
         plugin:
           name: barman-cloud.cloudnative-pg.io
           parameters:
-            barmanObjectName: "" # defaults to <fullname>-object-store
+            barmanObjectName: ""
             serverName: ""
    
     # ===============================================
@@ -143,7 +156,7 @@ appStorage:
       - name: barman-cloud.cloudnative-pg.io
         isWALArchiver: true
         parameters:
-          barmanObjectName: "" # defaults to <fullname>-object-store 
+          barmanObjectName: ""
           serverName: ""
 
     # ===============================================
@@ -168,8 +181,8 @@ appStorage:
       name: ""
       namespace: ""
 
-      destinationPath: ""
-      endpointURL: ""
+      destinationPath: "s3://app-bucket/databases"
+      endpointURL: "http://seaweedfs-s3.seaweedfs.svc.cluster.local:8333"
 
       existingSecret:
         name: ""
@@ -179,6 +192,7 @@ appStorage:
 
       wal:
         compression: gzip
+
       data:
         compression: gzip        
 

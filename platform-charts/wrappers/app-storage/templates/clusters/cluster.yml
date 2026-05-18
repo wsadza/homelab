@@ -1,29 +1,86 @@
+{{- if .Values.appStorage.psql.enabled }}
+{{- $root := . }}
+
+{{- $objectStore := default (printf "%s-object-store" (include "common.names.fullname" .)) .Values.appStorage.psql.objectStore.name }}
+{{- $initdbSecretName := default (printf "%s-database-secret" (include "common.names.fullname" .)) .Values.appStorage.psql.bootstrap.initdb.secret.name }}
+
+{{- $backupGeneration := default "initial" .Values.appStorage.psql.backup.generation }}
+{{- $backupServerName := default (printf "%s-%s" (include "common.names.fullname" .) $backupGeneration) .Values.appStorage.psql.backup.serverName }}
+
+{{- $sourceGeneration := default "initial" .Values.appStorage.psql.recovery.sourceGeneration }}
+{{- $recoveryServerName := default (printf "%s-%s" (include "common.names.fullname" .) $sourceGeneration) .Values.appStorage.psql.recovery.sourceServerName }}
+
+{{- if and (eq .Values.appStorage.psql.bootstrap.mode "recovery") (eq $backupServerName $recoveryServerName) }}
+{{- fail (printf "Invalid recovery configuration: backup target serverName %q must differ from recovery source serverName %q. Set appStorage.psql.backup.generation to a new value, e.g. restore-YYYYMMDD." $backupServerName $recoveryServerName) }}
+{{- end }}
+
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
-metadata:
-  name: psql-instance
-  namespace: default
+metadata:  
+  name: {{ default (printf "%s-cnpg-cluster" (include "common.names.fullname" .)) .Values.appStorage.psql.name | quote }}
+  namespace: {{ default (include "common.names.namespace" .) .Values.appStorage.psql.namespace  | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
 spec:
-  instances: 1
-
-  imageName: ghcr.io/cloudnative-pg/postgresql:16
-
-  bootstrap:
-    initdb:
-      database: default
-      owner: user
-      secret:
-        name: dummy-db-user 
-
-  plugins:
-    - name: barman-cloud.cloudnative-pg.io
-      isWALArchiver: true
-      parameters:
-        barmanObjectName: seaweedfs-store
-        serverName: postgresql
-
-  storage:
-    size: 5Gi
-
+{{- /*
+--------------------------------------------
+  Instance Configuration 
+--------------------------------------------
+*/}}
+  instances: {{ .Values.appStorage.psql.instances }}
+  imageName: {{ .Values.appStorage.psql.image | quote }}
+  storage: 
+    size: {{ .Values.appStorage.psql.storage.size | quote }}
+    storageClass: {{ .Values.appStorage.psql.storage.storageClass | quote }}
   monitoring:
-    enablePodMonitor: false
+    enablePodMonitor: {{ .Values.appStorage.psql.monitoring.enablePodMonitor }}
+{{- /*
+--------------------------------------------
+  Bootstrap 
+--------------------------------------------
+*/}}
+  bootstrap:
+{{- if eq .Values.appStorage.psql.bootstrap.mode "initdb" }}
+{{- with .Values.appStorage.psql.bootstrap.initdb }}
+    initdb:
+      database: {{ default (include "common.names.fullname" $root) .database | quote }}
+      owner: {{ default (include "common.names.fullname" $root) .owner | quote }}
+      secret:
+        name: {{ $initdbSecretName | quote }}
+    {{- end }}
+{{- else if eq .Values.appStorage.psql.bootstrap.mode "recovery" }}
+{{- with .Values.appStorage.psql.bootstrap.recovery }}
+    recovery:
+      source: {{ .source | quote }}
+{{- end }}
+{{- end }}
+{{- /*
+--------------------------------------------
+  ExternalClusters 
+--------------------------------------------
+*/}}
+{{- if eq .Values.appStorage.psql.bootstrap.mode "recovery" }}
+  externalClusters:
+{{- range .Values.appStorage.psql.externalClusters }}
+    - name: {{ .name | quote }}
+      plugin:
+        name: {{ .plugin.name | quote }}
+        parameters:
+          barmanObjectName: {{ default $objectStore .plugin.parameters.barmanObjectName | quote }} 
+          serverName: {{ default $recoveryServerName .plugin.parameters.serverName | quote }}
+{{- end }}
+{{- end }}
+{{- /*
+--------------------------------------------
+  Plugins 
+--------------------------------------------
+*/}}
+  plugins:
+{{- range .Values.appStorage.psql.plugins }}
+    - name: {{ .name | quote }}
+      isWALArchiver: {{ .isWALArchiver }}
+      parameters:
+        barmanObjectName: {{ default $objectStore .parameters.barmanObjectName | quote }} 
+        serverName: {{ default $recoveryServerName .parameters.serverName | quote }}
+{{- end }}
+{{- end }}

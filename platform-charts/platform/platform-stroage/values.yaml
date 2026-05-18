@@ -1,0 +1,28 @@
+# ===============================================
+# Author: Igor Sadza 
+# Purpose: Manage Cluster Security
+# ===============================================
+
+platfromStorage:
+  enabled: true
+
+  # ===============================================
+  # @section NetworkPolicy parameters
+  # ===============================================
+  #
+  # @param...
+  # 
+  blobCluster:
+    enabled: true
+
+
+
+
+  # ===============================================
+  # @section NetworkPolicy parameters
+  # ===============================================
+  #
+  # @param...
+  # 
+  psqlCluster:
+    enabled: true

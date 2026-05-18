@@ -1,0 +1,10 @@
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: BucketAccess
+metadata:
+  name: app-bucket-access
+  namespace: seaweedfs
+spec:
+  bucketAccessClassName: seaweedfs
+  bucketClaimName: app-bucket
+  credentialsSecretName: app-bucket-secret
+  protocol: S3

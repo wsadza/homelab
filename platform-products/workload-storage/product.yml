@@ -39,10 +39,10 @@ applications:
           path: platform-products/workload-storage/applications/nextcloud/kustomize
 
         # Extra Manifests 
-        - type: manifests
-          repoURL: https://github.com/wsadza/homelab.git
-          targetRevision: HEAD
-          path: platform-products/workload-storage/applications/nextcloud/manifests
+        #- type: manifests
+        #  repoURL: https://github.com/wsadza/homelab.git
+        #  targetRevision: HEAD
+        #  path: platform-products/workload-storage/applications/nextcloud/manifests
 
         # Wrapper (expousure)
         - type: helm 
@@ -57,5 +57,13 @@ applications:
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
           path: platform-charts/wrappers/app-auth
+          valueFiles: 
+            - $values/platform-products/workload-storage/applications/nextcloud/helm/values.yml
+
+        # Wrapper (storage)
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-storage
           valueFiles: 
             - $values/platform-products/workload-storage/applications/nextcloud/helm/values.yml

@@ -4,35 +4,15 @@ global:
 
 master:
   enabled: false
-  replicas: 1
 
 volume:
   enabled: false
-  replicas: 1
-  dataDirs:
-    - name: data
-      type: persistentVolumeClaim
-      storageClass: "storage-local-retain"
-      size: "50Gi"
-      maxVolumes: 0
 
 filer:
   enabled: false
-  replicas: 1
 
 s3:
   enabled: false
-  replicas: 1
-  bindAddress: 0.0.0.0
-  port: 8333
-  httpsPort: 0
-  existingConfigSecret: seaweedfs-s3-secret
-  createBuckets:
-    - name: nextcloud
-      anonymousRead: false
-  enableAuth: true
-  service:
-    type: ClusterIP
 
 cosi:
   enabled: true
@@ -46,8 +26,3 @@ cosi:
 
   enableAuth: true
   existingConfigSecret: seaweed-cosi-s3-config
-
-
-  #cosi:
-  #  enabled: true
-  #  image: "ghcr.io/seaweedfs/seaweedfs-cosi-driver:v0.3.0"

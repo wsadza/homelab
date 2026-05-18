@@ -6,6 +6,12 @@ metadata:
 spec:
   instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:16
+  storage:
+    size: 20Gi
+    storageClass: storage-local-retain
+  monitoring:
+    enablePodMonitor: false
+
   bootstrap:
     initdb:
       database: nextcloud 
@@ -20,8 +26,3 @@ spec:
         barmanObjectName: seaweedfs-store
         serverName: nextcloud-v1
 
-  storage:
-    size: 20Gi
-    storageClass: storage-local-retain
-  monitoring:
-    enablePodMonitor: false
