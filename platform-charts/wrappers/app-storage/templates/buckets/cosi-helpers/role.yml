@@ -1,0 +1,18 @@
+{{- if .Values.appStorage.blob.enabled }}
+{{- $fullname := include "common.names.fullname" . }}
+{{- $baseName := default $fullname .Values.appStorage.blob.nameOverride }}
+apiVersion: rbac.authorization.k8s.io/v1 
+kind: Role 
+metadata:
+  name: {{ printf "%s-role" $baseName | quote }}
+  namespace: {{ default (include "common.names.namespace" .) .Values.appStorage.blob.namespace  | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get","list","watch"]
+  - apiGroups: ["authorization.k8s.io"]
+    resources: ["selfsubjectrulesreviews"]
+    verbs: ["create"]
+{{- end }}

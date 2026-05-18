@@ -4,10 +4,13 @@
 #  / __ |/ _ \/ _ \_\ \/ __/ _ \/ __/ _ `/ _ `/ -_)
 # /_/ |_/ .__/ .__/___/\__/\___/_/  \_,_/\_, /\__/ 
 #      /_/  /_/                         /___/      
+#
 # : AppStorage (wrapper)
 # -----------------------------------------------
-# Author: Igor Sadza 
+#
+# Author:  Igor Sadza
 # Purpose: Helm chart values for app storage resources: S3 blob storage and CNPG PostgreSQL
+#
 # ===============================================
 
 # -----------------------------------------------
@@ -21,30 +24,76 @@ appStorage:
   # ===============================================
   #
   blob:
-    enabled: false
+    enabled: true
 
-    name: "" # Defauls to <fullname>-bucket
-
+    # ===============================================
+    # Basic Configuration parameters 
+    # ===============================================
+    #
+    # @param appStorage.blob.enabled               : Enable S3 blob storage resources
+    # @param appStorage.blob.name                  : Override bucket name; defaults to <fullname>-bucket
+    # @param appStorage.blob.namespace             : Override bucket namespace; defaults to common.names.namespace
+    # @param appStorage.blob.credentialsSecretName : Override credentials Secret name; defaults to <fullname>-object-store-secret
+    #   
+    name: ""
     namespace: ""
     credentialsSecretName: ""
 
+    # ===============================================
+    # Bucket Naming parameters
+    # ===============================================
+    #
+    # @param appStorage.blob.bucketClassName       : COSI BucketClass name used by Bucket and BucketClaim
+    # @param appStorage.blob.bucketAccessClassName : COSI BucketAccessClass name used by BucketAccess
+    # @param appStorage.blob.driverName            : COSI object storage driver name
+    #
     bucketClassName: seaweedfs
     bucketAccessClassName: seaweedfs
     driverName: seaweedfs.objectstorage.k8s.io
 
+    # ===============================================
+    # @subsection clusterRef parameters
+    # ===============================================
+    #
+    # @param appStorage.blob.clusterRef.name      : SeaweedFS cluster name referenced by the bucket
+    # @param appStorage.blob.clusterRef.namespace : SeaweedFS cluster namespace referenced by the bucket
+    #
     clusterRef:
       name: seaweed
       namespace: seaweedfs
 
+    # ===============================================
+    # Reclaims parameters
+    # ===============================================
+    #
+    # @param appStorage.blob.reclaimPolicy  : SeaweedFS bucket reclaim policy
+    # @param appStorage.blob.deletionPolicy : COSI bucket deletion policy
+    # @param appStorage.blob.versioning     : Bucket versioning mode
+    #
     reclaimPolicy: Delete
     deletionPolicy: Retain
     versioning: Enabled
 
+    # ===============================================
+    # @subsection quota parameters
+    # ===============================================
+    #
+    # @param appStorage.blob.quota.size : Bucket quota size
+    #
     quota:
       size: 10Gi
 
-    owner: admin
 
+    # ===============================================
+    # @subsection access parameters
+    # ===============================================
+    #
+    # @param appStorage.blob.owner            : Bucket owner user
+    # @param appStorage.blob.access           : List of bucket access rules
+    # @param appStorage.blob.access[].user    : User granted access to the bucket
+    # @param appStorage.blob.access[].actions : List of allowed bucket actions for the user
+    #
+    owner: admin
     access:
       - user: admin
         actions:

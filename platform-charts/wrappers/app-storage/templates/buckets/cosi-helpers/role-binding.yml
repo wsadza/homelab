@@ -1,0 +1,20 @@
+{{- if .Values.appStorage.blob.enabled }}
+{{- $fullname := include "common.names.fullname" . }}
+{{- $baseName := default $fullname .Values.appStorage.blob.nameOverride }}
+{{- $namespace := default (include "common.names.namespace" .) .Values.appStorage.blob.namespace  | quote }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ printf "%s-role-binding" $baseName | quote }}
+  namespace: {{ $namespace }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ printf "%s-sa" $baseName | quote }}
+    namespace: {{ $namespace }} 
+roleRef:
+  kind: Role
+  name: {{ printf "%s-role" $baseName | quote }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
