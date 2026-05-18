@@ -1,6 +1,6 @@
 {{- if .Values.appStorage.blob.enabled }}
 {{- $fullname := include "common.names.fullname" . }}
-{{- $baseName := default $fullname .Values.appStorage.blob.nameOverride }}
+{{- $baseName := default $fullname .Values.appStorage.blob.name }}
 apiVersion: objectstorage.k8s.io/v1alpha1
 kind: BucketAccess
 metadata:
