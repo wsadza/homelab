@@ -97,7 +97,7 @@ appStorage:
     # @param appStorage.psql.bootstrap.recovery.source    : External cluster source name used when bootstrap.mode is recovery
     #
     bootstrap:
-      mode: "initdb" # initdb | recovery
+      mode: initdb # initdb | recovery
 
       initdb:
         database: "" # defaults to <fullname>

@@ -15,7 +15,7 @@
 {{- $recoveryServerName := default (printf "%s-%s" (include "common.names.fullname" .) $sourceGeneration) .Values.appStorage.psql.recovery.sourceServerName }}
 
 {{- $root := . }}
-{{- $mode := .Values.appStorage.psql.bootstrap.mode | quote }}
+{{- $mode := .Values.appStorage.psql.bootstrap.mode }}
 
 {{- /*
 --------------------------------------------
