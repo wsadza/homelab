@@ -34,65 +34,39 @@ appStorage:
     # @param appStorage.blob.name                  : Override bucket name; defaults to <fullname>-bucket
     # @param appStorage.blob.namespace             : Override bucket namespace; defaults to common.names.namespace
     # @param appStorage.blob.credentialsSecretName : Override credentials Secret name; defaults to <fullname>-object-store-secret
-    #   
+    # @param appStorage.blob.bucketClassName       : COSI BucketClass name used by Bucket and BucketClaim
+    # @param appStorage.blob.bucketAccessClassName : COSI BucketAccessClass name used by BucketAccess
+    # @param appStorage.blob.driverName            : COSI object storage driver name
+    # @param appStorage.blob.clusterRef.name       : SeaweedFS cluster name referenced by the bucket
+    # @param appStorage.blob.clusterRef.namespace  : SeaweedFS cluster namespace referenced by the bucket
+    # @param appStorage.blob.reclaimPolicy         : SeaweedFS bucket reclaim policy
+    # @param appStorage.blob.deletionPolicy        : COSI bucket deletion policy
+    # @param appStorage.blob.versioning            : Bucket versioning mode
+    # @param appStorage.blob.quota.size            : Bucket quota size
+    # @param appStorage.blob.owner                 : Bucket owner user
+    # @param appStorage.blob.access                : List of bucket access rules
+    # @param appStorage.blob.access[].user         : User granted access to the bucket
+    # @param appStorage.blob.access[].actions      : List of allowed bucket actions for the user
+    #
     name: ""
     namespace: ""
     credentialsSecretName: ""
 
-    # ===============================================
-    # Bucket Naming parameters
-    # ===============================================
-    #
-    # @param appStorage.blob.bucketClassName       : COSI BucketClass name used by Bucket and BucketClaim
-    # @param appStorage.blob.bucketAccessClassName : COSI BucketAccessClass name used by BucketAccess
-    # @param appStorage.blob.driverName            : COSI object storage driver name
-    #
     bucketClassName: seaweedfs
     bucketAccessClassName: seaweedfs
     driverName: seaweedfs.objectstorage.k8s.io
 
-    # ===============================================
-    # @subsection clusterRef parameters
-    # ===============================================
-    #
-    # @param appStorage.blob.clusterRef.name      : SeaweedFS cluster name referenced by the bucket
-    # @param appStorage.blob.clusterRef.namespace : SeaweedFS cluster namespace referenced by the bucket
-    #
     clusterRef:
       name: seaweed
       namespace: seaweedfs
 
-    # ===============================================
-    # Reclaims parameters
-    # ===============================================
-    #
-    # @param appStorage.blob.reclaimPolicy  : SeaweedFS bucket reclaim policy
-    # @param appStorage.blob.deletionPolicy : COSI bucket deletion policy
-    # @param appStorage.blob.versioning     : Bucket versioning mode
-    #
     reclaimPolicy: Delete
     deletionPolicy: Retain
     versioning: Enabled
 
-    # ===============================================
-    # @subsection quota parameters
-    # ===============================================
-    #
-    # @param appStorage.blob.quota.size : Bucket quota size
-    #
     quota:
       size: 10Gi
 
-
-    # ===============================================
-    # @subsection access parameters
-    # ===============================================
-    #
-    # @param appStorage.blob.owner            : Bucket owner user
-    # @param appStorage.blob.access           : List of bucket access rules
-    # @param appStorage.blob.access[].user    : User granted access to the bucket
-    # @param appStorage.blob.access[].actions : List of allowed bucket actions for the user
-    #
     owner: admin
     access:
       - user: admin
@@ -100,6 +74,65 @@ appStorage:
           - Read
           - Write
           - List
+
+    # ===============================================
+    # @subsection secretHelper parameters
+    # ===============================================
+    #
+    secretHelper:
+      enabled: true
+
+      # Final ExternalSecret Name
+      name: ""
+
+      serviceAccount:
+        name: ""
+        namespace: ""
+
+      role:
+        name: ""
+        namespace: ""
+        rules:
+          - apiGroups: [""]
+            resources: ["secrets"]
+            verbs: ["get","list","watch"]
+          - apiGroups: ["authorization.k8s.io"]
+            resources: ["selfsubjectrulesreviews"]
+            verbs: ["create"]
+
+      externalSecret:
+        apiVersion: external-secrets.io/v1
+        refreshInterval: 1m
+
+        secretStoreRef:
+          kind: SecretStore
+          name: ""
+
+        target:
+          name: "" 
+          creationPolicy: Owner
+          template:
+            engineVersion: v2
+            type: Opaque
+            data:
+              S3_BUCKET: '{{ $b := .bucketInfo | fromJson }}{{ index $b "spec" "bucketName" }}'
+              S3_ENDPOINT: '{{ $b := .bucketInfo | fromJson }}{{ index $b "spec" "secretS3" "endpoint" }}'
+              S3_REGION: '{{ $b := .bucketInfo | fromJson }}{{ index $b "spec" "secretS3" "region" }}'
+              S3_ACCESS_KEY: '{{ $b := .bucketInfo | fromJson }}{{ index $b "spec" "secretS3" "accessKeyID" }}'
+              S3_SECRET_KEY: '{{ $b := .bucketInfo | fromJson }}{{ index $b "spec" "secretS3" "accessSecretKey" }}'
+
+        data:
+          - secretKey: bucketInfo
+            remoteRef:
+              key: ""
+              property: BucketInfo
+
+    # ===============================================
+    # @subsection backupHelper parameters
+    # ===============================================
+    #
+    backupHelper:
+      enabled: true
 
   # ===============================================
   # @section psql parameters
@@ -146,13 +179,13 @@ appStorage:
     # @param appStorage.psql.bootstrap.recovery.source    : External cluster source name used when bootstrap.mode is recovery
     #
     bootstrap:
-      mode: initdb # initdb | recovery
+      mode: initdb
 
       initdb:
-        database: "" # defaults to <fullname>
-        owner:  "" # defaults to <fullname>
+        database: ""
+        owner:  ""
         secret:
-          name:  "" # defaults to <fullname>-database-secret
+          name:  ""
 
       recovery:
         source: origin
@@ -193,7 +226,7 @@ appStorage:
         plugin:
           name: barman-cloud.cloudnative-pg.io
           parameters:
-            barmanObjectName: "" # defaults to <fullname>-object-store
+            barmanObjectName: ""
             serverName: ""
    
     # ===============================================
@@ -209,7 +242,7 @@ appStorage:
       - name: barman-cloud.cloudnative-pg.io
         isWALArchiver: true
         parameters:
-          barmanObjectName: "" # defaults to <fullname>-object-store 
+          barmanObjectName: ""
           serverName: ""
 
     # ===============================================

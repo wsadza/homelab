@@ -11,6 +11,6 @@ metadata:
 spec:
   bucketAccessClassName: {{ .Values.appStorage.blob.bucketAccessClassName | quote }} 
   bucketClaimName: {{ default (printf "%s-bucket-claim" (include "common.names.fullname" .)) .Values.appStorage.blob.name | quote }}
-  credentialsSecretName: {{ default (printf "%s-object-store-secret" (include "common.names.fullname" .)) .Values.appStorage.blob.secretName | quote }}
+  credentialsSecretName: {{ default (printf "%s-object-store-secret-raw" (include "common.names.fullname" .)) .Values.appStorage.blob.secretName | quote }}
   protocol: S3
 {{- end }}
