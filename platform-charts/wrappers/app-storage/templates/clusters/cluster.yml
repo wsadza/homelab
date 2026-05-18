@@ -1,6 +1,10 @@
 {{- if .Values.appStorage.psql.enabled }}
-{{- $root := . }}
 
+{{- /*
+--------------------------------------------
+  Variables 
+--------------------------------------------
+*/}}
 {{- $objectStore := default (printf "%s-object-store" (include "common.names.fullname" .)) .Values.appStorage.psql.objectStore.name }}
 {{- $initdbSecretName := default (printf "%s-database-secret" (include "common.names.fullname" .)) .Values.appStorage.psql.bootstrap.initdb.secret.name }}
 
@@ -10,6 +14,23 @@
 {{- $sourceGeneration := default "initial" .Values.appStorage.psql.recovery.sourceGeneration }}
 {{- $recoveryServerName := default (printf "%s-%s" (include "common.names.fullname" .) $sourceGeneration) .Values.appStorage.psql.recovery.sourceServerName }}
 
+{{- $root := . }}
+{{- $mode := .Values.appStorage.psql.bootstrap.mode | quote }}
+
+{{- /*
+--------------------------------------------
+  Invalid Mode SafeGuard
+--------------------------------------------
+*/}}
+{{- if not (has $mode (list "initdb" "recovery")) }}
+{{- fail (printf "Invalid appStorage.psql.bootstrap.mode %q. Allowed values: initdb, recovery" $mode) }}
+{{- end }}
+
+{{- /*
+--------------------------------------------
+  Invalid Backup Target SafeGuard 
+--------------------------------------------
+*/}}
 {{- if and (eq .Values.appStorage.psql.bootstrap.mode "recovery") (eq $backupServerName $recoveryServerName) }}
 {{- fail (printf "Invalid recovery configuration: backup target serverName %q must differ from recovery source serverName %q. Set appStorage.psql.backup.generation to a new value, e.g. restore-YYYYMMDD." $backupServerName $recoveryServerName) }}
 {{- end }}

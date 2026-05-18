@@ -15,25 +15,42 @@
 # -----------------------------------------------
 
 appStorage:
-
-  # ---------------------
-  # S3-Blob Storage 
-  # ---------------------
   
+  # ===============================================
+  # @section blob parameters
+  # ===============================================
+  #
   blob:
     enabled: false
 
+    name: "" # Defauls to <fullname>-bucket
+
+    namespace: ""
+    credentialsSecretName: ""
+
+    bucketClassName: seaweedfs
+    bucketAccessClassName: seaweedfs
+    driverName: seaweedfs.objectstorage.k8s.io
+
     clusterRef:
       name: seaweed
-      namespace: seaweed
+      namespace: seaweedfs
 
-    configuration: 
-      reclaim: Delete
-      versioning: Enabled
-      quota:
-        size: 10Gi
-      owner: admin
-      access: []
+    reclaimPolicy: Delete
+    deletionPolicy: Retain
+    versioning: Enabled
+
+    quota:
+      size: 10Gi
+
+    owner: admin
+
+    access:
+      - user: admin
+        actions:
+          - Read
+          - Write
+          - List
 
   # ===============================================
   # @section psql parameters

@@ -1,0 +1,16 @@
+{{- if .Values.appStorage.blob.enabled }}
+{{- $fullname := include "common.names.fullname" . }}
+{{- $baseName := default $fullname .Values.appStorage.blob.nameOverride }}
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: BucketClaim
+metadata:
+  name: {{ printf "%s-bucket-claim" $baseName | quote }}
+  namespace: {{ default (include "common.names.namespace" .) .Values.appStorage.blob.namespace  | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+spec:
+  bucketClassName: {{ .Values.appStorage.blob.bucketClassName | quote }}
+  existingBucketName: {{ default (printf "%s-bucket" (include "common.names.fullname" .)) .Values.appStorage.blob.name | quote }}
+  protocols:
+    - S3
+{{- end }}

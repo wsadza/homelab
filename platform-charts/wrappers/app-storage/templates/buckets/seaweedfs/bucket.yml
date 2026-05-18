@@ -1,0 +1,26 @@
+{{- if .Values.appStorage.blob.enabled }}
+{{- $fullname := include "common.names.fullname" . }}
+{{- $baseName := default $fullname .Values.appStorage.blob.nameOverride }}
+apiVersion: seaweed.seaweedfs.com/v1
+kind: Bucket
+metadata:
+  name: {{ printf "%s-bucket" $baseName | quote }}
+  namespace: {{ default (include "common.names.namespace" .) .Values.appStorage.blob.namespace  | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+spec:
+  clusterRef:
+    name: {{ .Values.appStorage.blob.clusterRef.name | quote }}
+    namespace: {{ .Values.appStorage.blob.clusterRef.namespace | quote }}
+  reclaimPolicy: {{ .Values.appStorage.blob.reclaimPolicy | quote }}
+  versioning: {{ .Values.appStorage.blob.versioning | quote }}
+  quota:
+    size: {{ .Values.appStorage.blob.quota.size | quote }}
+  owner: {{ .Values.appStorage.blob.owner | quote }}
+  access:
+  {{- range .Values.appStorage.blob.access }}
+    - user: {{ .user | quote }}
+      actions:
+        {{- .actions | toYaml | nindent 8 }}
+  {{- end }}
+{{- end }}
