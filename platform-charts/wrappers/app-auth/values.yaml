@@ -59,6 +59,7 @@ appAuth:
       clientId: ""
 
       clientSecret:
+        generate: true
         name: ""
         key: client-secret
 
