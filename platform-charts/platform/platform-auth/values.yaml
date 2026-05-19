@@ -48,12 +48,12 @@ platformAuth:
     # @subsection realm parameters
     # -----------------------------------------------
     #
-    # @param platformAuth.keycloak.realm.name              : Keycloak realm name
-    # @param platformAuth.keycloak.realm.extraNamespaces[] : Extra namespaces where realm will be installed
+    # @param platformAuth.keycloak.realm.name  : Keycloak realm name
+    # @param platformAuth.keycloak.realm.scope : Install realm as Cluster wide or bounded to Namespace ~ namespace | cluster
     #
     realm:
       name: "" 
-      extraNamespaces: []
+      scope: namespace 
 
     # -----------------------------------------------
     # @subsection realmComponent parameters

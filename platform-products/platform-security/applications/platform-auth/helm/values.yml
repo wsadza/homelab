@@ -41,6 +41,7 @@ platformAuth:
     #
     realm:
       name: platform
+      scope: namespace # namespace | cluster
 
     # -----------------------------------------------
     # @subsection relamComponent parameters

@@ -72,7 +72,7 @@ appAuth:
       advancedProtocolMappers: false
       webUrl: ""
       adminUrl: ""
-      homeUrl: /
+      homeUrl: "/"
       redirectUris: []
       defaultClientScopes: []
 

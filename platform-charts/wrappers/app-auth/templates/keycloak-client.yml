@@ -19,16 +19,16 @@ spec:
   {{- with $root.Values.appAuth.keycloak.realmRef }}
   realmRef:
     name: {{ .name }}
-    kind: {{ default "KeycloakRealm" .kind }}
+    kind: {{ .kind }}
   {{- end }}
   clientId: {{ .clientId | quote }}
-  public: {{ default false .public }}
-  directAccess: {{ default true .directAccess }}
-  advancedProtocolMappers: {{ default true .advancedProtocolMappers }}
+  public: {{ .public }}
+  directAccess: {{ .directAccess }}
+  advancedProtocolMappers: {{ .advancedProtocolMappers }}
   secret: {{ printf "$%s:%s" .clientSecret.name .clientSecret.key | quote }}
   webUrl: {{ .webUrl | quote }}
   adminUrl: {{ .adminUrl | quote }}
-  homeUrl: {{ default "/" .homeUrl | quote }}
+  homeUrl: {{ .homeUrl | quote }}
   {{- with .defaultClientScopes }}
   defaultClientScopes:
     {{- toYaml . | nindent 4 }}
