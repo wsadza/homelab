@@ -19,5 +19,5 @@ spec:
   realmName: {{ .Values.platformAuth.keycloak.realm.name }} 
   keycloakRef:
     name: keycloak-endpoint
-    kind: {{ $keycloaKind }}
+    kind: {{ $keycloakKind }}
 {{- end }}
