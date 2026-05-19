@@ -13,7 +13,7 @@ metadata:
   labels:
     {{- include "common.labels.standard" . | nindent 4 }}
 spec:
-  url: {{ .Values.platformAuth.keycloak.instance.endpoint.url | quote }}
-  secret: {{  .Values.platformAuth.keycloak.instance.endpoint.secret | quote }}
+  url: {{ .Values.platformAuth.keycloak.instance.url | quote }}
+  secret: {{  .Values.platformAuth.keycloak.instance.secret | quote }}
 {{- end }}
 {{- end }}
