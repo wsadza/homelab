@@ -82,7 +82,6 @@ appStorage:
     secretHelper:
       enabled: true
 
-      # Final ExternalSecret Name
       name: ""
 
       serviceAccount:
@@ -110,7 +109,7 @@ appStorage:
           name: ""
 
         target:
-          name: "nextcloud-s3-env"
+          name: ""
           creationPolicy: Owner
           template:
             engineVersion: v2
