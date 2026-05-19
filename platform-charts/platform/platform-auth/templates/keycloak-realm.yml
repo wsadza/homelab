@@ -6,7 +6,7 @@
 {{- end }}
 
 {{- if eq $kind "namespace" }}
-apiVersion: v1.edp.epam.com/v1alpha1
+apiVersion: v1.edp.epam.com/v1
 kind: KeycloakRealm 
 metadata:
   name: {{ .Values.platformAuth.keycloak.realm.name | trunc 63 | trimSuffix "-" | quote }}
