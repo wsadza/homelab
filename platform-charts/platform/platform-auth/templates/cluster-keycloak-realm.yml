@@ -14,8 +14,6 @@ metadata:
     {{- include "common.labels.standard" . | nindent 4 }}
 spec:
   realmName: {{ .Values.platformAuth.keycloak.realm.name | quote }}
-  clusterKeycloakRef:
-    name: keycloak-cluster-endpoint
-    kind: ClusterKeycloak 
+  clusterKeycloakRef: keycloak-cluster-endpoint
 {{- end }}
 {{- end }}
