@@ -93,7 +93,7 @@ nextcloud:
     s3:
       enabled: true
       host: seaweed-filer.seaweedfs.svc.cluster.local
-      bucket: nextcloud
+      bucket: nextcloud-bucket
       port: "8333"
       ssl: false
       region: us-east-1
@@ -399,5 +399,5 @@ appStorage:
     storage:
       size: 50Gi
     objectStore:
-      destinationPath: "s3://app-bucket/databases"
+      destinationPath: "s3://nextcloud-bucket/databases"
       endpointURL: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"
