@@ -52,8 +52,14 @@ nextcloud:
   hooks:
     before-starting: |
       #!/bin/bash
-      
-      # Validate
+
+      # Validate Nextcloud installation
+      if [ ! -f "occ" ]; then
+        echo "Skipping OIDC initialization: Nextcloud occ command not found in current directory."
+        exit 0
+      fi
+
+      # Validate Variables
       if [ -z "${OIDC_CLIENT_SECRET:-}" ]; then
         echo "Skipping OIDC initialization: OIDC_CLIENT_SECRET is empty or missing."
         exit 0
