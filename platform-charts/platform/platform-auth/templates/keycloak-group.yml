@@ -13,8 +13,8 @@ metadata:
 spec:
   {{- with $root.Values.platformAuth.keycloak.realm }}
   realmRef:
-    name: {{ $root.name | quote }}
-    kind: {{ ternary "ClusterKeycloakRealm" "KeycloakRealm" (eq $root.realm.scope "cluster") }}
+    name: {{ .name | quote }}
+    kind: {{ ternary "ClusterKeycloakRealm" "KeycloakRealm" (eq .realm.scope "cluster") }}
   {{- end }}
   name: {{ .groupName | quote }}
 {{- end }}
