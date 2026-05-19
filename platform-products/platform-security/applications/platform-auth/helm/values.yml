@@ -41,8 +41,6 @@ platformAuth:
     #
     realm:
       name: platform
-      extraNamespaces:
-        - nextcloud
 
     # -----------------------------------------------
     # @subsection relamComponent parameters
