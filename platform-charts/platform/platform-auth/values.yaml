@@ -35,25 +35,27 @@ platformAuth:
     enabled: false
 
     # -----------------------------------------------
-    # @subsection endpoint parameters
+    # @subsection instance parameters
     # -----------------------------------------------
     #
-    # @param platformAuth.keycloak.endpoint.url    : Keycloak service URL
-    # @param platformAuth.keycloak.endpoint.secret : Secret containing Keycloak admin credentials
-    endpoint:
+    # @param platformAuth.keycloak.instance.url    : Keycloak service URL
+    # @param platformAuth.keycloak.instance.secret : Secret containing Keycloak admin credentials
+    # @param platformAuth.keycloak.instance.scope  : Scope of Keycloak endpoint resource. One of: namespace, cluster.
+    #
+    instance:
       url: ""
       secret: ""
+      scope: namespace
 
     # -----------------------------------------------
     # @subsection realm parameters
     # -----------------------------------------------
     #
-    # @param platformAuth.keycloak.realm.name  : Keycloak realm name
-    # @param platformAuth.keycloak.realm.scope : Install realm as Cluster wide or bounded to Namespace ~ namespace | cluster
+    # @param platformAuth.keycloak.realm.name : Keycloak realm name
+    # @param platformAuth.keycloak.realm.kind : 
     #
     realm:
       name: "" 
-      kind: KeycloakRealm # KeycloakRealm | ClusterKeycloakRealm 
 
     # -----------------------------------------------
     # @subsection realmComponent parameters

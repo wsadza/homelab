@@ -6,16 +6,14 @@
 {{- end }}
 
 {{- if eq $kind "namespace" }}
-apiVersion: v1.edp.epam.com/v1alpha1
-kind: KeycloakRealm 
+apiVersion: v1.edp.epam.com/v1
+kind: Keycloak
 metadata:
-  name: {{ .Values.platformAuth.keycloak.realm.name | trunc 63 | trimSuffix "-" | quote }}
+  name: keycloak-endpoint
   namespace: {{ include "common.names.namespace" . }}
   labels:
     {{- include "common.labels.standard" . | nindent 4 }}
 spec:
-  realmName: {{ .Values.platformAuth.keycloak.realm.name | quote }}
-  keycloakRef:
-    name: keycloak-endpoint
-    kind: Keycloak
+  url: {{ .Values.platformAuth.keycloak.instance.url | quote }}
+  secret: {{  .Values.platformAuth.keycloak.instance.secret | quote }}
 {{- end }}

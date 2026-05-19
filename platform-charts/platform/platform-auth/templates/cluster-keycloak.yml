@@ -6,15 +6,13 @@
 {{- end }}
 
 {{- if eq $kind "cluster" }}
-apiVersion: v1.edp.epam.com/v1alpha1
-kind: ClusterKeycloakRealm  
+apiVersion: v1.edp.epam.com/v1
+kind: ClusterKeycloak
 metadata:
-  name: {{ .Values.platformAuth.keycloak.realm.name | trunc 63 | trimSuffix "-" | quote }}
+  name: keycloak-cluster-endpoint
   labels:
     {{- include "common.labels.standard" . | nindent 4 }}
 spec:
-  realmName: {{ .Values.platformAuth.keycloak.realm.name | quote }}
-  clusterKeycloakRef:
-    name: keycloak-cluster-endpoint
-    kind: ClusterKeycloak 
+  url: {{ .Values.platformAuth.instance.endpoint.url | quote }}
+  secret: {{  .Values.platformAuth.instance.endpoint.secret | quote }}
 {{- end }}

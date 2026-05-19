@@ -1,4 +1,5 @@
 {{- if and .Values.platformAuth.keycloak.enabled .Values.platformAuth.keycloak.realmComponents }}
+{{- $kind := .Values.platformAuth.instance.scope }}
 {{- $root := . -}}
 {{- range .Values.platformAuth.keycloak.realmComponents }}
 {{- if .enabled }}
@@ -14,7 +15,7 @@ spec:
   name: {{ .name | quote }} 
   realmRef:
     name: {{ $root.Values.platformAuth.keycloak.realm.name | quote }}
-    kind: {{ ternary "ClusterKeycloakRealm" "KeycloakRealm" (eq $root.Values.platformAuth.keycloak.realm.scope "cluster") }}
+    kind: {{ ternary "ClusterKeycloakRealm" "KeycloakRealm" (eq $kind "cluster") }}
   providerId: {{ .providerId | quote }}
   providerType: {{ .providerType | quote }}
   {{- with .config }}
