@@ -48,9 +48,12 @@ platformAuth:
     # @subsection realm parameters
     # -----------------------------------------------
     #
-    # @param platformAuth.keycloak.realm.name : Keycloak realm name
+    # @param platformAuth.keycloak.realm.name              : Keycloak realm name
+    # @param platformAuth.keycloak.realm.extraNamespaces[] : Extra namespaces where realm will be installed
+    #
     realm:
       name: "" 
+      extraNamespaces: []
 
     # -----------------------------------------------
     # @subsection realmComponent parameters
@@ -89,7 +92,6 @@ platformAuth:
     # @param platformAuth.keycloak.clientScopes[].protocolMappers[].name   : Protocol mapper name
     # @param platformAuth.keycloak.clientScopes[].protocolMappers[].config : Protocol mapper configuration
     clientScopes: []
-
 
     # -----------------------------------------------
     # @subsection userDefaults parameters

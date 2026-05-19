@@ -45,6 +45,8 @@ platformAuth:
     #
     realm:
       name: platform
+      extraNamespaces:
+        - nextcloud     # will install in keycloak ns and nextcloud ns
 
     # -----------------------------------------------
     # @subsection relamComponent parameters

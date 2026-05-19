@@ -1,12 +1,22 @@
+{{- if .Values.platformAuth.keycloak.enabled }}
+{{- $root := . }}
+{{- $releaseNamespace := include "common.names.namespace" . }}
+{{- $extraNamespaces := .Values.platformAuth.keycloak.realm.extraNamespaces | default list }}
+{{- $namespaces := concat (list $releaseNamespace) $extraNamespaces | uniq }}
+
+{{- range $ns := $namespaces }}
+---
 apiVersion: v1.edp.epam.com/v1
 kind: KeycloakRealm
 metadata:
-  name: {{ .Values.platformAuth.keycloak.realm.name | trunc 63 | trimSuffix "-" | quote }}
-  namespace: {{ include "common.names.namespace" . }}
+  name: {{ $root.Values.platformAuth.keycloak.realm.name | trunc 63 | trimSuffix "-" | quote }}
+  namespace: {{ $ns | quote }}
   labels:
-    {{- include "common.labels.standard" . | nindent 4 }}
+    {{- include "common.labels.standard" $root | nindent 4 }}
 spec:
-  realmName: {{ .Values.platformAuth.keycloak.realm.name }} 
+  realmName: {{ $root.Values.platformAuth.keycloak.realm.name | quote }}
   keycloakRef:
     name: keycloak-endpoint
     kind: Keycloak
+{{- end }}
+{{- end }}
