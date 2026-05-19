@@ -14,7 +14,7 @@ spec:
   name: {{ .name | quote }} 
   realmRef:
     name: {{ $root.Values.platformAuth.keycloak.realm.name | quote }}
-    kind: {{ ternary "ClusterKeycloakRealm" "KeycloakRealm" (eq .Values.platformAuth.keycloak.realm.scope "cluster") }}
+    kind: {{ ternary "ClusterKeycloakRealm" "KeycloakRealm" (eq $root.Values.platformAuth.keycloak.realm.scope "cluster") }}
   providerId: {{ .providerId | quote }}
   providerType: {{ .providerType | quote }}
   {{- with .config }}
