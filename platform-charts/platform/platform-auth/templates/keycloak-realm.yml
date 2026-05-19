@@ -5,7 +5,6 @@
 {{- fail "platformAuth.keycloak.realm.scope must be either 'namespace' or 'cluster'" }}
 {{- end }}
 
-
 {{- $kind := "KeycloakRealm" }}
 {{- $keycloakKind := "Keycloak" }}
 
