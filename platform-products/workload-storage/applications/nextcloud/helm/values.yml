@@ -369,7 +369,7 @@ appAuth:
       enabled: true
      
       name: nextcloud
-      namespace: keycloak 
+      namespace: nextcloud 
       labels: []
       annotations: []
 
