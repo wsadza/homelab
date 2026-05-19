@@ -1,6 +1,7 @@
 {{- if and .Values.platformAuth.keycloak.enabled }}
 {{- $scope := .Values.platformAuth.keycloak.realm.scope }}
 {{- $kind := "KeycloakRealm" }}
+{{- $keycloakKind := "Keycloak" }}
 {{- if eq $scope "cluster" }}
 {{- $kind := "ClusterKeycloakRealm" }}
 {{- $keycloakKind := "ClusterKeycloak" }}
