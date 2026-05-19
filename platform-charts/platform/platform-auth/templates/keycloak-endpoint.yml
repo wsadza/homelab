@@ -1,6 +1,6 @@
 {{- if .Values.platformAuth.keycloak.enabled }}
 {{- $scope := .Values.platformAuth.keycloak.realm.scope | default "namespace" }}
-apiVersion: v1.edp.epam.com/v1
+apiVersion: v1.edp.epam.com/v1alpha1
 kind: {{ ternary "ClusterKeycloak" "Keycloak" (eq $scope "cluster") }}
 metadata:
   name: keycloak-endpoint
