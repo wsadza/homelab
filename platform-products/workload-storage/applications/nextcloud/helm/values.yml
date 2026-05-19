@@ -53,29 +53,36 @@ nextcloud:
     before-starting: |
       #!/bin/bash
 
+      # ----------------------------
       # Validate Nextcloud installation
+      # ----------------------------
+      
       if [ ! -f "occ" ]; then
         echo "Skipping OIDC initialization: Nextcloud occ command not found in current directory."
         exit 0
       fi
-
       if ! php occ status | grep -q "installed: true"; then
         echo "Skipping OIDC initialization: Nextcloud is not installed yet."
         exit 0
       fi
 
+      # ----------------------------
       # Validate Variables
+      # ----------------------------
+      
       if [ -z "${OIDC_CLIENT_SECRET:-}" ]; then
         echo "Skipping OIDC initialization: OIDC_CLIENT_SECRET is empty or missing."
         exit 0
       fi
-
       if [ -z "${KEYCLOAK_ENDPOINT:-}" ]; then
         echo "Skipping OIDC initialization: KEYCLOAK_ENDPOINT is empty or missing."
         exit 0
       fi
 
+      # ----------------------------
       # Ensure app is available/enabled.
+      # ----------------------------
+      
       echo "Ensuring user_oidc app is enabled..."
       php occ app:enable user_oidc || {
         echo "Installing user_oidc..."
@@ -97,7 +104,6 @@ nextcloud:
  
       echo "Keeping normal Nextcloud login enabled..."
       php occ config:app:set user_oidc allow_multiple_user_backends --value=1 || true
-
       echo "OIDC startup configuration complete."
 
   objectStore:
