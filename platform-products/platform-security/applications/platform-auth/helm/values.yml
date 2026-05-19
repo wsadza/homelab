@@ -31,9 +31,10 @@ platformAuth:
     # @subsection endpoint parameters
     # -----------------------------------------------
     #
-    endpoint:
+    instance:
       url: http://keycloak-service.keycloak.svc.cluster.local:8080 
       secret: keycloak-admin-secret
+      scope: cluster
 
     # -----------------------------------------------
     # @subsection relam parameters
@@ -41,7 +42,6 @@ platformAuth:
     #
     realm:
       name: platform
-      scope: cluster
 
     # -----------------------------------------------
     # @subsection relamComponent parameters
