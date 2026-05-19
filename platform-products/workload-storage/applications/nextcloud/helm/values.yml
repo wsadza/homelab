@@ -375,7 +375,7 @@ appAuth:
 
       clientId: nextcloud 
       clientSecret:
-        name: keycloak-client-secret-nextcloud 
+        name: nextcloud-client-secret # keycloak-client-secret-nextcloud 
         key: client-secret
 
       public: false
