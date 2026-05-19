@@ -1,11 +1,19 @@
 {{- if .Values.platformAuth.keycloak.enabled }}
-{{- $scope := .Values.platformAuth.keycloak.realm.scope }}
+{{- $scope := .Values.platformAuth.keycloak.realm.scope | default "namespace" }}
+
+{{- if not (has $scope (list "namespace" "cluster")) }}
+{{- fail "platformAuth.keycloak.realm.scope must be either 'namespace' or 'cluster'" }}
+{{- end }}
+
+
 {{- $kind := "KeycloakRealm" }}
 {{- $keycloakKind := "Keycloak" }}
+
 {{- if eq $scope "cluster" }}
 {{- $kind = "ClusterKeycloakRealm" }}
 {{- $keycloakKind = "ClusterKeycloak" }}
 {{- end }}
+
 apiVersion: v1.edp.epam.com/v1
 kind: {{ $kind }}
 metadata:
