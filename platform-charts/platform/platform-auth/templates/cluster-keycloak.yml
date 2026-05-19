@@ -16,3 +16,4 @@ spec:
   url: {{ .Values.platformAuth.instance.endpoint.url | quote }}
   secret: {{  .Values.platformAuth.instance.endpoint.secret | quote }}
 {{- end }}
+{{- end }}

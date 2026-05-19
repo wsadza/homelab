@@ -18,3 +18,4 @@ spec:
     name: keycloak-cluster-endpoint
     kind: ClusterKeycloak 
 {{- end }}
+{{- end }}

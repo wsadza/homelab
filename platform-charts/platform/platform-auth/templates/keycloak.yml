@@ -17,3 +17,4 @@ spec:
   url: {{ .Values.platformAuth.keycloak.instance.url | quote }}
   secret: {{  .Values.platformAuth.keycloak.instance.secret | quote }}
 {{- end }}
+{{- end }}

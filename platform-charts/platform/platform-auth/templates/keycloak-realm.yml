@@ -19,3 +19,4 @@ spec:
     name: keycloak-endpoint
     kind: Keycloak
 {{- end }}
+{{- end }}
