@@ -1,22 +1,22 @@
-{{- if and .Values.platformAuth.keycloak.enabled }}
-{{- $scope := .Values.platformAuth.keycloak.realm.scope }}
+{{- if .Values.platformAuth.keycloak.enabled }}
+{{- $mode := .Values.platformAuth.keycloak.realm.mode }}
 {{- $kind := "KeycloakRealm" }}
 {{- $keycloakKind := "Keycloak" }}
-{{- if eq $scope "cluster" }}
+{{- if eq $mode "cluster" }}
 {{- $kind = "ClusterKeycloakRealm" }}
 {{- $keycloakKind = "ClusterKeycloak" }}
 {{- end }}
 apiVersion: v1.edp.epam.com/v1
-kind: {{ $kind }} 
+kind: {{ $kind }}
 metadata:
   name: {{ .Values.platformAuth.keycloak.realm.name | trunc 63 | trimSuffix "-" | quote }}
-  {{- if eq $scope "namespace" }}
+  {{- if eq $mode "namespace" }}
   namespace: {{ include "common.names.namespace" . }}
   {{- end }}
   labels:
     {{- include "common.labels.standard" . | nindent 4 }}
 spec:
-  realmName: {{ .Values.platformAuth.keycloak.realm.name }} 
+  realmName: {{ .Values.platformAuth.keycloak.realm.name | quote }}
   keycloakRef:
     name: keycloak-endpoint
     kind: {{ $keycloakKind }}
