@@ -18,8 +18,8 @@ metadata:
 spec:
   {{- with $root.Values.appAuth.keycloak.realmRef }}
   realmRef:
-    name: {{ .name }}
-    kind: {{ .kind }}
+    name: {{ .name | quote }}
+    kind: {{ .kind | quote }}
   {{- end }}
   clientId: {{ .clientId | quote }}
   public: {{ .public }}
