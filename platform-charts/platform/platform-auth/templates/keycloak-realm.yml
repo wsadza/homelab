@@ -3,8 +3,8 @@
 {{- $kind := "KeycloakRealm" }}
 {{- $keycloakKind := "Keycloak" }}
 {{- if eq $scope "cluster" }}
-{{- $kind := "ClusterKeycloakRealm" }}
-{{- $keycloakKind := "ClusterKeycloak" }}
+{{- $kind = "ClusterKeycloakRealm" }}
+{{- $keycloakKind = "ClusterKeycloak" }}
 {{- end }}
 apiVersion: v1.edp.epam.com/v1
 kind: {{ $kind }} 
