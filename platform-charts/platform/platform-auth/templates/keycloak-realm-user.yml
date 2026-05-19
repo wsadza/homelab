@@ -4,7 +4,7 @@
 {{- $userDetails := mergeOverwrite (deepCopy $root.Values.platformAuth.keycloak.userDefaults) $user }}
 {{- if $userDetails.enabled }}
 
-{{- $kind := .Values.platformAuth.instance.scope }}
+{{- $kind := .Values.platformAuth.keycloak.instance.scope }}
 {{- $userResourceName := $user.username | replace "." "-" | trunc 56 | trimSuffix "-" }}
 {{- $passwordSecret := $userDetails.passwordSecret | default dict }}
 

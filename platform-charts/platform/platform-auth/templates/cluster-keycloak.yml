@@ -1,5 +1,5 @@
 {{- if .Values.platformAuth.keycloak.enabled }}
-{{- $kind := .Values.platformAuth.instance.scope }}
+{{- $kind := .Values.platformAuth.keycloak.instance.scope }}
 
 {{- if not (has $kind (list "namespace" "cluster")) }}
 {{- fail "platformAuth.keycloak.instance.scope must be either 'namespace' or 'cluster'" }}
