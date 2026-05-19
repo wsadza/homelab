@@ -10,7 +10,7 @@ apiVersion: v1.edp.epam.com/v1
 kind: {{ $kind }}
 metadata:
   name: {{ .Values.platformAuth.keycloak.realm.name | trunc 63 | trimSuffix "-" | quote }}
-  {{- if eq $mode "namespace" }}
+  {{- if eq $scope "namespace" }}
   namespace: {{ include "common.names.namespace" . }}
   {{- end }}
   labels:
