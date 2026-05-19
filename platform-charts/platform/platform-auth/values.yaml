@@ -53,7 +53,7 @@ platformAuth:
     #
     realm:
       name: "" 
-      scope: namespace 
+      kind: KeycloakRealm # KeycloakRealm | ClusterKeycloakRealm 
 
     # -----------------------------------------------
     # @subsection realmComponent parameters

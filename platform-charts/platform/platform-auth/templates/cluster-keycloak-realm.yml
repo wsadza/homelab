@@ -1,0 +1,22 @@
+{{- if .Values.platformAuth.keycloak.enabled }}
+{{- $kind := .Values.platformAuth.keycloak.realm.kind }}
+
+{{- if not (has $kind (list "KeycloakRealm" "ClusterKeycloakRealm")) }}
+{{- fail "platformAuth.keycloak.realm.kind must be either 'KeycloakRealm' or 'ClusterKeycloakRealm'" }}
+{{- end }}
+
+{{- if eq $kind "ClusterKeycloakRealm" }}
+apiVersion: v1.edp.epam.com/v1alpha1
+kind: ClusterKeycloakRealm  
+metadata:
+  name: {{ .Values.platformAuth.keycloak.realm.name | trunc 63 | trimSuffix "-" | quote }}
+  namespace: {{ include "common.names.namespace" . }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+spec:
+  realmName: {{ .Values.platformAuth.keycloak.realm.name | quote }}
+  clusterKeycloakRef:
+    name: keycloak-endpoint
+    kind: KeycloakRealm 
+{{- end }}
+{{- end }}
