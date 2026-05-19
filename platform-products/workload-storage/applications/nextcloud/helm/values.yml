@@ -59,6 +59,11 @@ nextcloud:
         exit 0
       fi
 
+      if ! php occ status | grep -q "installed: true"; then
+        echo "Skipping OIDC initialization: Nextcloud is not installed yet."
+        exit 0
+      fi
+
       # Validate Variables
       if [ -z "${OIDC_CLIENT_SECRET:-}" ]; then
         echo "Skipping OIDC initialization: OIDC_CLIENT_SECRET is empty or missing."
