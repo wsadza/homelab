@@ -18,7 +18,7 @@ spec:
     - list:
         elementsYaml: |
           {{ `{{- $items := list }}` }}
-          {{ `{{- range .` }}{{ .Values.leaf.listKey }}{{ ` }}` }}
+          {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
           {{ `{{- $items = append $items . }}` }}
           {{ `{{- end }}` }}
           {{ `{{ $items | toYaml }}` }}
