@@ -32,7 +32,7 @@ components:
   # app-exposure
   # ------------------
 
-    - name: app-storage
+    - name: app-exposure
       namespace: podinfo
 
       enabled: true
@@ -59,7 +59,7 @@ components:
   # app-security
   # ------------------
 
-    - name: app-auth
+    - name: app-security
       namespace: podinfo
 
       enabled: true
