@@ -48,8 +48,8 @@ spec:
               targetRevision: {{ $.Values.targetRevision | quote }}
 
               leaf:
-                name: {{ $.Values.node.childNameTemplate | replace "__product__" $.Values.node.product | replace "__application__" "{{ . }}" | quote }}
-                file: {{ $.Values.node.childFileTemplate | replace "__product__" $.Values.node.product | replace "__application__" "{{ . }}" | quote }}
+                name: {{ $.Values.node.childNameTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ . }}" | quote }}
+                file: {{ $.Values.node.childFileTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ . }}" | quote }}
                 product: {{ $.Values.node.product | quote }}
                 application: {{ `{{ . }}` | quote }}
                 listKey: {{ $.Values.leaf.listKey | quote }}
