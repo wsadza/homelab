@@ -28,10 +28,10 @@ node:
   listKey: applications
 
   # -- Child (leaf) ------------
-  #childMode: leaf
-  #childChartPath: platform-charts/foundation/appset-factory-v2
-  #childFileTemplate: "platform-products/{{ product }}/applications/{{ application }}/components.yml"
-  #childNameTemplate: "{{ application }}"
+  childMode: leaf
+  childChartPath: platform-charts/foundation/appset-factory-v2
+  childFileTemplate: "platform-products/{{ product }}/applications/{{ application }}/components.yml"
+  childNameTemplate: "{{ application }}"
 
 # --------------------------
 # -- Sources --------------
