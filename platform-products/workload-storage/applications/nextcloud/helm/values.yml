@@ -333,7 +333,6 @@ appPlatform:
               name: gateway-nextcloud
               namespace: envoy-gateway-system 
 
-
 # ===============================================================
 #    ___             ___       __  __ 
 #   / _ | ___  ___  / _ |__ __/ /_/ / 
