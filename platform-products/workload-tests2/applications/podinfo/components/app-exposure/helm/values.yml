@@ -1,5 +1,5 @@
 platformDefaults:
-  appName:              &appName              podinfo 
+  appName:              &appName              podinfo-app 
   namespace:            &namespace            podinfo 
   domain:               &domain               podinfo.anykey.pl
   gatewayNamespace:     &gatewayNamespace     envoy-gateway-system
