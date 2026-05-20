@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: {{ .Values.root.name }}
+  name: {{ .Values.root.name }}-root
   namespace: argocd
 spec:
   goTemplate: true
