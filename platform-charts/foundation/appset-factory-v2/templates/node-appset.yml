@@ -38,7 +38,7 @@ spec:
   template:
     metadata:
       #name: "{{ .Values.node.name }}-node"
-      name: "{{ `{{ .name }}` }}"
+      name: "{{ .name }}"
     spec:
       project: default
       destination:
@@ -46,6 +46,8 @@ spec:
         namespace: argocd
 
   templatePatch: |
+    metadata:
+      name: "{{ `{{ .name }}` }}"
     spec:
       sources:
         {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
