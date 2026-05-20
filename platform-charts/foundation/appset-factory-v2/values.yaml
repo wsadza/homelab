@@ -40,4 +40,6 @@ node:
 leaf:
   name: ""
   file: ""
+  product: ""
+  application: ""
   listKey: components
