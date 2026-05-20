@@ -15,16 +15,6 @@ spec:
         requeueAfterSeconds: 30
         files:
           - path: {{ .Values.node.file | quote }}
-    #- list:
-    #    elementsYaml: |
-    #      {{ `{{- $items := list }}` }}
-    #      {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
-    #      {{ `{{- if (dig "enabled" true .) }}` }}
-    #      {{ `{{- $items = append $items . }}` }}
-    #      {{ `{{- end }}` }}
-    #      {{ `{{- end }}` }}
-    #      {{ `{{ $items | toYaml }}` }}
-
   template:
     metadata:
       name: {{ .Values.node.name | quote }}
@@ -33,18 +23,4 @@ spec:
       destination:
         server: https://kubernetes.default.svc
         namespace: argocd
-
-  #templatePatch: |
-  #  spec:
-  #    sources:
-  #      {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
-  #      - repoURL: {{ $.Values.repoURL | quote }}
-  #        targetRevision: {{ $.Values.targetRevision | quote }}
-  #        path: {{ $.Values.node.childChartPath | quote }}
-  #        #helm:
-  #        #  values: |
-  #        #    mode: {{ $.Values.node.childMode | quote }}
-  #        #    repoURL: {{ $.Values.repoURL | quote }}
-  #        #    targetRevision: {{ $.Values.targetRevision | quote }}
-  #      {{ `{{- end }}` }}
 {{- end }}
