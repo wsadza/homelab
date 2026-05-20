@@ -46,9 +46,8 @@ spec:
 
                 childMode: {{ $.Values.node.childMode | quote }}
                 childChartPath: {{ $.Values.node.childChartPath | quote }}
-                childFileTemplate: {{ $.Values.node.childFileTemplate | quote }}
-                childNameTemplate: {{ $.Values.node.childNameTemplate | quote }}
-
+                childFileTemplate: {{ $.Values.node.childFileTemplate | replace "{{ product }}" "{{ . }}" | quote }}
+                childNameTemplate: {{ $.Values.node.childNameTemplate | replace "{{ product }}" "{{ . }}" | quote }}
               leaf:
                 listKey: {{ $.Values.leaf.listKey | quote }}
         {{ `{{- end }}` }}
