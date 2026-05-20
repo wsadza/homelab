@@ -15,6 +15,10 @@ spec:
         requeueAfterSeconds: 30
         files:
           - path: {{ .Values.node.file | quote }}
+    - list:
+        elementsYaml: |
+          {{ `{{ .applications | toYaml }}` }}
+
     #- list:
     #    elementsYaml: |
     #      {{ `{{- $items := list }}` }}
