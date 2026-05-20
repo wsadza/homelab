@@ -21,21 +21,25 @@ spec:
 
   filer:
     replicas: 1
+
+    persistence:
+      enabled: true
+      storageClassName: standard
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 2Gi
+
+    config: |
+      [leveldb2]
+      enabled = true
+      dir = "/data/filerldb2"
+
+    extraArgs:
+      - "-iam"
+      - "-s3.iam.readOnly=false"
+
     s3:
       enabled: true
     iam: true
-
-    #extraArgs:
-    #  - "-iam"
-    #  - "-s3.iam.config=/etc/seaweedfs/iam/iam.json"
-    #  - "-s3.iam.readOnly=false"
-
-    #volumes:
-    #  - name: iam-config
-    #    secret:
-    #      secretName: seaweed-iam-config
-
-    #volumeMounts:
-    #  - name: iam-config
-    #    mountPath: /etc/seaweedfs/iam
-    #    readOnly: true

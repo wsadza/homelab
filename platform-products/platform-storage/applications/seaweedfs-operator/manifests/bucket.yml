@@ -1,24 +1,24 @@
-apiVersion: seaweed.seaweedfs.com/v1
-kind: Bucket
-metadata:
-  name: nextcloud-managed 
-  namespace: seaweedfs
-spec:
-  clusterRef:
-    name: seaweed
-    namespace: seaweedfs
-  reclaimPolicy: Delete
-  versioning: Enabled
-
-  quota:
-    size: 10Gi
-
-  owner: admin 
-
-  #access:
-  #  - user: admin
-  #    actions:
-  #      - Read
-  #      - Write
-  #      - List
----
+#apiVersion: seaweed.seaweedfs.com/v1
+#kind: Bucket
+#metadata:
+#  name: nextcloud-managed 
+#  namespace: seaweedfs
+#spec:
+#  clusterRef:
+#    name: seaweed
+#    namespace: seaweedfs
+#  reclaimPolicy: Delete
+#  versioning: Enabled
+#
+#  quota:
+#    size: 10Gi
+#
+#  owner: admin 
+#
+#  #access:
+#  #  - user: admin
+#  #    actions:
+#  #      - Read
+#  #      - Write
+#  #      - List
+#---
