@@ -34,17 +34,17 @@ spec:
         server: https://kubernetes.default.svc
         namespace: argocd
 
-  templatePatch: |
-    spec:
-      sources:
-        {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
-        - repoURL: {{ $.Values.repoURL | quote }}
-          targetRevision: {{ $.Values.targetRevision | quote }}
-          path: {{ $.Values.node.childChartPath | quote }}
-          #helm:
-          #  values: |
-          #    mode: {{ $.Values.node.childMode | quote }}
-          #    repoURL: {{ $.Values.repoURL | quote }}
-          #    targetRevision: {{ $.Values.targetRevision | quote }}
-        {{ `{{- end }}` }}
+  #templatePatch: |
+  #  spec:
+  #    sources:
+  #      {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
+  #      - repoURL: {{ $.Values.repoURL | quote }}
+  #        targetRevision: {{ $.Values.targetRevision | quote }}
+  #        path: {{ $.Values.node.childChartPath | quote }}
+  #        #helm:
+  #        #  values: |
+  #        #    mode: {{ $.Values.node.childMode | quote }}
+  #        #    repoURL: {{ $.Values.repoURL | quote }}
+  #        #    targetRevision: {{ $.Values.targetRevision | quote }}
+  #      {{ `{{- end }}` }}
 {{- end }}
