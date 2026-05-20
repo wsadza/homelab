@@ -41,10 +41,10 @@ spec:
         - repoURL: {{ $.Values.repoURL | quote }}
           targetRevision: {{ $.Values.targetRevision | quote }}
           path: {{ $.Values.node.childChartPath | quote }}
-          #helm:
-          #  values: |
-          #    mode: {{ $.Values.node.childMode | quote }}
-          #    repoURL: {{ $.Values.repoURL | quote }}
-          #    targetRevision: {{ $.Values.targetRevision | quote }}
+          helm:
+            values: |
+              mode: {{ $.Values.node.childMode | quote }}
+              repoURL: {{ $.Values.repoURL | quote }}
+              targetRevision: {{ $.Values.targetRevision | quote }}
         {{ `{{- end }}` }}
 {{- end }}
