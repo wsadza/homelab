@@ -36,8 +36,7 @@ spec:
 
   templatePatch: |
     metadata:
-      name: {{ `{{ .name }}` }}
-
+      name: "{{ `{{ .name }}` }}"
     spec:
       sources:
         {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
