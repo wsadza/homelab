@@ -4,7 +4,7 @@
 components:
 
   # ------------------
-  # Podinfo
+  # application
   # ------------------
 
     - name: app
@@ -29,3 +29,57 @@ components:
           chart: podinfo 
           valueFiles: 
             - $values/platform-products/workload-tests2/applications/podinfo/components/app/helm/values.yml
+
+  # ------------------
+  # storage 
+  # ------------------
+
+    - name: app-storage
+      namespace: podinfo
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://stefanprodan.github.io/podinfo
+          targetRevision: 6.9.1
+          chart: podinfo 
+          valueFiles: 
+            - $values/platform-products/workload-tests2/applications/podinfo/components/app-storage/helm/values.yml
+
+  # ------------------
+  # auth 
+  # ------------------
+
+    - name: app-auth
+      namespace: podinfo
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://stefanprodan.github.io/podinfo
+          targetRevision: 6.9.1
+          chart: podinfo 
+          valueFiles: 
+            - $values/platform-products/workload-tests2/applications/podinfo/components/app-auth/helm/values.yml
