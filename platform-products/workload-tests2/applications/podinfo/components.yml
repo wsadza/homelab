@@ -27,11 +27,9 @@ components:
           repoURL: https://stefanprodan.github.io/podinfo
           targetRevision: 6.9.1
           chart: podinfo 
-          valueFiles: 
-            - $values/platform-products/workload-tests2/applications/podinfo/components/app/helm/values.yml
 
   # ------------------
-  # storage 
+  # app-exposure
   # ------------------
 
     - name: app-storage
@@ -50,15 +48,15 @@ components:
           targetRevision: HEAD
           ref: values
 
-        - type: helm
-          repoURL: https://stefanprodan.github.io/podinfo
-          targetRevision: 6.9.1
-          chart: podinfo 
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-platform
           valueFiles: 
-            - $values/platform-products/workload-tests2/applications/podinfo/components/app-storage/helm/values.yml
+            - $values/platform-products/workload-tests2/applications/podinfo/components/app-exposure/helm/values.yml
 
   # ------------------
-  # auth 
+  # app-security
   # ------------------
 
     - name: app-auth
@@ -77,9 +75,9 @@ components:
           targetRevision: HEAD
           ref: values
 
-        - type: helm
-          repoURL: https://stefanprodan.github.io/podinfo
-          targetRevision: 6.9.1
-          chart: podinfo 
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-security
           valueFiles: 
-            - $values/platform-products/workload-tests2/applications/podinfo/components/app-auth/helm/values.yml
+            - $values/platform-products/workload-tests2/applications/podinfo/components/app-security/helm/values.yml

@@ -1,0 +1,72 @@
+platformDefaults:
+  appName:              &appName              podinfo 
+  namespace:            &namespace            podinfo 
+
+# ===============================================================
+#    ___             ____                 _ __      
+#   / _ | ___  ___  / __/__ ______ ______(_) /___ __
+#  / __ |/ _ \/ _ \_\ \/ -_) __/ // / __/ / __/ // /
+# /_/ |_/ .__/ .__/___/\__/\__/\_,_/_/ /_/\__/\_, / 
+#      /_/  /_/                              /___/
+#
+# : AppSecurity (wrapper chart)
+# ===============================================================
+
+appSecurity:
+  enabled: true
+
+  # ===============================================
+  # @section NetworkPolicy parameters
+  # ===============================================
+
+  # @param appSecurity.networkPolicies List of NetworkPolicy resources to generate.
+  networkPolicies:
+  
+  # : Allow consuming Kubernetes DNS 
+  - enabled: true
+    name: allow-dns-egress
+    namespace: *namespace
+    podSelector:
+      matchLabels:
+        app.kubernetes.io/name: *appName
+    policyTypes:
+      - Egress 
+    egress:
+      - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system 
+        ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    ingress: []
+
+  # : Allow ingress traffic to from envoy-gatawy-system
+  - enabled: true
+    name: allow-from-gateway
+    namespace: *namespace 
+    labels: {}
+    annotations: {}
+    podSelector:
+      matchLabels:
+        app.kubernetes.io/name: *appName
+    policyTypes:
+      - Ingress
+    ingress:
+      - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: envoy-gateway-system
+    egress: []
+
+  # : Block all ingress and egress in namespace
+  - enabled: true
+    name: deny-all-ingress
+    namespace: *namespace
+    podSelector: {}
+    policyTypes:
+    - Ingress
+    - Egress
+    ingress: []
