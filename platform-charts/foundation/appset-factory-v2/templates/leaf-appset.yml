@@ -33,7 +33,7 @@ spec:
 
   template:
     metadata:
-      name: "{{ .Values.leaf.application }}-'{{ `{{ .name }}` }}'"
+      name: "{{ .Values.leaf.application }}-{{ `{{ .name }}` }}"
     spec:
       project: default 
       destination:
