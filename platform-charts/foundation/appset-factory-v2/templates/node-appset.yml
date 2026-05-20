@@ -26,8 +26,8 @@ spec:
     #      {{ `{{ $items | toYaml }}` }}
 
   template:
-    #metadata:
-    #  name: "{{ .Values.node.name }}-node"
+    metadata:
+      name: "{{ .Values.node.name }}-node"
     spec:
       project: default
       destination:
@@ -39,7 +39,7 @@ spec:
       name: "{{ `{{ .name }}` }}"
     spec:
       sources:
-        {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
+{{ `{{ range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
         - repoURL: {{ $.Values.repoURL | quote }}
           targetRevision: {{ $.Values.targetRevision | quote }}
           path: {{ $.Values.node.childChartPath | quote }}
@@ -57,5 +57,5 @@ spec:
               #  listKey: {{ $.Values.leaf.listKey | quote }}
               #  application: {{ `{{ .name }}` | quote }}
               #  listKey: {{ $.Values.leaf.listKey | quote }}
-        {{ `{{- end }}` }}
+{{`{{ end }}` }}
 {{- end }}
