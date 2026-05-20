@@ -60,7 +60,7 @@ appStorage:
       name: seaweed
       namespace: seaweedfs
 
-    reclaimPolicy: Delete
+    reclaimPolicy: Retain 
     deletionPolicy: Retain
     versioning: Enabled
 

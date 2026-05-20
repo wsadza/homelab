@@ -4,7 +4,7 @@
 apiVersion: seaweed.seaweedfs.com/v1
 kind: Bucket
 metadata:
-  name: {{ printf "%s-seaweedfs-bucket" $baseName | quote }}
+  name: {{ printf "%s-bucket" $baseName | quote }}
   namespace: {{ default (include "common.names.namespace" .) .Values.appStorage.blob.namespace  | quote }}
   labels:
     {{- include "common.labels.standard" . | nindent 4 }}
