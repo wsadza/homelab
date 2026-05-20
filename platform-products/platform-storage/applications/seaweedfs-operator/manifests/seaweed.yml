@@ -24,7 +24,6 @@ spec:
 
     persistence:
       enabled: true
-      storageClassName: standard
       accessModes:
         - ReadWriteOnce
       resources:
