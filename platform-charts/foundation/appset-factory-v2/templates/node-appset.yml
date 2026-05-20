@@ -9,19 +9,22 @@ spec:
   goTemplateOptions: ["missingkey=error"]
 
   generators:
-    - git:
-        repoURL: {{ .Values.repoURL | quote }}
-        revision: {{ .Values.targetRevision | quote }}
-        requeueAfterSeconds: 30
-        files:
-          - path: {{ .Values.node.file | quote }}
-    - list:
-        elementsYaml: |
-          {{ `{{- $items := list }}` }}
-          {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
-          {{ `{{- $items = append $items . }}` }}
-          {{ `{{- end }}` }}
-          {{ `{{ $items | toYaml }}` }}
+    - matrix:
+        generators:
+          - git:
+              repoURL: {{ .Values.repoURL | quote }}
+              revision: {{ .Values.targetRevision | quote }}
+              requeueAfterSeconds: 30
+              files:
+                - path: {{ .Values.node.file | quote }}
+
+          - list:
+              elementsYaml: |
+                {{ `{{- $items := list }}` }}
+                {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
+                {{ `{{- $items = append $items . }}` }}
+                {{ `{{- end }}` }}
+                {{ `{{ $items | toYaml }}` }}
 
 #          {{ `{{ .applications | toYaml }}` }}
 
