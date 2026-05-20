@@ -27,7 +27,8 @@ spec:
 
   template:
     metadata:
-      name: {{ .Values.node.name | quote }}
+      #name: {{ .Values.node.name | quote }}
+      name: '{{ `{{ .name }}` }}'
     spec:
       project: default
       destination:
