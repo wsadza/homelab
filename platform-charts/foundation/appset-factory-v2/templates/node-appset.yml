@@ -26,8 +26,8 @@ spec:
     #      {{ `{{ $items | toYaml }}` }}
 
   template:
-    metadata:
-      name: "{{ .Values.node.name }}-node"
+    #metadata:
+    #  name: "{{ .Values.node.name }}-node"
     spec:
       project: default
       destination:
