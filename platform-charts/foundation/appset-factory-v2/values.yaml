@@ -28,8 +28,8 @@ node:
   listKey: applications
 
   # -- Child (leaf) ------------
-  #childFileTemplate: ""
-  #childNameTemplate: ""
+  childFileTemplate: ""
+  childNameTemplate: ""
 
   childMode: leaf
   childChartPath: platform-charts/foundation/appset-factory-v2
