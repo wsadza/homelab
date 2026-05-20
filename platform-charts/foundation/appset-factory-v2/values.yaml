@@ -24,13 +24,14 @@ root:
 node:
   name: ""
   file: ""
+  product: ""
   listKey: applications
 
   # -- Child (leaf) ------------
   childMode: leaf
   childChartPath: platform-charts/foundation/appset-factory-v2
   childFileTemplate: "platform-products/{{ product }}/applications/{{ application }}/components.yml"
-  childNameTemplate: "{{ product }}-{{ application }}"
+  childNameTemplate: "{{ application }}"
 
 # --------------------------
 # -- Sources --------------
@@ -39,4 +40,5 @@ node:
 leaf:
   name: ""
   file: ""
+  product: ""
   listKey: components
