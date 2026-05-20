@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: {{ .Values.root.name }}-root
+  name: {{ .Values.root.name }}
   namespace: argocd
 spec:
   goTemplate: true
@@ -18,7 +18,7 @@ spec:
 
   template:
     metadata:
-      name: {{ .Values.root.name | quote }}-root
+      name: "{{ .Values.root.name }}-root"
     spec:
       project: default
       destination:
