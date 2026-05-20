@@ -28,7 +28,7 @@ spec:
 
   template:
     metadata:
-      name: "{{ `{{ .name }}` }}"
+      name: "{{ {{ .name }}-`{{ .name }}` }}"
     spec:
       project: '{{ `{{ .name }}` }}'
       destination:
