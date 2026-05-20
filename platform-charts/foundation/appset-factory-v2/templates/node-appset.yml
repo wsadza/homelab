@@ -29,7 +29,7 @@ spec:
     metadata:
       #name: {{ .Values.node.name | quote }}
       #name: '{{ `{{ .name }}` }}'
-      name: "DUPA"
+      name: "dupa"
     spec:
       project: default
       destination:
