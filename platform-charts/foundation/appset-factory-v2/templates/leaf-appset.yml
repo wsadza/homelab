@@ -46,6 +46,10 @@ spec:
         {{ `{{- if hasKey . "priority" }}` }}
         argocd.argoproj.io/sync-wave: "{{ `{{ .priority }}` }}"
         {{ `{{- end }}` }}
+      labels:
+        product: {{ .Values.leaf.product | quote }}
+        application: {{ .Values.leaf.application | quote }}
+        component: "{{ `{{ .name | quote }}` }}"
     spec:
       syncPolicy:
         {{ `{{- if (dig "syncPolicy" "automated" false .) }}` }}
