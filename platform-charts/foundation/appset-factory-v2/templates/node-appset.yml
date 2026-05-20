@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: {{ .Values.node.name }}-node
+  name: {{ .Values.node.name | quote }}
   namespace: argocd
 spec:
   goTemplate: true
@@ -26,21 +26,8 @@ spec:
                 {{ `{{- end }}` }}
                 {{ `{{ $items | toYaml }}` }}
 
-#          {{ `{{ .applications | toYaml }}` }}
-
-    #- list:
-    #    elementsYaml: |
-    #      {{ `{{- $items := list }}` }}
-    #      {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
-    #      {{ `{{- if (dig "enabled" true .) }}` }}
-    #      {{ `{{- $items = append $items . }}` }}
-    #      {{ `{{- end }}` }}
-    #      {{ `{{- end }}` }}
-    #      {{ `{{ $items | toYaml }}` }}
-
   template:
     metadata:
-      #name: "{{ .Values.node.name }}-node"
       name: "{{ `{{ .name }}` }}"
     spec:
       project: default
@@ -48,28 +35,28 @@ spec:
         server: https://kubernetes.default.svc
         namespace: argocd
 
-  #templatePatch: |
-  #  metadata:
-  #    name: "{{ `{{ .name }}` }}"
-  #  spec:
-  #    sources:
-  #      {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
-  #      - repoURL: {{ $.Values.repoURL | quote }}
-  #        targetRevision: {{ $.Values.targetRevision | quote }}
-  #        path: {{ $.Values.node.childChartPath | quote }}
-  #        helm:
-  #          values: |
-  #            mode: {{ $.Values.node.childMode | quote }}
-  #            repoURL: {{ $.Values.repoURL | quote }}
-  #            targetRevision: {{ $.Values.targetRevision | quote }}
-  #            name: "{{ `{{ .name }}` }}"
-  #            #leaf:
-  #            #  name: {{ $.Values.node.childNameTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ .name }}" | quote }}
-  #            #  file: {{ $.Values.node.childFileTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ .name }}" | quote }}
-  #            #  product: {{ $.Values.node.product | quote }}
-  #            #  application: {{ `{{ .name }}` | quote }}
-  #            #  listKey: {{ $.Values.leaf.listKey | quote }}
-  #            #  application: {{ `{{ .name }}` | quote }}
-  #            #  listKey: {{ $.Values.leaf.listKey | quote }}
-  #      {{ `{{- end }}` }}
+  templatePatch: |
+    metadata:
+      name: "{{ `{{ .name }}` }}"
+    spec:
+      sources:
+        {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
+        - repoURL: {{ $.Values.repoURL | quote }}
+          targetRevision: {{ $.Values.targetRevision | quote }}
+          path: {{ $.Values.node.childChartPath | quote }}
+          helm:
+            values: |
+              mode: {{ $.Values.node.childMode | quote }}
+              repoURL: {{ $.Values.repoURL | quote }}
+              targetRevision: {{ $.Values.targetRevision | quote }}
+              name: "{{ `{{ .name }}` }}"
+              leaf:
+                name: {{ $.Values.node.childNameTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ .name }}" | quote }}
+                file: {{ $.Values.node.childFileTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ .name }}" | quote }}
+                product: {{ $.Values.node.product | quote }}
+                application: {{ `{{ .name }}` | quote }}
+                listKey: {{ $.Values.leaf.listKey | quote }}
+                application: {{ `{{ .name }}` | quote }}
+                listKey: {{ $.Values.leaf.listKey | quote }}
+        {{ `{{- end }}` }}
 {{- end }}

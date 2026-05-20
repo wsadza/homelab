@@ -18,7 +18,7 @@ spec:
 
   template:
     metadata:
-      name: "{{ .Values.root.name }}-root"
+      name: {{ .Values.root.name | quote }}
     spec:
       project: default
       destination:
