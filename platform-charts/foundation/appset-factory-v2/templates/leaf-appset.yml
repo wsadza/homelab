@@ -33,9 +33,9 @@ spec:
 
   template:
     metadata:
-      name: "{{ .application }}-'{{ `{{ .name }}` }}'"
+      name: "{{ .Values.leaf.application }}-'{{ `{{ .name }}` }}'"
     spec:
-      project: {{ .Values.leaf.application | quote}}
+      project: default 
       destination:
         server: https://kubernetes.default.svc
         namespace: default
