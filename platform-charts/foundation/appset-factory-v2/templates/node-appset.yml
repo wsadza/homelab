@@ -39,7 +39,6 @@ spec:
     metadata:
       name: "{{ `{{ .name }}` }}"
       labels:
-        product: {{ .Values.node.product | quote }}
         application: "{{ `{{ .name }}` }}"
     spec:
       sources:

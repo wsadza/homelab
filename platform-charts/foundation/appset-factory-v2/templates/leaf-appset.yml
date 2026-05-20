@@ -47,9 +47,7 @@ spec:
         argocd.argoproj.io/sync-wave: "{{ `{{ .priority }}` }}"
         {{ `{{- end }}` }}
       labels:
-        product: {{ .Values.leaf.product | quote }}
         application: {{ .Values.leaf.application | quote }}
-        component: {{ `{{ .name }}` }}
     spec:
       syncPolicy:
         {{ `{{- if (dig "syncPolicy" "automated" false .) }}` }}
