@@ -15,7 +15,7 @@ root:
   childMode: node
   childChartPath: platform-charts/foundation/appset-factory
   childFileTemplate: "platform-products/{{ product }}/applications.yml"
-  childNameTemplate: "{{ item }}"
+  childNameTemplate: "{{ product }}"
 
 # --------------------------
 # -- MID-Generator --------
@@ -31,7 +31,7 @@ node:
   childMode: leaf
   childChartPath: platform-charts/foundation/appset-factory
   childFileTemplate: "platform-products/{{ product }}/applications/{{ application }}/components.yml"
-  childNameTemplate: "{{ item }}"
+  childNameTemplate: "{{ product }}-{{ application }}"
 
 # --------------------------
 # -- Sources --------------
