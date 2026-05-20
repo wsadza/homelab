@@ -62,7 +62,7 @@ components:
     - name: app-security
       namespace: podinfo
 
-      enabled: false
+      enabled: true
       priority: 0
 
       syncPolicy:
