@@ -1,0 +1,25 @@
+apiVersion: v2
+name: product-orchestrator
+description: Top-level Argo CD ApplicationSet orchestrator for enabling and deploying environment products dynamically.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+
+keywords:
+  - argocd
+  - applicationset
+  - gitops
+  - product-orchestrator
+  - bootstrap
+
+home: https://github.com/wsadza/homelab
+
+sources:
+  - https://github.com/wsadza/homelab
+
+maintainers:
+  - name: wsadza
+
+annotations:
+  category: GitOps
+  argocd.argoproj.io/application-set: "true"

@@ -1,0 +1,8 @@
+name: dev
+products:
+  - workload-tests2
+
+#  - platform-observability
+#  - platform-security
+#  - gpu
+#  - infrastructure

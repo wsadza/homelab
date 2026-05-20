@@ -1,0 +1,55 @@
+# ===============================
+# 
+# ===============================
+components: 
+
+  - name: app
+    namespace: ""
+    enabled: true
+
+    priority: 0
+
+    syncPolicy:
+      automated: false
+
+    sources:
+
+      - type: helm
+        repoURL: https://stefanprodan.github.io/podinfo
+        targetRevision: 6.9.1
+        chart: podinfo 
+        valueFiles: 
+          - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
+
+  - name: app-expousure
+    namespace: ""
+
+    enabled: true
+
+    priority: 0
+
+    syncPolicy:
+      automated: false
+
+    sources:
+      - type: values
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        ref: values
+
+      - type: helm
+        repoURL: https://stefanprodan.github.io/podinfo
+        targetRevision: 6.9.1
+        chart: podinfo 
+        valueFiles: 
+          - $values/platform-products/workload-tests/applications/podinfo/helm/values.yml
+
+  - name: app-auth
+    namespace: ""
+
+    enabled: true
+
+    priority: 0
+
+    syncPolicy:
+      automated: false

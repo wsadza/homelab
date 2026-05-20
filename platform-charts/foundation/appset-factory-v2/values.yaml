@@ -1,0 +1,43 @@
+mode: root
+repoURL: https://github.com/wsadza/homelab.git
+targetRevision: HEAD
+
+# --------------------------
+# -- TOP-Generator --------
+# ------------------------
+
+root:
+  name: test
+  file: environments/dta.yml 
+  listKey: products
+
+  # -- Child (node) ------------
+  childMode: node
+  childChartPath: platform-charts/foundation/appset-factory
+  childFileTemplate: "platform-products/{{ product }}/applications.yml"
+  childNameTemplate: "{{ item }}"
+
+# --------------------------
+# -- MID-Generator --------
+# ------------------------
+
+node:
+  name: ""
+  file: ""
+  product: ""
+  listKey: applications
+
+  # -- Child (leaf) ------------
+  childMode: leaf
+  childChartPath: platform-charts/foundation/appset-factory
+  childFileTemplate: "platform-products/{{ product }}/applications/{{ application }}/components.yml"
+  childNameTemplate: "{{ item }}"
+
+# --------------------------
+# -- Sources --------------
+# ------------------------
+
+leaf:
+  name: ""
+  file: ""
+  listKey: components
