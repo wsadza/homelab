@@ -17,7 +17,13 @@ spec:
           - path: {{ .Values.node.file | quote }}
     - list:
         elementsYaml: |
-          {{ `{{ .applications | toYaml }}` }}
+          {{ `{{- $items := list }}` }}
+          {{ `{{- range .` }}{{ .Values.leaf.listKey }}{{ ` }}` }}
+          {{ `{{- $items = append $items . }}` }}
+          {{ `{{- end }}` }}
+          {{ `{{ $items | toYaml }}` }}
+
+#          {{ `{{ .applications | toYaml }}` }}
 
     #- list:
     #    elementsYaml: |
