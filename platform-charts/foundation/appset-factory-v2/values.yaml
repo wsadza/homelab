@@ -13,7 +13,7 @@ root:
 
   # -- Child (node) ------------
   childMode: node
-  childChartPath: platform-charts/foundation/appset-factory
+  childChartPath: platform-charts/foundation/appset-factory-v2
   childFileTemplate: "platform-products/{{ product }}/applications.yml"
   childNameTemplate: "{{ product }}"
 
@@ -29,7 +29,7 @@ node:
 
   # -- Child (leaf) ------------
   childMode: leaf
-  childChartPath: platform-charts/foundation/appset-factory
+  childChartPath: platform-charts/foundation/appset-factory-v2
   childFileTemplate: "platform-products/{{ product }}/applications/{{ application }}/components.yml"
   childNameTemplate: "{{ product }}-{{ application }}"
 
@@ -40,6 +40,5 @@ node:
 leaf:
   name: ""
   file: ""
-  product: ""
   application: ""
   listKey: components
