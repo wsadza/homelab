@@ -28,8 +28,7 @@ spec:
   template:
     metadata:
       #name: {{ .Values.node.name | quote }}
-      #name: '{{ `{{ .name }}` }}'
-      name: "dupa"
+      name: '{{ `{{ .name }}` }}'
     spec:
       project: default
       destination:
