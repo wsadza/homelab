@@ -28,9 +28,9 @@ spec:
 
   template:
     metadata:
-      name: "{{ {{ .name }}-`{{ .name }}` }}"
+      name: "{{ .name }}"
     spec:
-      project: '{{ `{{ .name }}` }}'
+      project: default 
       destination:
         server: https://kubernetes.default.svc
         namespace: argocd
