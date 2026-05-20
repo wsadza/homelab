@@ -24,7 +24,6 @@ root:
 node:
   name: ""
   file: ""
-  product: ""
   listKey: applications
 
   # -- Child (leaf) ------------
@@ -40,5 +39,4 @@ node:
 leaf:
   name: ""
   file: ""
-  application: ""
   listKey: components
