@@ -15,17 +15,19 @@ spec:
         requeueAfterSeconds: 30
         files:
           - path: {{ .Values.node.file | quote }}
-    - list:
-        elementsYaml: |
-          {{ `{{- $items := list }}` }}
-          {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
-          {{ `{{- $items = append $items . }}` }}
-          {{ `{{- end }}` }}
-          {{ `{{ $items | toYaml }}` }}
+    #- list:
+    #    elementsYaml: |
+    #      {{ `{{- $items := list }}` }}
+    #      {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
+    #      {{ `{{- if (dig "enabled" true .) }}` }}
+    #      {{ `{{- $items = append $items . }}` }}
+    #      {{ `{{- end }}` }}
+    #      {{ `{{- end }}` }}
+    #      {{ `{{ $items | toYaml }}` }}
 
   template:
     metadata:
-      name: '{{ `{{ .name }}` }}'
+      name: {{ .Values.node.name | quote }}
     spec:
       project: default
       destination:
@@ -39,5 +41,17 @@ spec:
         - repoURL: {{ $.Values.repoURL | quote }}
           targetRevision: {{ $.Values.targetRevision | quote }}
           path: {{ $.Values.node.childChartPath | quote }}
+          helm:
+            values: |
+              mode: {{ $.Values.node.childMode | quote }}
+              repoURL: {{ $.Values.repoURL | quote }}
+              targetRevision: {{ $.Values.targetRevision | quote }}
+
+              leaf:
+                name: {{ $.Values.node.childNameTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ .name }}" | quote }}
+                file: {{ $.Values.node.childFileTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ .name }}" | quote }}
+                product: {{ $.Values.node.product | quote }}
+                application: {{ `{{ .name }}` | quote }}
+                listKey: {{ $.Values.leaf.listKey | quote }}
         {{ `{{- end }}` }}
 {{- end }}
