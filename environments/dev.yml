@@ -10,7 +10,7 @@ products:
   - platform-security-extras
 
   - workload-storage
-  - workload-tests
+  #- workload-tests
 
 #  - platform-observability
 #  - platform-security
