@@ -50,7 +50,7 @@ spec:
         application: {{ .Values.leaf.application | quote }}
     spec:
       syncPolicy:
-        {{ `{{- if (dig "syncPolicy" "automated" true .) }}` }}
+        {{ `{{- if eq (toString (dig "syncPolicy" "automated" "false" .)) "true" }}` }}
         automated:
           prune: true
           selfHeal: true
@@ -113,4 +113,4 @@ spec:
           
         {{ `{{- end }}` }}
 
-{{- end }}
+        {{- end }}
