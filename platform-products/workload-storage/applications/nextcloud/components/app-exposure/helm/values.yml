@@ -8,6 +8,27 @@
 # : AppPlatform (wrapper)
 # ===============================================================
 
+# -----------------------------------------------
+# @section common parameters
+# -----------------------------------------------
+#
+# @param nameOverride      : String to partially override common.names.name
+# @param fullnameOverride  : String to fully override common.names.fullname
+# @param namespaceOverride : String to fully override common.names.namespace
+# @param commonLabels      : Labels to add to all deployed objects
+# @param commonAnnotations : Annotations to add to all deployed objects
+#
+
+nameOverride: ""
+fullnameOverride: "nextcloud"
+namespaceOverride: ""
+commonLabels: {}
+commonAnnotations: {}
+
+# -----------------------------------------------
+# @section appPlatform parameters
+# -----------------------------------------------
+#
 appPlatform:
 
   # ===============================================
