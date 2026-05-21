@@ -77,12 +77,19 @@ components:
           targetRevision: HEAD
           ref: values
 
+        # -- Application -----
         - type: helm 
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
           path: platform-charts/wrappers/app-storage
           valueFiles: 
             - $values/platform-products/workload-storage/applications/nextcloud/components/app-storage/helm/values.yml
+
+        # -- Secrets -----
+        - type: kustomize 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-products/workload-storage/applications/nextcloud/components/app-storage/kustomize
 
   # ------------------
   # app-auth
