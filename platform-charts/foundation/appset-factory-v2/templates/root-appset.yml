@@ -41,6 +41,5 @@ spec:
               node:
                 name: {{ $.Values.root.childNameTemplate | replace "{{ product }}" "{{ . }}" | quote }}
                 file: {{ $.Values.root.childFileTemplate | replace "{{ product }}" "{{ . }}" | quote }}
-                product: {{ `{{ . }}` | quote }}
         {{ `{{- end }}` }}
 {{- end }}
