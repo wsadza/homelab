@@ -15,7 +15,7 @@ spec:
   bucketClassName: {{ .Values.appStorage.blob.bucketClassName | quote }}
   deletionPolicy: {{ .Values.appStorage.blob.deletionPolicy | quote }}
   driverName: {{ .Values.appStorage.blob.driverName | quote }}
-  existingBucketID: {{ default (printf "%s-seaweedfs-bucket" (include "common.names.fullname" .)) .Values.appStorage.blob.name | quote }}
+  existingBucketID: {{ default (printf "%s-bucket" (include "common.names.fullname" .)) .Values.appStorage.blob.name | quote }}
   protocols:
     - S3
 {{- end }}
