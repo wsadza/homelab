@@ -295,5 +295,5 @@ appStorage:
       enabled: true
       name: ""
       immediate: true
-      schedule: "0 0 0 * * *"
+      schedule: "0 0 * * *"
       pluginName: barman-cloud.cloudnative-pg.io
