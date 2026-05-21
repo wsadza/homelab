@@ -13,7 +13,7 @@ appAuth:
   # ===============================================
   # @section Keycloak parameters
   # ===============================================
-  
+  #
   keycloak:
 
     # @param appAuth.keycloak.enabled Enable Keycloak integration resources
@@ -25,9 +25,8 @@ appAuth:
     #
     # @param appAuth.keycloak.realmRef.name Name of the Keycloak realm resource
     # @param appAuth.keycloak.realmRef.kind Kind of the Keycloak realm resource
-    #
     realmRef:
-      name: platform 
+      name: platform
       kind: ClusterKeycloakRealm
 
     # -----------------------------------------------
@@ -51,56 +50,46 @@ appAuth:
     # @param appAuth.keycloak.client.homeUrl Home URL for the Keycloak client
     # @param appAuth.keycloak.client.redirectUris Allowed redirect URIs for the Keycloak client
     # @param appAuth.keycloak.client.defaultClientScopes Default client scopes assigned to the Keycloak client
-    #
     client:
-      enabled: true
-     
-      name: podinfo
-      namespace: podinfo 
-      labels: []
-      annotations: []
+      enabled: false
+      name: ""
+      namespace: ""
+      labels: {}
+      annotations: {}
+      clientId: ""
 
-      clientId: podinfo 
       clientSecret:
-        name: podinfo-keycloak-client-secret
+        generate: true
+        name: ""
         key: client-secret
 
+        #secretName: ""
+        #secretKey: client-secret
+        #secretNamespaces: []
+
       public: false
-      directAccess: true
-      advancedProtocolMappers: true
-      webUrl: https://podinfo.anykey.pl
-      adminUrl: https://podinfo.anykey.pl
-      homeUrl: /
-      redirectUris:
-        - https://podinfo.anykey.pl/oauth2/callback
-      defaultClientScopes:
-        - groups
+      directAccess: false
+      advancedProtocolMappers: false
+      webUrl: ""
+      adminUrl: ""
+      homeUrl: "/"
+      redirectUris: []
+      defaultClientScopes: []
 
     # -----------------------------------------------
-    # @subsection groups parameters
+    # @subsection Groups parameters
     # -----------------------------------------------
-    # @param appAuth.keycloak.groups[0].name        : Name of the Kubernetes group resource
-    # @param appAuth.keycloak.groups[0].groupName   : Name of the Keycloak group
-    # @param appAuth.keycloak.groups[0].namespace   : Namespace where the group resource is created
-    # @param appAuth.keycloak.groups[0].labels      : Additional labels for the group resource
-    # @param appAuth.keycloak.groups[0].annotations : Additional annotations for the group resource
-    #
-    groups:
-      - name: podinfo-admins
-        groupName: PodInfoAdmins
-        namespace: keycloak
-        labels: []
-        annotations: []
-      - name: podinfo-developers
-        groupName: PodInfoDevelopers
-        namespace: keycloak
-        labels: []
-        annotations: []
+    groups: []
+      # @param appAuth.keycloak.groups[0].name        : Name of the Kubernetes group resource
+      # @param appAuth.keycloak.groups[0].groupName   : Name of the Keycloak group
+      # @param appAuth.keycloak.groups[0].namespace   : Namespace where the group resource is created
+      # @param appAuth.keycloak.groups[0].labels      : Additional labels for the group resource
+      # @param appAuth.keycloak.groups[0].annotations : Additional annotations for the group resource
 
   # ===============================================
-  # @section Gateway API parameters
+  # @section Envoy Gateway parameters
   # ===============================================
-
+  #
   envoyGateway:
 
     # -----------------------------------------------
@@ -120,31 +109,24 @@ appAuth:
     # @param appAuth.envoyGateway.oidc.logoutPath         : Path used to trigger logout
     # @param appAuth.envoyGateway.oidc.scopes             : OIDC scopes requested during authentication
     # @param appAuth.envoyGateway.oidc.forwardAccessToken : Forward the access token to the upstream service
-    #
     oidc:
-      enabled: true
+      enabled: false
+      name: ""
+      namespace: ""
+      labels: {}
+      annotations: {}
+      targetRefs: []
+      issuer: ""
+      clientId: ""
 
-      name: podinfo-oidc
-      namespace: podinfo
-      labels: []
-      annotations: []
-
-      targetRefs:
-        - group: gateway.networking.k8s.io
-          kind: HTTPRoute
-          name: podinfo-host
-
-      issuer: https://keycloak.anykey.pl/realms/platform
-      clientId: podinfo 
       clientSecret:
-        name: podinfo-keycloak-client-secret
-        key: clientSecret
-      redirectURL: https://podinfo.anykey.pl/oauth2/callback
+        name: ""
 
+      redirectURL: ""
       logoutPath: /logout
-
       scopes:
         - openid
         - profile
         - email
+
       forwardAccessToken: true
