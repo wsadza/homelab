@@ -1,0 +1,112 @@
+# ===============================
+# 
+# ===============================
+components:
+
+  # ------------------
+  # app
+  # ------------------
+
+    - name: app
+      namespace: nextcloud
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://nextcloud.github.io/helm/
+          targetRevision: 9.0.6
+          chart: nextcloud
+          valueFiles: 
+            - $values/platform-products/workload-storage/applications/nextcloud/components/app/helm/values.yml
+
+  # ------------------
+  # app-exposure
+  # ------------------
+
+    - name: app-exposure
+      namespace: nextcloud
+
+      enabled: true
+      priority: 5
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-platform
+          valueFiles: 
+            - $values/platform-products/workload-storage/applications/nextcloud/components/app-exposure/helm/values.yml
+
+  # ------------------
+  # app-storage
+  # ------------------
+
+    - name: app-storage
+      namespace: nextcloud
+
+      enabled: false
+      priority: -5
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-storage
+          valueFiles: 
+            - $values/platform-products/workload-storage/applications/nextcloud/components/app-storage/helm/values.yml
+
+  # ------------------
+  # app-auth
+  # ------------------
+
+    - name: app-auth
+      namespace: nextcloud
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-auth
+          valueFiles: 
+            - $values/platform-products/workload-storage/applications/nextcloud/components/app-auth/helm/values.yml

@@ -1,6 +1,6 @@
 name: dev
 products:
-  #- workload-storage
+  - workload-storage
   - workload-tests
 
 #  - platform-observability
