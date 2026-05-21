@@ -66,8 +66,11 @@ spec:
     initdb:
       database: {{ default (include "common.names.fullname" $root) .database | quote }}
       owner: {{ default (include "common.names.fullname" $root) .owner | quote }}
+      {{- with .secret.name }}
       secret:
-        name: {{ $initdbSecretName | quote }}
+        #name: {{ $initdbSecretName | quote }}
+        name: {{ .name | quote }}
+      {{- end }}
     {{- end }}
 {{- else if eq .Values.appStorage.psql.bootstrap.mode "recovery" }}
 {{- with .Values.appStorage.psql.bootstrap.recovery }}
