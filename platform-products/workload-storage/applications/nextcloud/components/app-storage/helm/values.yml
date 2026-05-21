@@ -45,5 +45,6 @@ appStorage:
     storage:
       size: 50Gi
     objectStore:
-      destinationPath: "s3://nextcloud-app-bucket/databases"
+      #destinationPath: "s3://nextcloud-bucket/databases"
+      destinationPath: "s3:// nextcloud-app-storage-bucket/databases"
       endpointURL: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"
