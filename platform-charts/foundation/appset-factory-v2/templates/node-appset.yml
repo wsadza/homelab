@@ -28,7 +28,7 @@ spec:
 
   template:
     metadata:
-      name: "{{ $.Values.node.product}}-{{ .name }}"
+      name: ""
     spec:
       project: default 
       destination:
@@ -37,7 +37,7 @@ spec:
 
   templatePatch: |
     metadata:
-      name: "{{ `{{ .name }}` }}"
+      name: "{{ $.Values.node.product}}-{{ `{{ .name }}` }}"
       labels:
         application: "{{ `{{ .name }}` }}"
     spec:
