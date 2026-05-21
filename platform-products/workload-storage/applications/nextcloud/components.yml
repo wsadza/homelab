@@ -46,7 +46,7 @@ components:
       namespace: nextcloud
 
       enabled: true
-      priority: 5
+      priority: -5
 
       #syncPolicy:
       #  automated: false
@@ -93,12 +93,6 @@ components:
           valueFiles: 
             - $values/platform-products/workload-storage/applications/nextcloud/components/app-storage/helm/values.yml
 
-        # -- Secrets -----
-        - type: kustomize 
-          repoURL: https://github.com/wsadza/homelab.git
-          targetRevision: HEAD
-          path: platform-products/workload-storage/applications/nextcloud/components/app-storage/kustomize
-
   # ------------------
   # app-auth
   # ------------------
@@ -107,7 +101,7 @@ components:
       namespace: nextcloud
 
       enabled: true
-      priority: 0
+      priority: -5
 
       #syncPolicy:
       #  automated: false
