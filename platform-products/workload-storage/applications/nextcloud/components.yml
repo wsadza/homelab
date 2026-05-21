@@ -64,7 +64,7 @@ components:
     - name: app-storage
       namespace: nextcloud
 
-      enabled: false
+      enabled: true
       priority: -5
 
       syncPolicy:
