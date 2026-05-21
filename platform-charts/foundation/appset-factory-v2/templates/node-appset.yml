@@ -51,9 +51,10 @@ spec:
               mode: {{ $.Values.node.childMode | quote }}
               repoURL: {{ $.Values.repoURL | quote }}
               targetRevision: {{ $.Values.targetRevision | quote }}
+              name: "{{ `{{ .name }}` }}"
               leaf:
-                name: {{ $.Values.node.childNameTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ `{{ .name }}` }}" | quote }}
-                file: {{ $.Values.node.childFileTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ `{{ .name }}` }}" | quote }}
+                name: {{ $.Values.node.childNameTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ .name }}" | quote }}
+                file: {{ $.Values.node.childFileTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ .name }}" | quote }}
                 product: {{ $.Values.node.product | quote }}
                 application: {{ `{{ .name }}` | quote }}
         {{ `{{- end }}` }}
