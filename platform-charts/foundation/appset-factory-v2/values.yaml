@@ -7,7 +7,7 @@ targetRevision: HEAD
 # ------------------------
 
 root:
-  name: test
+  name: battlestation.sh
   file: environments/dta.yml 
   listKey: products
 

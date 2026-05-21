@@ -1,6 +1,6 @@
 name: dev
 products:
-  - workload-tests2
+  - workload-tests
 
 #  - platform-observability
 #  - platform-security
