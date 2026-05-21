@@ -4,7 +4,7 @@
 components:
 
   # ------------------
-  # application
+  # app
   # ------------------
 
     - name: app
@@ -62,7 +62,7 @@ components:
     - name: app-security
       namespace: podinfo
 
-      enabled: true
+      enabled: false
       priority: 0
 
       syncPolicy:
@@ -81,3 +81,30 @@ components:
           path: platform-charts/wrappers/app-security
           valueFiles: 
             - $values/platform-products/workload-tests2/applications/podinfo/components/app-security/helm/values.yml
+
+  # ------------------
+  # app-auth
+  # ------------------
+
+    - name: app-auth
+      namespace: podinfo
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-auth
+          valueFiles: 
+            - $values/platform-products/workload-tests2/applications/podinfo/components/app-auth/helm/values.yml

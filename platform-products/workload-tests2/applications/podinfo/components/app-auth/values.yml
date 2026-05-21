@@ -33,7 +33,7 @@ appAuth:
       enabled: true
      
       name: podinfo
-      namespace: keycloak 
+      namespace: podinfo 
       labels: []
       annotations: []
 
