@@ -23,7 +23,7 @@ appAuth:
     #
     realmRef:
       name: platform 
-      kind: KeycloakRealm
+      kind: ClusterKeycloakRealm
 
     # -----------------------------------------------
     # @subsection client parameters
