@@ -40,7 +40,7 @@ appAuth:
       clientId: podinfo 
       clientSecret:
         name: podinfo-keycloak-client-secret
-        key: clientSecret
+        key: client-secret
 
       public: false
       directAccess: true
