@@ -14,7 +14,7 @@ components:
       priority: 0
 
       syncPolicy:
-        automated: true
+        automated: false
 
       sources:
 
@@ -49,7 +49,7 @@ components:
       priority: -5
 
       syncPolicy:
-        automated: true 
+        automated: false
 
       sources:
 
@@ -76,7 +76,7 @@ components:
       priority: -5
 
       syncPolicy:
-        automated: true
+        automated: false
 
       sources:
 
@@ -104,7 +104,7 @@ components:
       priority: -5
 
       syncPolicy:
-        automated: true
+        automated: false
 
       sources:
 
