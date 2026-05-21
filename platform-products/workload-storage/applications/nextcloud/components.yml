@@ -36,7 +36,7 @@ components:
         - type: kustomize 
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
-          path: platform-products/workload-storage/applications/nextcloud/components/app-storage/kustomize
+          path: platform-products/workload-storage/applications/nextcloud/components/app/kustomize
 
   # ------------------
   # app-exposure
