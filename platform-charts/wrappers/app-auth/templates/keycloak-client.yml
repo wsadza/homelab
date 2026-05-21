@@ -16,7 +16,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- with $root.Values.keycloak.realmRef }}
+  {{- with $root.Values.appAuth.keycloak.realmRef }}
   realmRef:
     name: {{ .name | quote }}
     kind: {{ .kind | quote }}
