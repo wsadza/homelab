@@ -28,7 +28,7 @@ spec:
 
   template:
     metadata:
-      name: "{{ .name }}"
+      name: "{{ $.Values.node.product}}-{{ .name }}"
     spec:
       project: default 
       destination:
