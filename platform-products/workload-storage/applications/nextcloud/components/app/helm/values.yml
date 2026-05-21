@@ -1,0 +1,147 @@
+nextcloud:
+  host: nextcloud.anykey.pl 
+
+  existingSecret:
+    enabled: true
+    secretName: nextcloud-admin-secret
+    usernameKey: username
+    passwordKey: password
+
+  extraEnv:
+    - name: OIDC_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: nextcloud-keycloak-client-secret
+          key: client-secret
+
+    - name: KEYCLOAK_BASE
+      value: "keycloak.anykey.pl"
+
+    - name: KEYCLOAK_REALM
+      value: "platform"
+
+    - name: KEYCLOAK_ENDPOINT 
+      value: "https://$(KEYCLOAK_BASE)/realms/$(KEYCLOAK_REALM)/.well-known/openid-configuration"
+
+  trustedDomains:
+    - nextcloud.anykey.pl 
+    - nextcloud.nextcloud.svc.cluster.local
+
+  configs:
+    proxy.config.php: |-
+      <?php
+      $CONFIG = array (
+        'trusted_proxies' =>
+        array (
+          0 => '127.0.0.1',
+          1 => '::1',
+          2 => '10.0.0.0/8',
+          3 => '172.16.0.0/12',
+          4 => '192.168.0.0/16',
+        ),
+        'forwarded_for_headers' =>
+        array (
+          0 => 'HTTP_X_FORWARDED_FOR',
+        ),
+      );
+
+  hooks:
+    before-starting: |
+      #!/bin/bash
+
+      # ----------------------------
+      # Validate Nextcloud installation
+      # ----------------------------
+      
+      if [ ! -f "occ" ]; then
+        echo "Skipping OIDC initialization: Nextcloud occ command not found in current directory."
+        exit 0
+      fi
+      if ! php occ status | grep -q "installed: true"; then
+        echo "Skipping OIDC initialization: Nextcloud is not installed yet."
+        exit 0
+      fi
+
+      # ----------------------------
+      # Validate Variables
+      # ----------------------------
+      
+      if [ -z "${OIDC_CLIENT_SECRET:-}" ]; then
+        echo "Skipping OIDC initialization: OIDC_CLIENT_SECRET is empty or missing."
+        exit 0
+      fi
+      if [ -z "${KEYCLOAK_ENDPOINT:-}" ]; then
+        echo "Skipping OIDC initialization: KEYCLOAK_ENDPOINT is empty or missing."
+        exit 0
+      fi
+
+      # ----------------------------
+      # Ensure app is available/enabled.
+      # ----------------------------
+      
+      echo "Ensuring user_oidc app is enabled..."
+      php occ app:enable user_oidc || {
+        echo "Installing user_oidc..."
+        php occ app:install user_oidc
+        php occ app:enable user_oidc
+      }
+ 
+      echo "Deleting existing Keycloak OIDC provider if it exists..."
+      php occ user_oidc:provider:delete Keycloak || true
+
+      echo "Creating/updating Keycloak OIDC provider..."
+      php occ user_oidc:provider Keycloak \
+        --clientid="nextcloud" \
+        --clientsecret="${OIDC_CLIENT_SECRET}" \
+        --discoveryuri="${KEYCLOAK_ENDPOINT}" \
+        --scope="openid profile email groups" \
+        --unique-uid=1 \
+        --group-provisioning=1
+ 
+      echo "Keeping normal Nextcloud login enabled..."
+      php occ config:app:set user_oidc allow_multiple_user_backends --value=1 || true
+      echo "OIDC startup configuration complete."
+
+  objectStore:
+    s3:
+      enabled: true
+      host: seaweed-filer.seaweedfs.svc.cluster.local
+      bucket: nextcloud-bucket
+      port: "8333"
+      ssl: false
+      region: us-east-1
+      usePathStyle: true
+      autoCreate: false
+      existingSecret: nextcloud-object-store-secret 
+      secretKeys:
+        accessKey: S3_ACCESS_KEY # accessKey
+        secretKey: S3_SECRET_KEY # secretKey
+        #bucket: bucket
+        #host: host
+
+persistence:
+  enabled: true
+  size: 10Gi
+
+internalDatabase:
+  enabled: false
+
+postgresql:
+  enabled: false
+
+mariadb:
+  enabled: false
+
+externalDatabase:
+  enabled: true
+  type: postgresql
+  host: nextcloud-cnpg-cluster-rw.nextcloud.svc.cluster.local:5432
+  database: nextcloud
+  existingSecret:
+    enabled: true
+    secretName: nextcloud-database-secret
+    usernameKey: username
+    passwordKey: password
+
+cronjob:
+  enabled: true

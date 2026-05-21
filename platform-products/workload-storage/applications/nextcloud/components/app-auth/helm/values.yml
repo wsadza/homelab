@@ -1,0 +1,54 @@
+# ===============================================================
+#    ___             ___       __  __ 
+#   / _ | ___  ___  / _ |__ __/ /_/ / 
+#  / __ |/ _ \/ _ \/ __ / // / __/ _ \
+# /_/ |_/ .__/ .__/_/ |_\_,_/\__/_//_/
+#      /_/  /_/
+#
+# : AppAuth (wrapper chart)
+# ===============================================================
+
+appAuth:
+
+  # ===============================================
+  # @section Keycloak parameters
+  # ===============================================
+  
+  keycloak:
+    enabled: true
+
+    # -----------------------------------------------
+    # @subsection relam reference parameters
+    # -----------------------------------------------
+    #
+    realmRef:
+      name: platform 
+      kind: ClusterKeycloakRealm
+
+    # -----------------------------------------------
+    # @subsection client parameters
+    # -----------------------------------------------
+    #
+    client:
+      enabled: true
+     
+      name: nextcloud
+      namespace: nextcloud 
+      labels: []
+      annotations: []
+
+      clientId: nextcloud 
+      clientSecret:
+        name: nextcloud-keycloak-client-secret # keycloak-client-secret-nextcloud 
+        key: client-secret
+
+      public: false
+      directAccess: true
+      advancedProtocolMappers: true
+      webUrl: https://nextcloud.anykey.pl
+      adminUrl: https://nextcloud.anykey.pl
+      homeUrl: /
+      redirectUris:
+        - https://nextcloud.anykey.pl/apps/user_oidc/code
+      defaultClientScopes:
+        - groups

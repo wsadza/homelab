@@ -27,6 +27,8 @@ components:
           repoURL: https://stefanprodan.github.io/podinfo
           targetRevision: 6.9.1
           chart: podinfo 
+          valueFiles: 
+            - $values/platform-products/workload-tests2/applications/podinfo/components/app/helm/values.yml
 
   # ------------------
   # app-exposure

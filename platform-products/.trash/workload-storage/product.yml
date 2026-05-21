@@ -1,0 +1,69 @@
+# ===============================
+# 
+# ===============================
+applications:
+
+  # ------------------
+  # Podinfo
+  # ------------------
+
+    - name: nextcloud 
+      namespace: nextcloud 
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+        
+        # Helper
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        # Application
+        - type: helm
+          repoURL: https://nextcloud.github.io/helm/
+          targetRevision: 9.0.6
+          chart: nextcloud
+          valueFiles: 
+            - $values/platform-products/workload-storage/applications/nextcloud/helm/values.yml
+
+        # Secrets
+        - type: kustomize 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-products/workload-storage/applications/nextcloud/kustomize
+
+        # Extra Manifests 
+        #- type: manifests
+        #  repoURL: https://github.com/wsadza/homelab.git
+        #  targetRevision: HEAD
+        #  path: platform-products/workload-storage/applications/nextcloud/manifests
+
+        # Wrapper (expousure)
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-platform
+          valueFiles: 
+            - $values/platform-products/workload-storage/applications/nextcloud/helm/values.yml
+
+        # Wrapper (auth)
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-auth
+          valueFiles: 
+            - $values/platform-products/workload-storage/applications/nextcloud/helm/values.yml
+
+        # Wrapper (storage)
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-storage
+          valueFiles: 
+            - $values/platform-products/workload-storage/applications/nextcloud/helm/values.yml
