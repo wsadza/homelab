@@ -86,7 +86,7 @@ appPlatform:
         rules:
           - backendRefs:
               - kind: Service
-                name: nextcloud
+                name: nextcloud-app
                 namespace: nextcloud
                 port: 8080
 
