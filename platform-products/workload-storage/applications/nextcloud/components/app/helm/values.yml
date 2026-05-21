@@ -112,7 +112,7 @@ nextcloud:
       region: us-east-1
       usePathStyle: true
       autoCreate: false
-      existingSecret: nextcloud-object-store-secret 
+      existingSecret: nextcloud-app-storage-object-store-secret
       secretKeys:
         accessKey: S3_ACCESS_KEY # accessKey
         secretKey: S3_SECRET_KEY # secretKey
