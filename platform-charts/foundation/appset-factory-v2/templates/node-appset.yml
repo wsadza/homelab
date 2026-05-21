@@ -54,7 +54,7 @@ spec:
               name: "{{ `{{ .name }}` }}"
               leaf:
                 #name: {{ $.Values.node.childNameTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ .name }}" | quote }}
-                name: {{ .name | quote }}
+                name: {{ `{{ .name }}` }}
                 file: {{ $.Values.node.childFileTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ .name }}" | quote }}
                 product: {{ $.Values.node.product | quote }}
                 application: {{ `{{ .name }}` | quote }}
