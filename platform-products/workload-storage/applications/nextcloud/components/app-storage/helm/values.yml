@@ -7,6 +7,26 @@
 # : AppStorage
 # ===============================================
 
+# -----------------------------------------------
+# @section common parameters
+# -----------------------------------------------
+#
+# @param nameOverride      : String to partially override common.names.name
+# @param fullnameOverride  : String to fully override common.names.fullname
+# @param namespaceOverride : String to fully override common.names.namespace
+# @param commonLabels      : Labels to add to all deployed objects
+# @param commonAnnotations : Annotations to add to all deployed objects
+#
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+commonLabels: {}
+commonAnnotations: {}
+
+# -----------------------------------------------
+# @section appStorge parameters
+# -----------------------------------------------
+#
 appStorage:
 
   # ===============================================
@@ -25,5 +45,5 @@ appStorage:
     storage:
       size: 50Gi
     objectStore:
-      destinationPath: "s3://nextcloud-bucket/databases"
+      destinationPath: "s3://nextcloud-app-bucket/databases"
       endpointURL: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"

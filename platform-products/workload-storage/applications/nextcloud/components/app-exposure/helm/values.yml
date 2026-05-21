@@ -18,9 +18,8 @@
 # @param commonLabels      : Labels to add to all deployed objects
 # @param commonAnnotations : Annotations to add to all deployed objects
 #
-
 nameOverride: ""
-fullnameOverride: "nextcloud"
+fullnameOverride: ""
 namespaceOverride: ""
 commonLabels: {}
 commonAnnotations: {}
@@ -48,6 +47,7 @@ appPlatform:
     # @param appPlatform.gatewayApi.gateway.listeners        : List of Gateway listeners. 
     gateway:
       enabled: true
+      name: gateway-nextcloud
       namespace: envoy-gateway-system
       annotations:
         external-dns.alpha.kubernetes.io/target: anykey.pl
