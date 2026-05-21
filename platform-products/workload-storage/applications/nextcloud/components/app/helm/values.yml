@@ -135,7 +135,8 @@ mariadb:
 externalDatabase:
   enabled: true
   type: postgresql
-  host: nextcloud-cnpg-cluster-rw.nextcloud.svc.cluster.local:5432
+  #host: nextcloud-cnpg-cluster-rw.nextcloud.svc.cluster.local:5432
+  host: nextcloud-app-storage-cnpg-cluster-rw.nextcloud.svc.cluster.local:5432
   database: nextcloud
   existingSecret:
     enabled: true
