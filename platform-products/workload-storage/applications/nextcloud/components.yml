@@ -61,7 +61,7 @@ components:
         - type: helm 
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
-          path: platform-charts/wrappers/app-platform
+          path: platform-charts/wrappers/app-exposure
           valueFiles: 
             - $values/platform-products/workload-storage/applications/nextcloud/components/app-exposure/helm/values.yml
 

@@ -63,10 +63,6 @@ appAuth:
         name: ""
         key: client-secret
 
-        #secretName: ""
-        #secretKey: client-secret
-        #secretNamespaces: []
-
       public: false
       directAccess: false
       advancedProtocolMappers: false

@@ -1,0 +1,27 @@
+{{- if .Values.appExposure.certificate.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:  
+  name: {{ default ( printf "%s-tls-certificate" (include "common.names.fullname" . )) .Values.appExposure.certificate.name }} 
+  namespace: {{ default ( include "common.names.namespace" . ) .Values.appExposure.certificate.namespace }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}    
+spec:
+  duration: {{ .Values.appExposure.certificate.duration | quote }}
+  renewBefore: {{ .Values.appExposure.certificate.renewBefore | quote }}
+  secretName: {{ default (printf "%s-tls-certificate" (include "common.names.fullname" . )) .Values.appExposure.certificate.secretName }}
+  commonName: {{ first .Values.appExposure.certificate.dnsNames | default (printf "%s-tls" (include "common.names.fullname" . )) | quote }}
+  privateKey:
+    algorithm: {{ .Values.appExposure.certificate.keyAlgorithm }}
+    size: {{ .Values.appExposure.certificate.keySize }}
+  issuerRef:
+    name: {{ default (printf "issuer-%s" (include "common.names.fullname" . )) .Values.appExposure.certificate.existingIssuer }}
+    kind: {{ .Values.appExposure.certificate.existingIssuerKind }}
+    group: cert-manager.io
+  {{- with .Values.appExposure.certificate.dnsNames }}
+  dnsNames:
+    {{- range . }}
+    - {{ . }}
+    {{- end }}
+  {{- end }}
+{{- end }}

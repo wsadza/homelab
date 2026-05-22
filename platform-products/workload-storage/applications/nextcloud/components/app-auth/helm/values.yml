@@ -62,12 +62,10 @@ appAuth:
         name: nextcloud-keycloak-client-secret # keycloak-client-secret-nextcloud 
         key: client-secret
 
-      public: false
       directAccess: true
       advancedProtocolMappers: true
       webUrl: https://nextcloud.anykey.pl
       adminUrl: https://nextcloud.anykey.pl
-      homeUrl: /
       redirectUris:
         - https://nextcloud.anykey.pl/apps/user_oidc/code
       defaultClientScopes:

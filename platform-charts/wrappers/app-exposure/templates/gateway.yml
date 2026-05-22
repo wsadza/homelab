@@ -1,0 +1,33 @@
+{{- if and .Values.appExposure.gatewayApi.enabled .Values.appExposure.gatewayApi.gateway.enabled }}
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: {{ default ( printf "gateway-%s" (include "common.names.fullname" . )) .Values.appExposure.gatewayApi.gateway.name | quote }} 
+  namespace: {{ default ( include "common.names.namespace" . ) .Values.appExposure.gatewayApi.gateway.namespace | quote }} 
+  labels:
+  {{- include "common.labels.standard" . | nindent 4 }}    
+  {{- with .Values.appExposure.gatewayApi.gateway.labels }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.appExposure.gatewayApi.gateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  gatewayClassName: {{ .Values.appExposure.gatewayApi.gateway.gatewayClassName | quote }}
+  listeners:
+  {{- range .Values.appExposure.gatewayApi.gateway.listeners }}
+  - name: {{ .name | quote }}
+    protocol: {{ .protocol | quote }}
+    port: {{ .port }}
+    hostname: {{ .hostname | quote }}
+    {{- with .tls }}
+    tls:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .allowedRoutes }}
+    allowedRoutes:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- end }} 
+{{- end }} 

@@ -1,0 +1,27 @@
+{{- if and .Values.appExposure.certificate.enabled .Values.appExposure.certificate.issuer.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ default (printf "issuer-%s" (include "common.names.fullname" . )) .Values.appExposure.certificate.issuer.name }}
+  namespace: {{ default (include "common.names.namespace" . ) .Values.appExposure.certificate.issuer.namespace }}
+  labels:
+      {{- include "common.labels.standard" . | nindent 4 }}    
+spec:
+  acme:
+    {{- with .Values.appExposure.certificate.issuer.acme.email }}
+    email: {{ . | quote }}
+    {{- end }}
+    server: {{ .Values.appExposure.certificate.issuer.acme.server | quote }}
+    privateKeySecretRef:
+      name: {{ .Values.appExposure.certificate.issuer.acme.privateKeySecretName | quote }}
+    solvers:
+      - http01:
+          gatewayHTTPRoute:
+            parentRefs:
+              {{- range .Values.appExposure.certificate.issuer.acme.gatewayHTTPRoute.parentRefs }}
+              - group: {{ .group | quote }}
+                kind: {{ .kind | quote }}
+                name: {{ .name | quote }}
+                namespace: {{ .namespace | quote }}
+              {{- end }}
+{{- end }}
