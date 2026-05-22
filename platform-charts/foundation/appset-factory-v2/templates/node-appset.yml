@@ -46,7 +46,6 @@ spec:
         {{ `{{- end }}` }}
       labels:
         application: "{{ `{{ .name }}` }}"
-        priority: "{{ `{{ default "0" .priority }}` }}"
     spec:
       sources:
         {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
