@@ -4,18 +4,18 @@
 applications:
 
   # ------------------
-  # Cosi 
-  # ------------------
-
-    - name: cosi 
-      enabled: true 
-
-  # ------------------
   # CloudNative-PG
   # ------------------
 
     - name: cloudnative-pg 
       enabled: true
+
+  # ------------------
+  # Container Object Storage Interface (COSI)
+  # ------------------
+
+    - name: cosi 
+      enabled: true 
 
   # ------------------
   # Local Path Provisioner 
@@ -25,10 +25,10 @@ applications:
       enabled: true
 
   # ------------------
-  # Rook Ceph 
+  # PgAdmin4 
   # ------------------
 
-    - name: rook-ceph 
+    - name: pgadmin 
       enabled: false
 
   # ------------------
