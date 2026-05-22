@@ -145,7 +145,7 @@ appStorage:
   psql:
     enabled: false
 
-    name: "" # defaults to <fullname>-cnpg-cluster
+    name: ""
     namespace: "" 
 
     # ===============================================

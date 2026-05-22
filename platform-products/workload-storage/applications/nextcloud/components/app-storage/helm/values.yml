@@ -44,7 +44,39 @@ appStorage:
     enabled: true
     storage:
       size: 50Gi
+
+    # ===============================================
+    # @subsection objectStore parameters
+    # ===============================================
+    #
+    # @param appStorage.psql.objectStore.enabled                       : Enable Barman ObjectStore resource
+    # @param appStorage.psql.backupSchedule.name                       : Override ScheduledBackup name; defaults to <fullname>-scheduled-backup
+    # @param appStorage.psql.objectStore.name                          : Override ObjectStore name; defaults to <fullname>-object-store
+    # @param appStorage.psql.objectStore.namespace                     : Override ObjectStore namespace; defaults to common.names.namespace
+    # @param appStorage.psql.objectStore.destinationPath               : S3 destination path for backups; e.g. s3://nextcloud-backups
+    # @param appStorage.psql.objectStore.endpointURL                   : S3-compatible endpoint URL
+    # @param appStorage.psql.objectStore.existingSecret.name           : Existing secret containing S3 credentials; defaults to <fullname>-object-store-secret
+    # @param appStorage.psql.objectStore.existingSecret.keys.accessKey : Key name inside the S3 credentials secret for access key ID
+    # @param appStorage.psql.objectStore.existingSecret.keys.secretKey : Key name inside the S3 credentials secret for secret access key
+    # @param appStorage.psql.objectStore.wal.compression               : Compression algorithm for archived WAL files
+    # @param appStorage.psql.objectStore.data.compression              : Compression algorithm for base backup data
+    #
     objectStore:
-      #destinationPath: "s3://nextcloud-bucket/databases"
+      enabled: true
+     
+      name: ""
+      namespace: ""
+
       destinationPath: "s3://nextcloud-app-storage-bucket/databases"
       endpointURL: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"
+
+      existingSecret:
+        name: ""
+        keys: 
+          accessKey: S3_ACCESS_KEY
+          secretKey: S3_SECRET_KEY
+
+      wal:
+        compression: gzip
+      data:
+        compression: gzip   
