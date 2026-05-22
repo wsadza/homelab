@@ -39,7 +39,8 @@ spec:
 
   templatePatch: |
     metadata:
-      name: "{{ $.Values.node.product}}-{{ `{{ .name }}` }}"
+      #name: "{{ $.Values.node.product}}-{{ `{{ .name }}` }}"
+      name: "{{ `{{ .name }}` }}"
       annotations:
         {{ `{{- if hasKey . "priority" }}` }}
         argocd.argoproj.io/sync-wave: "{{ `{{ .priority }}` }}"
