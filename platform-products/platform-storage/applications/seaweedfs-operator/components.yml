@@ -5,7 +5,7 @@ components:
   # app 
   # ------------------
 
-  - name: seaweedfs-operator
+  - name: app 
     namespace: seaweedfs
 
     enabled: true
