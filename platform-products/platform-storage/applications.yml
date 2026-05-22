@@ -29,11 +29,11 @@ applications:
   # ------------------
 
     - name: seaweedfs 
-      enabled: false
+      enabled: true
 
   # ------------------
   # SeaWeedFS-Operator
   # ------------------
 
     - name: seaweedfs-operator
-      enabled: false
+      enabled: true
