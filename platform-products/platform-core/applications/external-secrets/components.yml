@@ -7,7 +7,7 @@ components:
   # app 
   # ------------------
   
-  - name: external-secrets
+  - name: app 
     namespace: external-secrets
 
     enabled: true
