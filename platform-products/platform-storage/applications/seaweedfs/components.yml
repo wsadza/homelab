@@ -25,7 +25,7 @@ components:
           targetRevision: 4.23.0
           chart: seaweedfs
           valueFiles: 
-            - $values/platform-products/platform-storage/applications/seaweedfs/components/helm/values.yml
+            - $values/platform-products/platform-storage/applications/seaweedfs/components/app/helm/values.yml
 
         - type: kustomize 
           repoURL: https://github.com/wsadza/homelab.git
