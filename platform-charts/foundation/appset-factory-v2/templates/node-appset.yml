@@ -18,15 +18,15 @@ spec:
               files:
                 - path: {{ .Values.node.file | quote }}
 
-          #- list:
-          #    elementsYaml: |
-          #      {{ `{{- $items := list }}` }}
-          #      {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
-          #      {{ `{{- if (dig "enabled" true .) }}` }}
-          #      {{ `{{- $items = append $items . }}` }}
-          #      {{ `{{- end }}` }}
-          #      {{ `{{- end }}` }}
-          #      {{ `{{ $items | toYaml }}` }}
+          - list:
+              elementsYaml: |
+                {{ `{{- $items := list }}` }}
+                {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
+                {{ `{{- if (dig "enabled" true .) }}` }}
+                {{ `{{- $items = append $items . }}` }}
+                {{ `{{- end }}` }}
+                {{ `{{- end }}` }}
+                {{ `{{ $items | toYaml }}` }}
 
   template:
     metadata:
@@ -48,7 +48,6 @@ spec:
         application: "{{ `{{ .name }}` }}"
     spec:
       sources:
-        {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
         - repoURL: {{ $.Values.repoURL | quote }}
           targetRevision: {{ $.Values.targetRevision | quote }}
           path: {{ $.Values.node.childChartPath | quote }}
@@ -64,5 +63,4 @@ spec:
                 file: {{ $.Values.node.childFileTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ .name }}" | quote }}
                 product: {{ $.Values.node.product | quote }}
                 application: {{ `{{ .name }}` | quote }}
-        {{ `{{- end }}` }}
 {{- end }}
