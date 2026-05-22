@@ -28,7 +28,7 @@ components:
           targetRevision: 6.9.1
           chart: podinfo 
           valueFiles: 
-            - $values/platform-products/workload-tests2/applications/podinfo/components/app/helm/values.yml
+            - $values/platform-products/workload-tests/applications/podinfo/components/app/helm/values.yml
 
   # ------------------
   # app-exposure
@@ -55,7 +55,7 @@ components:
           targetRevision: HEAD
           path: platform-charts/wrappers/app-exposure
           valueFiles: 
-            - $values/platform-products/workload-tests2/applications/podinfo/components/app-exposure/helm/values.yml
+            - $values/platform-products/workload-tests/applications/podinfo/components/app-exposure/helm/values.yml
 
   # ------------------
   # app-security
@@ -82,7 +82,7 @@ components:
           targetRevision: HEAD
           path: platform-charts/wrappers/app-security
           valueFiles: 
-            - $values/platform-products/workload-tests2/applications/podinfo/components/app-security/helm/values.yml
+            - $values/platform-products/workload-tests/applications/podinfo/components/app-security/helm/values.yml
 
   # ------------------
   # app-auth
@@ -109,4 +109,4 @@ components:
           targetRevision: HEAD
           path: platform-charts/wrappers/app-auth
           valueFiles: 
-            - $values/platform-products/workload-tests2/applications/podinfo/components/app-auth/helm/values.yml
+            - $values/platform-products/workload-tests/applications/podinfo/components/app-auth/helm/values.yml
