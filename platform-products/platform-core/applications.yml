@@ -7,7 +7,7 @@ applications:
   # CertManager 
   # ------------------
 
-    - name: cert-manager 
+    - name: cert-manager
       enabled: true
 
   # ------------------
@@ -21,12 +21,12 @@ applications:
   # External-DNS 
   # ------------------
 
-    - name: external-dns 
+    - name: external-dns
       enabled: true 
 
   # ------------------
   # External-Secret
   # ------------------
 
-    - name: external-secret 
+    - name: external-secrets
       enabled: true
