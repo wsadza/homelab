@@ -18,15 +18,15 @@ spec:
               files:
                 - path: {{ .Values.node.file | quote }}
 
-          - list:
-              elementsYaml: |
-                {{ `{{- $items := list }}` }}
-                {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
-                {{ `{{- if (dig "enabled" true .) }}` }}
-                {{ `{{- $items = append $items . }}` }}
-                {{ `{{- end }}` }}
-                {{ `{{- end }}` }}
-                {{ `{{ $items | toYaml }}` }}
+          #- list:
+          #    elementsYaml: |
+          #      {{ `{{- $items := list }}` }}
+          #      {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
+          #      {{ `{{- if (dig "enabled" true .) }}` }}
+          #      {{ `{{- $items = append $items . }}` }}
+          #      {{ `{{- end }}` }}
+          #      {{ `{{- end }}` }}
+          #      {{ `{{ $items | toYaml }}` }}
 
   template:
     metadata:
