@@ -6,8 +6,8 @@ products:
   #- platform-storage
   #- platform-storage-extras
 
-  - platform-security
-  - platform-security-extras
+  #- platform-security
+  #- platform-security-extras
 
   #- workload-storage
   #- workload-tests
