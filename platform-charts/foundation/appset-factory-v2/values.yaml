@@ -10,6 +10,7 @@ root:
   name: battlestation.sh
   file: environments/dta.yml 
   listKey: products
+  product: ""
 
   # -- Child (node) ------------
   childMode: node
