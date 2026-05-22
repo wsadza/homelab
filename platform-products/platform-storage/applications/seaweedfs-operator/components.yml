@@ -1,0 +1,34 @@
+
+components:
+
+  # ------------------
+  # app 
+  # ------------------
+
+  - name: seaweedfs-operator
+    namespace: seaweedfs
+
+    enabled: true
+    priority: 0
+
+    syncPolicy:
+      automated: false
+
+    sources:
+
+      - type: values
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        ref: values
+
+      - type: helm
+        repoURL: https://seaweedfs.github.io/seaweedfs-operator
+        targetRevision: 0.1.22 
+        chart: seaweedfs-operator
+        valueFiles: 
+          - $values/platform-products/platform-storage/applications/seaweedfs-operator/components/app/helm/values.yml
+
+      - type: manifests
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-products/platform-storage/applications/seaweedfs-operator/components/app/manifests

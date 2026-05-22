@@ -1,0 +1,24 @@
+# ===============================
+# 
+# ===============================
+components:
+
+  # ------------------
+  # app
+  # ------------------
+
+  - name: app
+    namespace: cosi 
+
+    enabled: true
+    priority: 0
+
+    syncPolicy:
+      automated: false
+
+    sources:
+
+      - type: kustomize 
+        repoURL: https://github.com/kubernetes-sigs/container-object-storage-interface
+        targetRevision: v0.2.1
+        path: .

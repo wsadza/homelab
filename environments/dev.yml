@@ -3,8 +3,8 @@ products:
   - platform-core
   - platform-core-extras
 
-  - platform-storage
-  - platform-storage-extras
+  #- platform-storage
+  #- platform-storage-extras
 
   - platform-security
   - platform-security-extras

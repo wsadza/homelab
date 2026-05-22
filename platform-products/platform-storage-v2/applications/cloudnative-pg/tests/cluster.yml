@@ -1,0 +1,29 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: psql-instance
+  namespace: default
+spec:
+  instances: 2
+
+  imageName: ghcr.io/cloudnative-pg/postgresql:16
+
+  bootstrap:
+    initdb:
+      database: default
+      owner: user
+      secret:
+        name: dummy-db-user 
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: seaweedfs-store
+        serverName: postgresql
+
+  storage:
+    size: 5Gi
+
+  monitoring:
+    enablePodMonitor: false

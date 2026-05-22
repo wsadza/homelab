@@ -1,0 +1,33 @@
+# ===============================
+# 
+# ===============================
+components:
+
+  # ------------------
+  # app
+  # ------------------
+
+  - name: app 
+    namespace: postgresql-operator
+
+    enabled: true
+    priority: 0
+
+    syncPolicy:
+      automated: false
+      syncOptions:
+        - ServerSideApply=true
+
+    sources:
+
+      # -- app --------
+      - type: helm
+        repoURL: https://cloudnative-pg.io/charts/
+        targetRevision: 0.28.0
+        chart: cloudnative-pg
+
+      # -- plugin -----
+      - type: helm
+        repoURL: https://cloudnative-pg.io/charts/
+        targetRevision: 0.6.0
+        chart: plugin-barman-cloud 

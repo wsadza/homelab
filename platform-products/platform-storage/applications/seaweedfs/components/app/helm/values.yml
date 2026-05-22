@@ -1,0 +1,28 @@
+global:
+  extraEnvironmentVars:
+    SEAWEEDFS_FILER: seaweed-filer.seaweedfs.svc.cluster.local:18888
+
+master:
+  enabled: false
+
+volume:
+  enabled: false
+
+filer:
+  enabled: false
+
+s3:
+  enabled: false
+
+cosi:
+  enabled: true
+  image: "ghcr.io/seaweedfs/seaweedfs-cosi-driver:v0.3.0"
+
+  driverName: "seaweedfs.objectstorage.k8s.io"
+  bucketClassName: "seaweedfs"
+
+  endpoint: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"
+  region: "us-east-1"
+
+  enableAuth: true
+  existingConfigSecret: seaweed-cosi-s3-config

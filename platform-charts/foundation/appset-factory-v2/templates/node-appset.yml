@@ -22,7 +22,9 @@ spec:
               elementsYaml: |
                 {{ `{{- $items := list }}` }}
                 {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}
+                {{ `{{- if (dig "enabled" true .) }}` }}
                 {{ `{{- $items = append $items . }}` }}
+                {{ `{{- end }}` }}
                 {{ `{{- end }}` }}
                 {{ `{{ $items | toYaml }}` }}
 
@@ -38,8 +40,13 @@ spec:
   templatePatch: |
     metadata:
       name: "{{ $.Values.node.product}}-{{ `{{ .name }}` }}"
+      annotations:
+        {{ `{{- if hasKey . "priority" }}` }}
+        argocd.argoproj.io/sync-wave: "{{ `{{ .priority }}` }}"
+        {{ `{{- end }}` }}
       labels:
         application: "{{ `{{ .name }}` }}"
+        priority: "{{ `{{ default "0" .priority }}` }}"
     spec:
       sources:
         {{ `{{- range .` }}{{ .Values.node.listKey }}{{ ` }}` }}

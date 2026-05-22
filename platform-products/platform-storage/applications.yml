@@ -1,0 +1,39 @@
+# ===============================
+# 
+# ===============================
+applications:
+
+  # ------------------
+  # CloudNative-PG
+  # ------------------
+
+    - name: cloudnative-pg 
+      enabled: true
+
+  # ------------------
+  # Local Path Provisioner 
+  # ------------------
+
+    - name: local-path-provisioner 
+      enabled: true
+
+  # ------------------
+  # Rook Ceph 
+  # ------------------
+
+    - name: rook-ceph 
+      enabled: false
+
+  # ------------------
+  # SeaWeedFS 
+  # ------------------
+
+    - name: seaweedfs 
+      enabled: false
+
+  # ------------------
+  # SeaWeedFS-Operator
+  # ------------------
+
+    - name: seaweedfs-operator
+      enabled: false

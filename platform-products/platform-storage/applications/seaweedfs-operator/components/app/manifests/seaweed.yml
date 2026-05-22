@@ -1,0 +1,44 @@
+apiVersion: seaweed.seaweedfs.com/v1
+kind: Seaweed
+metadata:
+  name: seaweed
+  namespace: seaweedfs
+spec:
+  image: chrislusf/seaweedfs:latest
+  volumeServerDiskCount: 1
+  hostSuffix: seaweed.anykey.pl
+
+  master:
+    replicas: 1
+    volumeSizeLimitMB: 1024
+
+  volume:
+    replicas: 1
+    requests:
+      storage: 2Gi
+    rack: "rack1"
+    dataCenter: "dc1"
+
+  filer:
+    replicas: 1
+
+    persistence:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 2Gi
+
+    config: |
+      [leveldb2]
+      enabled = true
+      dir = "/data/filerldb2"
+
+    extraArgs:
+      - "-iam"
+      - "-s3.iam.readOnly=false"
+
+    s3:
+      enabled: true
+    iam: true
