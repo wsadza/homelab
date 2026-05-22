@@ -48,6 +48,7 @@ spec:
         {{ `{{- end }}` }}
       labels:
         application: {{ .Values.leaf.application | quote }}
+        product: {{ .Values.leaf.product | quote }}
     spec:
       syncPolicy:
         {{ `{{- if eq (toString (dig "syncPolicy" "automated" "false" .)) "true" }}` }}

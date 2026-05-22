@@ -47,6 +47,7 @@ spec:
         {{ `{{- end }}` }}
       labels:
         application: "{{ `{{ .name }}` }}"
+        product: "{{ `{{ .product }}` }}"
     spec:
       sources:
         - repoURL: {{ $.Values.repoURL | quote }}
