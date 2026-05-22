@@ -1,7 +1,7 @@
 name: dev
 products:
-  - platform-core
-  - platform-core-extras
+  #- platform-core
+  #- platform-core-extras
 
   #- platform-storage
   #- platform-storage-extras

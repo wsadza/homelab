@@ -1,0 +1,32 @@
+# ===============================
+# 
+# ===============================
+applications:
+
+  # ------------------
+  # CertManager 
+  # ------------------
+
+    - name: cert-manager 
+      enabled: true
+
+  # ------------------
+  # EnvoyGateway 
+  # ------------------
+
+    - name: envoy-gateway
+      enabled: true 
+
+  # ------------------
+  # External-DNS 
+  # ------------------
+
+    - name: external-dns 
+      enabled: true 
+
+  # ------------------
+  # External-Secret
+  # ------------------
+
+    - name: external-secret 
+      enabled: true

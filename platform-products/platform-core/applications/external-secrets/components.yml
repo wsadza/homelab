@@ -1,0 +1,29 @@
+# ===============================
+# 
+# ===============================
+components:
+
+  # ------------------
+  # app 
+  # ------------------
+  
+  - name: external-secrets
+    namespace: external-secrets
+
+    enabled: true
+    priority: 0
+
+    syncPolicy:
+      automated: false
+
+    sources:
+
+      - type: values
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        ref: values
+
+      - type: helm
+        repoURL: https://charts.external-secrets.io/
+        targetRevision: 2.4.1 
+        chart: external-secrets

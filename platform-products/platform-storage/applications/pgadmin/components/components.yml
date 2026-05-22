@@ -1,0 +1,112 @@
+# ===============================
+# 
+# ===============================
+components:
+
+  # ------------------
+  # app
+  # ------------------
+
+    - name: app
+      namespace: pgadmin
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm
+          repoURL: https://stefanprodan.github.io/pgadmin
+          targetRevision: 6.9.1
+          chart: pgadmin 
+          valueFiles: 
+            - $values/platform-products/platform-storage/applications/pgadmin/components/app/helm/values.yml
+
+  # ------------------
+  # app-exposure
+  # ------------------
+
+    - name: app-exposure
+      namespace: pgadmin
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-exposure
+          valueFiles: 
+            - $values/platform-products/platform-storage/applications/pgadmin/components/app-exposure/helm/values.yml
+
+  # ------------------
+  # app-security
+  # ------------------
+
+    - name: app-security
+      namespace: pgadmin
+
+      enabled: false
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-security
+          valueFiles: 
+            - $values/platform-products/platform-storage/applications/pgadmin/components/app-security/helm/values.yml
+
+  # ------------------
+  # app-auth
+  # ------------------
+
+    - name: app-auth
+      namespace: pgadmin
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-auth
+          valueFiles: 
+            - $values/platform-products/platform-storage/applications/pgadmin/components/app-auth/helm/values.yml
