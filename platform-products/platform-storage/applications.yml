@@ -4,6 +4,13 @@
 applications:
 
   # ------------------
+  # COSI 
+  # ------------------
+
+    - name: cosi 
+      enabled: true 
+
+  # ------------------
   # CloudNative-PG
   # ------------------
 
