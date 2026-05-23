@@ -25,9 +25,9 @@ components:
           targetRevision: 4.23.0
           chart: seaweedfs
           valueFiles: 
-            - $values/platform-products/platform-storage/applications/seaweedfs/components/app/helm/values.yml
+            - $values/platform-products/infra-storage/applications/seaweedfs/components/app/helm/values.yml
 
         - type: kustomize 
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
-          path: platform-products/platform-storage/applications/seaweedfs/components/app/kustomize
+          path: platform-products/infra-storage/applications/seaweedfs/components/app/kustomize
