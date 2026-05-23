@@ -156,8 +156,8 @@ openldap:
     tls:
       enabled: false
       enforce: false
-      verifyClient: never # Logging level (256 = stats, 0 = no logging, -1 = any)
-      secretName: ""      # Logging level (256 = stats, 0 = no logging, -1 = any)
+      verifyClient: never 
+      secretName: ""      
 
     # ------------------------------------------
     # @subsection Replication parameters 
