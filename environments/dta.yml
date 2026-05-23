@@ -2,5 +2,5 @@ name: dta
 products:
   - infra-core
   - infra-storage
-  #- infra-identity
+  - infra-identity
   #- infra-helpers
