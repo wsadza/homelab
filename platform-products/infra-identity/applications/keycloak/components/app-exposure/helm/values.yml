@@ -1,70 +1,62 @@
 # ===============================================================
-# Author:
-# - igor.sadza
+#    ___             ____                                
+#   / _ | ___  ___  / __/_ __ ___  ___  ___ __ _________ 
+#  / __ |/ _ \/ _ \/ _/ \ \ // _ \/ _ \(_-</ // / __/ -_)
+# /_/ |_/ .__/ .__/___//_\_\/ .__/\___/___/\_,_/_/  \__/ 
+#      /_/  /_/            /_/                           
 #
-# Purpose:
-# - keycloak helm chart values.yaml file
-#
+# : AppExposure (wrapper)
 # ===============================================================
 
-platformDefaults:
-  appName:              &appName              keycloak 
-  namespace:            &namespace            keycloak
-  domain:               &domain               keycloak.anykey.pl
-  gatewayNamespace:     &gatewayNamespace     envoy-gateway-system
-  certificateName:      &certificateName      keycloak-tls-certificate
-  gatewayName:          &gatewayName          gateway-keycloak
-  issuerName:           &issuerName           issuer-keycloak
-  serviceName:          &serviceName          keycloak-service
-  issuerEmail:          &issuerEmail          keycloak@anykey.pl
-  httpRouteName:        &httpRouteName        keycloak-host
-  httpRouteServicePort: &httpRouteServicePort 8080
-
-# ===============================================================
-#    ___             ___  __     __  ___             
-#   / _ | ___  ___  / _ \/ /__ _/ /_/ _/__  ______ _ 
-#  / __ |/ _ \/ _ \/ ___/ / _ `/ __/ _/ _ \/ __/  ' \
-# /_/ |_/ .__/ .__/_/  /_/\_,_/\__/_/ \___/_/ /_/_/_/
-#      /_/  /_/                                      
+# -----------------------------------------------
+# @section common parameters
+# -----------------------------------------------
 #
-# : AppPlatform (wrapper chart)
-# ===============================================================
-
-appPlatform:
+# @param nameOverride      : String to partially override common.names.name
+# @param fullnameOverride  : String to fully override common.names.fullname
+# @param namespaceOverride : String to fully override common.names.namespace
+# @param commonLabels      : Labels to add to all deployed objects
+# @param commonAnnotations : Annotations to add to all deployed objects
+#
+# -----------------------------------------------
+# @section appExposure parameters
+# -----------------------------------------------
+#
+appExposure:
 
   # ===============================================
-  # @section gatewayApi parameters
+  # @section Gateway API parameters
   # ===============================================
-  
+
   gatewayApi:
-    # @param appPlatform.gatewayApi.enabled Enable Gateway API resources.
+    # @param appExposure.gatewayApi.enabled Enable Gateway API resources.
     enabled: true
 
-    # @param appPlatform.gatewayApi.gateway.enabled Enable Gateway resource generation.
-    # @param appPlatform.gatewayApi.gateway.name Gateway resource name.
-    # @param appPlatform.gatewayApi.gateway.namespace Namespace where the Gateway will be created.
-    # @param appPlatform.gatewayApi.gateway.labels Labels to add to the Gateway.
-    # @param appPlatform.gatewayApi.gateway.annotations Annotations to add to the Gateway.
-    # @param appPlatform.gatewayApi.gateway.gatewayClassName GatewayClass name used by the Gateway.
-    # @param appPlatform.gatewayApi.gateway.listeners List of Gateway listeners. 
+    # @param appExposure.gatewayApi.gateway.enabled          : Enable Gateway resource generation.
+    # @param appExposure.gatewayApi.gateway.name             : Gateway resource name.
+    # @param appExposure.gatewayApi.gateway.namespace        : Namespace where the Gateway will be created.
+    # @param appExposure.gatewayApi.gateway.labels           : Labels to add to the Gateway.
+    # @param appExposure.gatewayApi.gateway.annotations      : Annotations to add to the Gateway.
+    # @param appExposure.gatewayApi.gateway.gatewayClassName : GatewayClass name used by the Gateway.
+    # @param appExposure.gatewayApi.gateway.listeners        : List of Gateway listeners. 
     gateway:
       enabled: true
-      name: *gatewayName
-      namespace: *gatewayNamespace
+      name: gateway-keycloak
+      namespace: envoy-gateway-system
       annotations:
         external-dns.alpha.kubernetes.io/target: anykey.pl
       gatewayClassName: envoy
 
-      # @param appPlatform.gatewayApi.gateway.listeners[0].name Listener name.
-      # @param appPlatform.gatewayApi.gateway.listeners[0].protocol Listener protocol.
-      # @param appPlatform.gatewayApi.gateway.listeners[0].port Listener port.
-      # @param appPlatform.gatewayApi.gateway.listeners[0].hostname Hostname accepted by the listener.
-      # @param appPlatform.gatewayApi.gateway.listeners[0].allowedRoutes Allowed routes configuration.
+      # @param appExposure.gatewayApi.gateway.listeners[0].name          : Listener name.
+      # @param appExposure.gatewayApi.gateway.listeners[0].protocol      : Listener protocol.
+      # @param appExposure.gatewayApi.gateway.listeners[0].port          : Listener port.
+      # @param appExposure.gatewayApi.gateway.listeners[0].hostname      : Hostname accepted by the listener.
+      # @param appExposure.gatewayApi.gateway.listeners[0].allowedRoutes : Allowed routes configuration.
       listeners:
         - name: listener-http
           protocol: HTTP
           port: 80
-          hostname: *domain
+          hostname: keycloak.anykey.pl 
           allowedRoutes:
             namespaces:
               from: All
@@ -72,52 +64,72 @@ appPlatform:
         - name: listener-https
           protocol: HTTPS
           port: 443
-          hostname: *domain
+          hostname: keycloak.anykey.pl 
           tls:
             mode: Terminate
             certificateRefs:
-              - name: *certificateName
+              - name: keycloak-tls-certificate
           allowedRoutes:
             namespaces:
               from: Selector
               selector:
                 matchLabels:
-                  kubernetes.io/metadata.name: *namespace
- 
-    # @param appPlatform.gatewayApi.httpRoute.enabled Enable HTTPRoute resource generation.
-    # @param appPlatform.gatewayApi.httpRoute.name HTTPRoute resource name.
-    # @param appPlatform.gatewayApi.httpRoute.namespace Namespace where the HTTPRoute will be created.
-    # @param appPlatform.gatewayApi.httpRoute.labels Labels to add to the HTTPRoute.
-    # @param appPlatform.gatewayApi.httpRoute.annotations Annotations to add to the HTTPRoute.
-    # @param appPlatform.gatewayApi.httpRoute.parentRefs Parent Gateway references.
-    # @param appPlatform.gatewayApi.httpRoute.hostnames Hostnames matched by the HTTPRoute.
-    # @param appPlatform.gatewayApi.httpRoute.rules HTTPRoute routing rules.
+                  kubernetes.io/metadata.name: keycloak 
+
+    # -----------------------------------------------
+    # @subsection HTTPRoutes parameters
+    # -----------------------------------------------
+    #
+    # @param appExposure.gatewayApi.httpRoute.enabled     : Enable HTTPRoute resource generation.
+    # @param appExposure.gatewayApi.httpRoute.name        : HTTPRoute resource name.
+    # @param appExposure.gatewayApi.httpRoute.namespace   : Namespace where the HTTPRoute will be created.
+    # @param appExposure.gatewayApi.httpRoute.labels      : Labels to add to the HTTPRoute.
+    # @param appExposure.gatewayApi.httpRoute.annotations : Annotations to add to the HTTPRoute.
+    # @param appExposure.gatewayApi.httpRoute.parentRefs  : Parent Gateway references.
+    # @param appExposure.gatewayApi.httpRoute.hostnames   : Hostnames matched by the HTTPRoute.
+    # @param appExposure.gatewayApi.httpRoute.rules       : HTTPRoute routing rules.
     httpRoutes:
       - enabled: true
-        name: *httpRouteName
-        namespace: *namespace
+        name: keycloak-https-route
+        namespace: keycloak 
         parentRefs:
-          - name: *gatewayName
-            namespace: *gatewayNamespace
+          - name: gateway-keycloak
+            namespace: envoy-gateway-system 
             sectionName: listener-https
         hostnames:
-          - *domain
+          - keycloak.anykey.pl
         rules:
           - backendRefs:
               - kind: Service
-                name: *serviceName
-                namespace: *namespace
-                port: *httpRouteServicePort
+                name: keycloak-app
+                namespace: keycloak
+                port: 8080
 
       - enabled: true
-        name: http-redirect
-        namespace: *namespace
+        name: acme-http-route
+        namespace: keycloak 
         parentRefs:
-          - name: *gatewayName
-            namespace: *gatewayNamespace
+          - name: gateway-keycloak
+            namespace: envoy-gateway-system
             sectionName: listener-http
         hostnames:
-          - *domain
+          - keycloak.anykey.pl
+        rules:
+           - matches:
+              - path:
+                  type: PathPrefix
+                  value: /.well-known/acme-challenge/
+             backendRefs: []
+
+      - enabled: true
+        name: keycloak-http-redirect
+        namespace: keycloak 
+        parentRefs:
+          - name: gateway-keycloak
+            namespace: envoy-gateway-system
+            sectionName: listener-http
+        hostnames:
+          - keycloak.anykey.pl
         rules:
           - filters:
               - type: RequestRedirect
@@ -125,52 +137,46 @@ appPlatform:
                   scheme: https
                   statusCode: 301
                   port: 443
-  
+
   # ===============================================
   # @section Certificate parameters
   # ===============================================
   
-  # @param appPlatform.certificate.enabled Enable Certificate resource generation.
-  # @param appPlatform.certificate.name Certificate resource name.
-  # @param appPlatform.certificate.namespace Namespace where the Certificate will be created.
-  # @param appPlatform.certificate.existingIssuer Name of an existing Issuer or ClusterIssuer.
-  # @param appPlatform.certificate.existingIssuerKind Kind of the existing issuer. Usually Issuer or ClusterIssuer.
-  # @param appPlatform.certificate.keySize Private key size.
-  # @param appPlatform.certificate.keyAlgorithm Private key algorithm.
-  # @param appPlatform.certificate.duration Certificate validity duration.
-  # @param appPlatform.certificate.renewBefore How long before expiry cert-manager should renew the certificate.
-  # @param appPlatform.certificate.secretName Secret name where the TLS certificate will be stored.
-  # @param appPlatform.certificate.dnsNames DNS names covered by the certificate. 
+  # @param appExposure.certificate.enabled            : Enable Certificate resource generation.
+  # @param appExposure.certificate.name               : Certificate resource name.
+  # @param appExposure.certificate.namespace          : Namespace where the Certificate will be created.
+  # @param appExposure.certificate.existingIssuer     : Name of an existing Issuer or ClusterIssuer.
+  # @param appExposure.certificate.existingIssuerKind : Kind of the existing issuer. Usually Issuer or ClusterIssuer.
+  # @param appExposure.certificate.keySize            : Private key size.
+  # @param appExposure.certificate.keyAlgorithm       : Private key algorithm.
+  # @param appExposure.certificate.duration           : Certificate validity duration.
+  # @param appExposure.certificate.renewBefore        : How long before expiry cert-manager should renew the certificate.
+  # @param appExposure.certificate.secretName         : Secret name where the TLS certificate will be stored.
+  # @param appExposure.certificate.dnsNames           : DNS names covered by the certificate. 
   certificate:
     enabled: true
-    name: *certificateName
-    namespace: *gatewayNamespace
-    existingIssuer: *issuerName
-    secretName: *certificateName
+    namespace: envoy-gateway-system
     dnsNames:
-      - *domain
+      - keycloak.anykey.pl
 
     # -----------------------------------------------
     # @subsection Issuer parameters
     # -----------------------------------------------
     #
-    # @param appPlatform.certificate.issuer.enabled Enable Issuer resource generation.
-    # @param appPlatform.certificate.issuer.name Issuer resource name.
-    # @param appPlatform.certificate.issuer.namespace Namespace where the Issuer will be created.
-    # @param appPlatform.certificate.issuer.kind Issuer kind. Usually Issuer or ClusterIssuer.
-    # @param appPlatform.certificate.issuer.acme.email ACME registration email.
-    # @param appPlatform.certificate.issuer.acme.server ACME server URL.
-    # @param appPlatform.certificate.issuer.acme.privateKeySecretName Secret name used to store the ACME account private key.
-    # @param appPlatform.certificate.issuer.acme.gatewayHTTPRoute.parentRefs Gateway parent references used for HTTP-01 challenges. 
+    # @param appExposure.certificate.issuer.enabled                          : Enable Issuer resource generation.
+    # @param appExposure.certificate.issuer.name                             : Issuer resource name.
+    # @param appExposure.certificate.issuer.namespace                        : Namespace where the Issuer will be created.
+    # @param appExposure.certificate.issuer.acme.email                       : ACME registration email.
+    # @param appExposure.certificate.issuer.acme.server                      : ACME server URL.
+    # @param appExposure.certificate.issuer.acme.privateKeySecretName        : Secret name used to store the ACME account private key.
+    # @param appExposure.certificate.issuer.acme.gatewayHTTPRoute.parentRefs : Gateway parent references used for HTTP-01 challenges. 
     issuer:
       enabled: true
-      name: *issuerName
-      namespace: *gatewayNamespace
+      namespace: envoy-gateway-system 
       acme:
-        email: *issuerEmail
         gatewayHTTPRoute:
           parentRefs:
             - group: gateway.networking.k8s.io
               kind: Gateway
-              name: *gatewayName
-              namespace: *gatewayNamespace
+              name: gateway-keycloak
+              namespace: envoy-gateway-system 
