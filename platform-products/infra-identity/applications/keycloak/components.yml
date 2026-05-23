@@ -43,6 +43,11 @@ components:
 
     sources:
 
+      - type: values
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        ref: values
+
       - type: helm 
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD
@@ -64,6 +69,11 @@ components:
       automated: false
 
     sources:
+
+      - type: values
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        ref: values
 
       - type: helm 
         repoURL: https://github.com/wsadza/homelab.git
