@@ -99,6 +99,7 @@ spec:
   Plugins 
 --------------------------------------------
 */}}
+{{- if .Values.appStorage.psql.objectStore.enabled }}
   plugins:
 {{- range .Values.appStorage.psql.plugins }}
     - name: {{ .name | quote }}
@@ -106,5 +107,6 @@ spec:
       parameters:
         barmanObjectName: {{ default $objectStore .parameters.barmanObjectName | quote }} 
         serverName: {{ default $recoveryServerName .parameters.serverName | quote }}
+{{- end }}
 {{- end }}
 {{- end }}
