@@ -80,4 +80,4 @@ components:
         targetRevision: HEAD
         path: platform-charts/wrappers/app-storage
         valueFiles: 
-          - $values/platform-products/infra-identity/applications/keycloak/components/app-exposure/helm/values.yml
+          - $values/platform-products/infra-identity/applications/keycloak/components/app-storage/helm/values.yml
