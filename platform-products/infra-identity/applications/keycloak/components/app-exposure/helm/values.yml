@@ -68,7 +68,7 @@ appExposure:
           tls:
             mode: Terminate
             certificateRefs:
-              - name: keycloak-tls-certificate
+              - name: keycloak-app-exposure-tls-certificate 
           allowedRoutes:
             namespaces:
               from: Selector
