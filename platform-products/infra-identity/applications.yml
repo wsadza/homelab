@@ -4,7 +4,14 @@
 applications:
 
   # ------------------
-  # Keycloak Operator
+  # Keycloak Operator 
+  # ------------------
+
+    - name: keycloak-operator
+      enabled: true
+
+  # ------------------
+  # Keycloak Instance 
   # ------------------
 
     - name: keycloak
