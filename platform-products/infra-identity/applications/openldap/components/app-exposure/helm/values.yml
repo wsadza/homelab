@@ -194,6 +194,6 @@ appExposure:
           parentRefs:
             - group: gateway.networking.k8s.io
               kind: Gateway
-              name: openldap-gateway 
+              name: gateway-openldap
               namespace: envoy-gateway-system 
           
