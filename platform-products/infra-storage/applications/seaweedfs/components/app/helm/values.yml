@@ -28,4 +28,4 @@ cosi:
 
   enableAuth: true
   #existingConfigSecret: seaweed-cosi-s3-config
-  existingConfigSecret: seaweed-s3-secret
+  existingConfigSecret: seaweedfs-s3-secret
