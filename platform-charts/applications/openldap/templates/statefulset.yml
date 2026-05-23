@@ -307,7 +307,7 @@ spec:
         {{- if .Values.openldap.configuration.tls.enabled }}
         - name: tls-certs-source
           secret:
-            secretName: {{ include "common.names.fullname" . }}-tls-secret
+            secretName: {{ default (include "common.names.fullname" .) .Values.openldap.configuration.tls.secretName }}-tls-secret
         - name: tls-certs-prepared
           emptyDir: {}
         {{- end }}
