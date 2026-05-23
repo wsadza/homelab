@@ -133,7 +133,7 @@ appExposure:
           - openldap.anykey.pl
         rules:
           - backendRefs:
-              - name: openldap
+              - name: openldap-app
                 port: 636
                 kind: Service
                 namespace: openldap
