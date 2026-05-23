@@ -19,7 +19,7 @@ spec:
     vendor: postgres
     host: keycloak-app-storage-cnpg-cluster-rw.keycloak.svc.cluster.local
     port: 5432
-    database: keycloak
+    database: keycloak-app-storage
     usernameSecret:
       name: keycloak-app-storage-cnpg-cluster-app
       key: username
