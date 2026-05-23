@@ -27,4 +27,5 @@ cosi:
   region: "us-east-1"
 
   enableAuth: true
-  existingConfigSecret: seaweed-cosi-s3-config
+  #existingConfigSecret: seaweed-cosi-s3-config
+  existingConfigSecret: seaweed-s3-secret
