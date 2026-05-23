@@ -101,7 +101,7 @@ appExposure:
         rules:
           - backendRefs:
               - kind: Service
-                name: keycloak-app
+                name: keycloak-app-service
                 namespace: keycloak
                 port: 8080
 
