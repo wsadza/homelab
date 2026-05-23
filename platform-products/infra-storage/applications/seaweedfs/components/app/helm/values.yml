@@ -1,6 +1,8 @@
 global:
   extraEnvironmentVars:
     SEAWEEDFS_FILER: seaweed-filer.seaweedfs.svc.cluster.local:18888
+  seaweedfs:
+    serviceAccountName: "seaweedfs-app"
 
 master:
   enabled: false
