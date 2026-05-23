@@ -1,0 +1,56 @@
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: keycloak
+  namespace: keycloak
+spec:
+  instances: 1
+
+  hostname:
+    hostname: keycloak.anykey.pl
+
+  http:
+    httpEnabled: true
+
+  proxy:
+    headers: xforwarded
+
+  db:
+    vendor: postgres
+    host: keycloak-postgresql-rw.keycloak.svc.cluster.local
+    port: 5432
+    database: keycloak
+    usernameSecret:
+      name: keycloak-database-secret
+      key: username
+    passwordSecret:
+      name: keycloak-database-secret
+      key: password
+
+  bootstrapAdmin:
+    user:
+      secret: keycloak-admin-secret
+
+  ingress:
+    enabled: false
+
+  health:
+    enabled: false
+
+  resources:
+    requests:
+      cpu: "250m"
+      memory: "1Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+
+  additionalOptions:
+    - name: http-pool-max-threads
+      value: "50"
+    - name: db-pool-max-size
+      value: "20"
+    - name: db-pool-min-size
+      value: "2"
+    - name: metrics-enabled
+      value: "true"

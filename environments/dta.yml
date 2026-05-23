@@ -1,11 +1,6 @@
-name: dev
+name: dta
 products:
-  - platform-core
-  #- platform-storage
-  #- workload-storage
-  #- workload-tests
-
-#  - platform-observability
-#  - platform-security
-#  - gpu
-#  - infrastructure
+  - infra-core
+  - infra-storage
+  #- infra-identity
+  #- infra-helpers

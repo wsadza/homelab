@@ -1,0 +1,36 @@
+# ===============================
+# 
+# ===============================
+components:
+
+  # ------------------
+  # app 
+  # ------------------
+  
+  - name: app
+    namespace: keycloak 
+
+    enabled: true
+    priority: 10 
+
+    syncPolicy:
+      automated: true
+
+    sources:
+
+      - type: values
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        ref: values
+
+      - type: helm 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-charts/platform/platform-auth
+        valueFiles: 
+          - $values/platform-products/infra-identity/applications/platform-identity/components/app/helm/values.yml
+
+      - type: kustomize 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-products/infra-identity/applications/platform-identity/components/app/kustomize

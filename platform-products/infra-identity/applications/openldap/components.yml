@@ -1,0 +1,61 @@
+# ===============================
+# 
+# ===============================
+components:
+
+  # ------------------
+  # app 
+  # ------------------
+
+  - name: app
+    namespace: openldap 
+
+    enabled: true
+    priority: 0
+
+    syncPolicy:
+      automated: false
+
+    sources:
+
+      - type: values
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        ref: values
+
+      - type: helm 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-charts/applications/openldap
+        valueFiles: 
+          - $values/platform-products/infra-identity/applications/openldap/components/app/helm/values.yml
+
+      - type: kustomize 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-products/infra-identity/applications/openldap/components/app/kustomize
+
+  # ------------------
+  # app-exposure
+  # ------------------
+
+  - name: app-exposure
+    namespace: openldap 
+
+    enabled: true
+    priority: 0
+
+    syncPolicy:
+      automated: false
+
+    sources:
+
+      - type: manifests 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-products/infra-identity/applications/openldap/components/app/manifests
+
+      - type: kustomize 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-products/infra-identity/applications/openldap/components/app/kustomize

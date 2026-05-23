@@ -1,0 +1,39 @@
+# ===============================================
+#    ___             ______                        
+#   / _ | ___  ___  / __/ /____  _______ ____ ____ 
+#  / __ |/ _ \/ _ \_\ \/ __/ _ \/ __/ _ `/ _ `/ -_)
+# /_/ |_/ .__/ .__/___/\__/\___/_/  \_,_/\_, /\__/ 
+#      /_/  /_/                         /___/      
+# : AppStorage
+# ===============================================
+
+# -----------------------------------------------
+# @section common parameters
+# -----------------------------------------------
+#
+# @param nameOverride      : String to partially override common.names.name
+# @param fullnameOverride  : String to fully override common.names.fullname
+# @param namespaceOverride : String to fully override common.names.namespace
+# @param commonLabels      : Labels to add to all deployed objects
+# @param commonAnnotations : Annotations to add to all deployed objects
+#
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+commonLabels: {}
+commonAnnotations: {}
+
+# -----------------------------------------------
+# @section common parameters
+# -----------------------------------------------
+#
+appStorage:
+
+  # ===============================================
+  # @section psql parameters
+  # ===============================================
+  #
+  psql:
+    enabled: true
+    storage:
+      size: 50Gi

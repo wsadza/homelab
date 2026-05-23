@@ -1,0 +1,32 @@
+# ===============================
+# 
+# ===============================
+applications:
+
+  # ------------------
+  # Keycloak Operator
+  # ------------------
+
+    - name: keycloak
+      enabled: true
+
+  # ------------------
+  # EDP Keycloak Operator
+  # ------------------
+
+    - name: edp-keycloak-operator 
+      enabled: true 
+
+  # ------------------
+  # OpenLDAP
+  # ------------------
+
+    - name: openldap 
+      enabled: true 
+
+  # ------------------
+  # Platform Identity Configurations
+  # ------------------
+
+    - name: platform-identity
+      enabled: true

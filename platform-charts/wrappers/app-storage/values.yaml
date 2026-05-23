@@ -24,7 +24,7 @@ appStorage:
   # ===============================================
   #
   blob:
-    enabled: true
+    enabled: false
 
     # ===============================================
     # Basic Configuration parameters 
@@ -80,7 +80,7 @@ appStorage:
     # ===============================================
     #
     secretHelper:
-      enabled: true
+      enabled: false
 
       name: ""
 
@@ -132,7 +132,7 @@ appStorage:
     # ===============================================
     #
     backupHelper:
-      enabled: true
+      enabled: false
 
   # ===============================================
   # @section psql parameters
@@ -262,7 +262,7 @@ appStorage:
     # @param appStorage.psql.objectStore.data.compression              : Compression algorithm for base backup data
     #
     objectStore:
-      enabled: true
+      enabled: false
      
       name: ""
       namespace: ""
@@ -292,7 +292,7 @@ appStorage:
     # @param appStorage.psql.backupSchedule.pluginName : Plugin name used by ScheduledBackup
     #
     backupSchedule:
-      enabled: true
+      enabled: false
       name: ""
       immediate: true
       schedule: "0 0 * * *"

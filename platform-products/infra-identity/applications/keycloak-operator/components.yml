@@ -1,0 +1,24 @@
+# ===============================
+# 
+# ===============================
+components:
+
+  # ------------------
+  # app 
+  # ------------------
+
+  - name: app
+    namespace: keycloak
+
+    enabled: true
+    priority: 0
+
+    syncPolicy:
+      automated: false
+
+    sources:
+
+      - type: manifests
+        repoURL: https://github.com/keycloak/keycloak-k8s-resources.git
+        targetRevision: 26.6.1
+        path: kubernetes/

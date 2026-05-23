@@ -1,0 +1,18 @@
+# ===============================
+# 
+# ===============================
+applications:
+
+  # ------------------
+  # PgAdmin4 
+  # ------------------
+
+    - name: pgadmin 
+      enabled: false
+
+  # ------------------
+  # PhpLdapAdmin 
+  # ------------------
+
+    - name: phpldapadmin 
+      enabled: false
