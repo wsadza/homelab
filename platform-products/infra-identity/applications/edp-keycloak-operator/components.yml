@@ -7,7 +7,7 @@ components:
   # edp-keycloak-operator (manage clients) 
   # ------------------
   
-  - name: edp-keycloak-operator 
+  - name: app 
     namespace: keycloak
 
     enabled: true
