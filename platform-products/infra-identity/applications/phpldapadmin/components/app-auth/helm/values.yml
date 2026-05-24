@@ -102,12 +102,12 @@ appAuth:
     # @param appAuth.keycloak.groups[0].annotations : Additional annotations for the group resource
     #
     groups:
-      - name: podinfo-admins
+      - name: phpldapadmin-admins
         groupName: PodInfoAdmins
         namespace: keycloak
         labels: []
         annotations: []
-      - name: podinfo-developers
+      - name: phpldapadmin-developers
         groupName: PodInfoDevelopers
         namespace: keycloak
         labels: []
@@ -140,22 +140,22 @@ appAuth:
     oidc:
       enabled: true
 
-      name: podinfo-oidc
-      namespace: podinfo
+      name: phpldapadmin-oidc
+      namespace: phpldapadmin
       labels: []
       annotations: []
 
       targetRefs:
         - group: gateway.networking.k8s.io
           kind: HTTPRoute
-          name: podinfo-host
+          name: phpldapadmin-host
 
       issuer: https://keycloak.anykey.pl/realms/platform
-      clientId: podinfo 
+      clientId: phpldapadmin 
       clientSecret:
-        name: podinfo-keycloak-client-secret
+        name: phpldapadmin-keycloak-client-secret
         key: clientSecret
-      redirectURL: https://podinfo.anykey.pl/oauth2/callback
+      redirectURL: https://phpldapadmin.anykey.pl/oauth2/callback
 
       logoutPath: /logout
 
