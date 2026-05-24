@@ -47,7 +47,7 @@ appExposure:
     # @param appExposure.gatewayApi.gateway.listeners        : List of Gateway listeners. 
     gateway:
       enabled: true
-      name: gateway-podinfo
+      name: gateway-phpldapadmin
       namespace: envoy-gateway-system
       annotations:
         external-dns.alpha.kubernetes.io/target: anykey.pl
@@ -62,7 +62,7 @@ appExposure:
         - name: listener-http
           protocol: HTTP
           port: 80
-          hostname: podinfo.anykey.pl 
+          hostname: phpldapadmin.anykey.pl 
           allowedRoutes:
             namespaces:
               from: All
@@ -70,17 +70,17 @@ appExposure:
         - name: listener-https
           protocol: HTTPS
           port: 443
-          hostname: podinfo.anykey.pl 
+          hostname: phpldapadmin.anykey.pl 
           tls:
             mode: Terminate
             certificateRefs:
-              - name: podinfo-tls-certificate
+              - name: phpldapadmin-tls-certificate
           allowedRoutes:
             namespaces:
               from: Selector
               selector:
                 matchLabels:
-                  kubernetes.io/metadata.name: podinfo 
+                  kubernetes.io/metadata.name: phpldapadmin 
 
     # -----------------------------------------------
     # @subsection HTTPRoutes parameters
@@ -96,30 +96,30 @@ appExposure:
     # @param appExposure.gatewayApi.httpRoute.rules       : HTTPRoute routing rules.
     httpRoutes:
       - enabled: true
-        name: podinfo-https-route
-        namespace: podinfo 
+        name: phpldapadmin-https-route
+        namespace: phpldapadmin 
         parentRefs:
-          - name: gateway-podinfo
+          - name: gateway-phpldapadmin
             namespace: envoy-gateway-system 
             sectionName: listener-https
         hostnames:
-          - podinfo.anykey.pl
+          - phpldapadmin.anykey.pl
         rules:
           - backendRefs:
               - kind: Service
-                name: podinfo-app
-                namespace: podinfo
-                port: 9898
+                name: phpldapadmin-app
+                namespace: phpldapadmin
+                port: 80
 
       - enabled: true
         name: acme-http-route
-        namespace: podinfo 
+        namespace: phpldapadmin 
         parentRefs:
-          - name: gateway-podinfo
+          - name: gateway-phpldapadmin
             namespace: envoy-gateway-system
             sectionName: listener-http
         hostnames:
-          - podinfo.anykey.pl
+          - phpldapadmin.anykey.pl
         rules:
            - matches:
               - path:
@@ -128,14 +128,14 @@ appExposure:
              backendRefs: []
 
       - enabled: true
-        name: podinfo-http-redirect
-        namespace: podinfo 
+        name: phpldapadmin-http-redirect
+        namespace: phpldapadmin 
         parentRefs:
-          - name: gateway-podinfo
+          - name: gateway-phpldapadmin
             namespace: envoy-gateway-system
             sectionName: listener-http
         hostnames:
-          - podinfo.anykey.pl
+          - phpldapadmin.anykey.pl
         rules:
           - filters:
               - type: RequestRedirect
@@ -163,7 +163,7 @@ appExposure:
     enabled: true
     namespace: envoy-gateway-system
     dnsNames:
-      - podinfo.anykey.pl
+      - phpldapadmin.anykey.pl
 
     # -----------------------------------------------
     # @subsection Issuer parameters
@@ -184,6 +184,6 @@ appExposure:
           parentRefs:
             - group: gateway.networking.k8s.io
               kind: Gateway
-              name: gateway-podinfo
+              name: gateway-phpldapadmin
               namespace: envoy-gateway-system 
 

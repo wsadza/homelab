@@ -1,0 +1,87 @@
+# ===============================
+# 
+# ===============================
+components:
+
+  # ------------------
+  # app
+  # ------------------
+
+    - name: app
+      namespace: phpldapadmin 
+
+      enabled: true
+      priority: 0
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        # -- Helper -----
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        # -- Application -----
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/applications/phpldapadmin
+          #valueFiles: 
+          #  - $values/platform-products/platform-identity/applications/phpldapadmin/components/app/helm/values.yml
+
+  # ------------------
+  # app-exposure
+  # ------------------
+
+    - name: app-exposure
+      namespace: phpldapadmin 
+
+      enabled: true
+      priority: -5
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-exposure
+          valueFiles: 
+            - $values/platform-products/platform-identity/applications/phpldapadmin/components/app-exposure/helm/values.yml
+
+  # ------------------
+  # app-auth
+  # ------------------
+
+    - name: app-auth
+      namespace: phpldapadmin
+
+      enabled: true
+      priority: -5
+
+      syncPolicy:
+        automated: false
+
+      sources:
+
+        - type: values
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          ref: values
+
+        - type: helm 
+          repoURL: https://github.com/wsadza/homelab.git
+          targetRevision: HEAD
+          path: platform-charts/wrappers/app-auth
+          valueFiles: 
+            - $values/platform-products/platform-identity/applications/phpldapadmin/components/app-auth/helm/values.yml
