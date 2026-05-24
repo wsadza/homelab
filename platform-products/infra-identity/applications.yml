@@ -32,6 +32,13 @@ applications:
       enabled: true 
 
   # ------------------
+  # PHPLDAPAdmin 
+  # ------------------
+
+    - name: phpldapadmin 
+      enabled: true 
+
+  # ------------------
   # Platform Identity Configurations
   # ------------------
 
