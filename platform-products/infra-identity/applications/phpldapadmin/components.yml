@@ -57,7 +57,7 @@ components:
           targetRevision: HEAD
           path: platform-charts/wrappers/app-exposure
           valueFiles: 
-            - $values/platform-products/platform-identity/applications/phpldapadmin/components/app-exposure/helm/values.yml
+            - $values/platform-products/infra-identity/applications/phpldapadmin/components/app-exposure/helm/values.yml
 
   # ------------------
   # app-auth
@@ -84,4 +84,4 @@ components:
           targetRevision: HEAD
           path: platform-charts/wrappers/app-auth
           valueFiles: 
-            - $values/platform-products/platform-identity/applications/phpldapadmin/components/app-auth/helm/values.yml
+            - $values/platform-products/infra-identity/applications/phpldapadmin/components/app-auth/helm/values.yml
