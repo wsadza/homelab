@@ -9,7 +9,6 @@ components:
 
   - name: crds
     namespace: envoy-gateway-system
-    releaseName: envoy-gateway-crds
 
     enabled: true
     priority: -10
@@ -59,6 +58,7 @@ components:
         repoURL: oci://docker.io/envoyproxy/gateway-helm
         targetRevision: v1.7.1
         chart: envoy-gateway-crds
+        skipCrds: true
         valueFiles: 
           - $values/platform-products/infra-core/applications/envoy-gateway/components/core/helm/values.yml
       

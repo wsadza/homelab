@@ -98,6 +98,10 @@ spec:
             releaseName: {{ .Values.leaf.application | quote }}
             {{ `{{- end }}` }}
 
+            {{ `{{- with .skipCrds }}` }}
+            skipCrds: {{ `{{ . | quote }}` }}
+            {{ `{{- end }}` }}
+
           {{ `{{- end }}` }}
           {{ `{{- end }}` }}
 
