@@ -28,7 +28,7 @@ spec:
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.appStorage.blob.backupHelper.backupSourceSecrets.name | quote }}
-                      key: {{ .Values.appStorage.blob..backupHelper.backupSourceSecrets.keys.sourceKey | quote }}
+                      key: {{ .Values.appStorage.blob.backupHelper.backupSourceSecrets.keys.sourceKey | quote }}
                 - name: SRC_SECRET_KEY
                   valueFrom:
                     secretKeyRef:
