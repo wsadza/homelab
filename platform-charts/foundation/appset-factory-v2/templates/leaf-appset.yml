@@ -92,9 +92,10 @@ spec:
             - {{ `{{ . | quote }}` }}
             {{ `{{- end }}` }}
 
-            {{ `{{- if hasKey $root "releaseName" }}` }}
-            #releaseName: {{ `{{ $root.releaseName | quote }}` }}
+            {{ `{{- if ne hasKey $root "releaseName" }}` }}
             releaseName: {{ .Values.leaf.application | quote }}
+            {{ `{{- else }}` }}
+            releaseName: {{ `{{ $root.releaseName | quote }}` }}
             {{ `{{- end }}` }}
 
           {{ `{{- end }}` }}
