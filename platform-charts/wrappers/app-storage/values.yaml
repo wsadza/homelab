@@ -134,7 +134,7 @@ appStorage:
     backupHelper:
       enabled: true
       name: seaweedfs-s3-backup
-      namespace: seaweedfs
+      namespace: "" 
       schedule: "0 2 * * *"
     
       sourceBucket: nextcloud
