@@ -7,7 +7,7 @@ applications:
   # Podinfo
   # ------------------
 
-    - name: podinfo 
+    - name: podinfo-stack
       #namespace: podinfo 
 
       #enabled: true
