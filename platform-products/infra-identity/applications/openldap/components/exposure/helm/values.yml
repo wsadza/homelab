@@ -19,7 +19,7 @@
 # @param commonAnnotations : Annotations to add to all deployed objects
 #
 nameOverride: ""
-fullnameOverride: ""
+fullnameOverride: "openldap"
 namespaceOverride: ""
 commonLabels: {}
 commonAnnotations: {}
