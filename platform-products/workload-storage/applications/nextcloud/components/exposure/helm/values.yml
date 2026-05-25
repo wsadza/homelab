@@ -107,7 +107,7 @@ appExposure:
         rules:
           - backendRefs:
               - kind: Service
-                name: nextcloud-app
+                name: nextcloud
                 namespace: nextcloud
                 port: 8080
 

@@ -50,6 +50,5 @@ appStorage:
     # ===============================================
     #
     objectStore:
-      #destinationPath: "s3://nextcloud-bucket/databases"
-      destinationPath: "s3://nextcloud-app-storage-bucket/databases"
+      destinationPath: "s3://nextcloud-bucket/databases"
       endpointURL: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"

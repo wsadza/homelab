@@ -3,5 +3,6 @@ products:
   - infra-core
   - infra-storage
   - infra-identity
+  - workload-storage
   #- infra-helpers
   #- workload-tests

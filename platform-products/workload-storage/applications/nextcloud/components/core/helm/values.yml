@@ -112,7 +112,7 @@ nextcloud:
       region: us-east-1
       usePathStyle: true
       autoCreate: false
-      existingSecret: nextcloud-app-storage-object-store-secret
+      existingSecret: nextcloud-object-store-secret
       secretKeys:
         accessKey: S3_ACCESS_KEY # accessKey
         secretKey: S3_SECRET_KEY # secretKey
@@ -133,11 +133,11 @@ mariadb:
 externalDatabase:
   enabled: true
   type: postgresql
-  host: nextcloud-app-storage-cnpg-cluster-rw.nextcloud.svc.cluster.local:5432
-  database: nextcloud-app-storage
+  host: nextcloud-cnpg-cluster-rw.nextcloud.svc.cluster.local:5432
+  database: nextcloud
   existingSecret:
     enabled: true
-    secretName: nextcloud-app-storage-cnpg-cluster-app
+    secretName: nextcloud-cnpg-cluster-app
     usernameKey: username
     passwordKey: password
 
