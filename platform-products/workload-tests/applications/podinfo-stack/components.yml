@@ -4,10 +4,10 @@
 components:
 
   # ------------------
-  # app
+  # core 
   # ------------------
 
-    - name: app
+    - name: podinfo
       namespace: podinfo
 
       enabled: true
@@ -31,10 +31,10 @@ components:
             - $values/platform-products/workload-tests/applications/podinfo/components/app/helm/values.yml
 
   # ------------------
-  # app-exposure
+  # exposure
   # ------------------
 
-    - name: app-exposure
+    - name: exposure
       namespace: podinfo
 
       enabled: true
@@ -58,10 +58,10 @@ components:
             - $values/platform-products/workload-tests/applications/podinfo/components/app-exposure/helm/values.yml
 
   # ------------------
-  # app-security
+  # security
   # ------------------
 
-    - name: app-security
+    - name: security
       namespace: podinfo
 
       enabled: false
@@ -85,10 +85,10 @@ components:
             - $values/platform-products/workload-tests/applications/podinfo/components/app-security/helm/values.yml
 
   # ------------------
-  # app-auth
+  # auth
   # ------------------
 
-    - name: app-auth
+    - name: auth
       namespace: podinfo
 
       enabled: true
