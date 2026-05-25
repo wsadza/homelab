@@ -37,6 +37,7 @@ components:
 
     - name: exposure
       namespace: podinfo
+      releaseName: podinfo
 
       enabled: true
       priority: 0
@@ -64,6 +65,7 @@ components:
 
     - name: security
       namespace: podinfo
+      releaseName: podinfo
 
       enabled: false
       priority: 0
@@ -91,6 +93,7 @@ components:
 
     - name: auth
       namespace: podinfo
+      releaseName: podinfo
 
       enabled: true
       priority: 0
