@@ -140,7 +140,7 @@ appStorage:
       sourceBucket: nextcloud
       targetBucket: backup
     
-      backupSourceEndpoint: "http://seaweedfs-s3.seaweedfs.svc.cluster.local:8333"
+      backupSourceEndpoint: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"
       backupSourceSecrets:
         name: nextcloud-object-store-secret
         keys:
