@@ -4,7 +4,7 @@
 components:
 
   # ------------------
-  # app
+  # core
   # ------------------
   
   - name: app 
@@ -21,4 +21,4 @@ components:
       - type: manifests
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD
-        path: platform-products/infra-storage/applications/local-path-provisioner/components/app/manifests
+        path: platform-products/infra-storage/applications/local-path-provisioner/components/core/manifests

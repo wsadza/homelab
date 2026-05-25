@@ -4,11 +4,11 @@
 components:
 
   # ------------------
-  # app
+  # core
   # ------------------
 
-  - name: app
-    namespace: cosi 
+  - name: core
+    namespace: cosi
 
     enabled: true
     priority: 0

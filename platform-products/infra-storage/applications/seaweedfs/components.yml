@@ -1,10 +1,10 @@
 components:
 
   # ------------------
-  # app
+  # core
   # ------------------
   
-  - name: app 
+  - name: core
     namespace: seaweedfs 
 
     enabled: true
@@ -25,9 +25,9 @@ components:
           targetRevision: 4.23.0
           chart: seaweedfs
           valueFiles: 
-            - $values/platform-products/infra-storage/applications/seaweedfs/components/app/helm/values.yml
+            - $values/platform-products/infra-storage/applications/seaweedfs/components/core/helm/values.yml
 
         - type: kustomize 
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
-          path: platform-products/infra-storage/applications/seaweedfs/components/app/kustomize
+          path: platform-products/infra-storage/applications/seaweedfs/components/core/kustomize

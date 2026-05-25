@@ -25,13 +25,6 @@ applications:
       enabled: true
 
   # ------------------
-  # PgAdmin4 
-  # ------------------
-
-    - name: pgadmin 
-      enabled: false
-
-  # ------------------
   # SeaWeedFS 
   # ------------------
 
