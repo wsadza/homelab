@@ -92,14 +92,14 @@ spec:
             {{ `{{- end }}` }}
             {{ `{{- end }}` }}
 
-            {{ `{{- if hasKey $root "releaseName" }}` }}
-            releaseName: {{ `{{ $root.releaseName | quote }}` }}
+            {{ `{{- if hasKey . "releaseName" }}` }}
+            releaseName: {{ `{{ .releaseName | quote }}` }}
             {{ `{{- else }}` }}
             releaseName: {{ .Values.leaf.application | quote }}
             {{ `{{- end }}` }}
 
-            {{ `{{- with .skipCrds }}` }}
-            skipCrds: {{ `{{ . | quote }}` }}
+            {{ `{{- if hasKey . "skipCrds" }}` }}
+            skipCrds: {{ `{{ .skipCrds }}` }}
             {{ `{{- end }}` }}
 
         {{ `{{- else if eq .type "manifests"}}` }}
