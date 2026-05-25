@@ -4,3 +4,4 @@ products:
   - infra-storage
   - infra-identity
   #- infra-helpers
+  - workload-tests
