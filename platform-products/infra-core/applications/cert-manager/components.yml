@@ -4,10 +4,10 @@
 components:
 
   # ------------------
-  # app
+  # core
   # ------------------
 
-  - name: app 
+  - name: core
     namespace: cert-manager 
 
     enabled: true
@@ -28,5 +28,5 @@ components:
         targetRevision: 1.20.2 
         chart: cert-manager 
         valueFiles: 
-          - $values/platform-products/infra-core/applications/cert-manager/components/app/helm/values.yml
+          - $values/platform-products/infra-core/applications/cert-manager/components/core/helm/values.yml
 
