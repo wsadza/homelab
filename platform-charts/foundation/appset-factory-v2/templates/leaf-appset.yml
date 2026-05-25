@@ -84,12 +84,12 @@ spec:
           path: {{ `{{ .path | quote }}` }}
           {{ `{{- end }}` }}
 
-          {{ `{{- if hasKey . "valueFiles" }}` }}
-          {{ `{{- with .valueFiles }}` }}
           helm:
+            {{ `{{- with .valueFiles }}` }}
             valueFiles:
             {{ `{{- range . }}` }}
             - {{ `{{ . | quote }}` }}
+            {{ `{{- end }}` }}
             {{ `{{- end }}` }}
 
             {{ `{{- if hasKey $root "releaseName" }}` }}
@@ -101,9 +101,6 @@ spec:
             {{ `{{- with .skipCrds }}` }}
             skipCrds: {{ `{{ . | quote }}` }}
             {{ `{{- end }}` }}
-
-          {{ `{{- end }}` }}
-          {{ `{{- end }}` }}
 
         {{ `{{- else if eq .type "manifests"}}` }}
         - repoURL: {{ `{{ .repoURL | quote }}` }}
