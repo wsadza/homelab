@@ -74,6 +74,9 @@ spec:
         {{ `{{- else if eq .type "helm"}}` }}
         - repoURL: {{ `{{ .repoURL | quote }}` }}
           targetRevision: {{ `{{ .targetRevision | quote }}` }}
+          {{ `{{- if hasKey . "releaseName" }}` }}
+          releaseName: {{ `{{ .releaseName | quote }}` }}
+          {{ `{{- end }}` }}
 
           {{ `{{- if hasKey . "chart" }}` }}
           chart:  {{ `{{ .chart | quote }}` }}

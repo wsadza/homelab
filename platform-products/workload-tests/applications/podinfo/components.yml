@@ -7,8 +7,9 @@ components:
   # core 
   # ------------------
 
-    - name: podinfo
+    - name: core 
       namespace: podinfo
+      releaseName: podinfo
 
       enabled: true
       priority: 0
@@ -28,7 +29,7 @@ components:
           targetRevision: 6.9.1
           chart: podinfo 
           valueFiles: 
-            - $values/platform-products/workload-tests/applications/podinfo-stack/components/podinfo/helm/values.yml
+            - $values/platform-products/workload-tests/applications/podinfo-stack/components/core/helm/values.yml
 
   # ------------------
   # exposure
