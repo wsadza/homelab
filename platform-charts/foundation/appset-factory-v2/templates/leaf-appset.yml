@@ -85,10 +85,12 @@ spec:
           {{ `{{- end }}` }}
 
           helm:
+            {{ `{{- if hasKey . "valueFiles" }}` }}
             {{ `{{- with .valueFiles }}` }}
             valueFiles:
             {{ `{{- range . }}` }}
             - {{ `{{ . | quote }}` }}
+            {{ `{{- end }}` }}
             {{ `{{- end }}` }}
             {{ `{{- end }}` }}
 

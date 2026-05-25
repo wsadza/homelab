@@ -20,7 +20,7 @@ components:
 
     sources:
 
-      # -- app --------
+      # -- core --------
       - type: helm
         repoURL: https://cloudnative-pg.io/charts/
         targetRevision: 0.28.0
