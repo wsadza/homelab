@@ -4,10 +4,10 @@
 components:
 
   # ------------------
-  # app
+  # core
   # ------------------
 
-    - name: app
+    - name: core
       namespace: nextcloud
 
       enabled: true
@@ -30,19 +30,19 @@ components:
           targetRevision: 9.0.6
           chart: nextcloud
           valueFiles: 
-            - $values/platform-products/workload-storage/applications/nextcloud/components/app/helm/values.yml
+            - $values/platform-products/workload-storage/applications/nextcloud/components/core/helm/values.yml
 
         # -- Secrets -----
         - type: kustomize 
           repoURL: https://github.com/wsadza/homelab.git
           targetRevision: HEAD
-          path: platform-products/workload-storage/applications/nextcloud/components/app/kustomize
+          path: platform-products/workload-storage/applications/nextcloud/components/core/kustomize
 
   # ------------------
-  # app-exposure
+  # exposure
   # ------------------
 
-    - name: app-exposure
+    - name: exposure
       namespace: nextcloud
 
       enabled: true
@@ -63,13 +63,13 @@ components:
           targetRevision: HEAD
           path: platform-charts/wrappers/app-exposure
           valueFiles: 
-            - $values/platform-products/workload-storage/applications/nextcloud/components/app-exposure/helm/values.yml
+            - $values/platform-products/workload-storage/applications/nextcloud/components/exposure/helm/values.yml
 
   # ------------------
-  # app-storage
+  # storage
   # ------------------
 
-    - name: app-storage
+    - name: storage
       namespace: nextcloud
 
       enabled: true
@@ -91,13 +91,13 @@ components:
           targetRevision: HEAD
           path: platform-charts/wrappers/app-storage
           valueFiles: 
-            - $values/platform-products/workload-storage/applications/nextcloud/components/app-storage/helm/values.yml
+            - $values/platform-products/workload-storage/applications/nextcloud/components/storage/helm/values.yml
 
   # ------------------
-  # app-auth
+  # auth
   # ------------------
 
-    - name: app-auth
+    - name: auth
       namespace: nextcloud
 
       enabled: true
@@ -118,4 +118,4 @@ components:
           targetRevision: HEAD
           path: platform-charts/wrappers/app-auth
           valueFiles: 
-            - $values/platform-products/workload-storage/applications/nextcloud/components/app-auth/helm/values.yml
+            - $values/platform-products/workload-storage/applications/nextcloud/components/auth/helm/values.yml
