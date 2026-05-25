@@ -4,10 +4,10 @@
 components:
 
   # ------------------
-  # app 
+  # core
   # ------------------
 
-  - name: app
+  - name: core
     namespace: openldap 
 
     enabled: true
@@ -28,18 +28,18 @@ components:
         targetRevision: HEAD
         path: platform-charts/applications/openldap
         valueFiles: 
-          - $values/platform-products/infra-identity/applications/openldap/components/app/helm/values.yml
+          - $values/platform-products/infra-identity/applications/openldap/components/core/helm/values.yml
 
       - type: kustomize 
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD
-        path: platform-products/infra-identity/applications/openldap/components/app/kustomize
+        path: platform-products/infra-identity/applications/openldap/components/core/kustomize
 
   # ------------------
-  # app-exposure
+  # exposure
   # ------------------
 
-  - name: app-exposure
+  - name: exposure
     namespace: openldap 
 
     enabled: true
@@ -60,4 +60,4 @@ components:
         targetRevision: HEAD
         path: platform-charts/wrappers/app-exposure
         valueFiles: 
-          - $values/platform-products/infra-identity/applications/openldap/components/app-exposure/helm/values.yml
+          - $values/platform-products/infra-identity/applications/openldap/components/exposure/helm/values.yml

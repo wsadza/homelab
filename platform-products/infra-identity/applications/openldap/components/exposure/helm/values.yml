@@ -7,7 +7,7 @@
 #
 # : AppExposure (wrapper)
 # ===============================================================
-
+#
 # -----------------------------------------------
 # @section common parameters
 # -----------------------------------------------
@@ -47,7 +47,7 @@ appExposure:
     # @param appExposure.gatewayApi.gateway.listeners        : List of Gateway listeners. 
     gateway:
       enabled: true
-      name: gateway-phpldapadmin
+      name: gateway-openldap
       namespace: envoy-gateway-system
       annotations:
         external-dns.alpha.kubernetes.io/target: anykey.pl
@@ -62,25 +62,23 @@ appExposure:
         - name: listener-http
           protocol: HTTP
           port: 80
-          hostname: phpldapadmin.anykey.pl 
+          hostname: openldap.anykey.pl 
           allowedRoutes:
             namespaces:
               from: All
 
-        - name: listener-https
-          protocol: HTTPS
-          port: 443
-          hostname: phpldapadmin.anykey.pl 
+        - name: listener-tls
+          protocol: TLS
+          port: 636
+          hostname: openldap.anykey.pl 
           tls:
-            mode: Terminate
-            certificateRefs:
-              - name: phpldapadmin-app-exposure-tls-certificate 
+            mode: Passthrough
           allowedRoutes:
             namespaces:
               from: Selector
               selector:
                 matchLabels:
-                  kubernetes.io/metadata.name: phpldapadmin 
+                  kubernetes.io/metadata.name: openldap
 
     # -----------------------------------------------
     # @subsection HTTPRoutes parameters
@@ -96,30 +94,14 @@ appExposure:
     # @param appExposure.gatewayApi.httpRoute.rules       : HTTPRoute routing rules.
     httpRoutes:
       - enabled: true
-        name: phpldapadmin-https-route
-        namespace: phpldapadmin 
+        name: openldap-http-route
+        namespace: openldap
         parentRefs:
-          - name: gateway-phpldapadmin
-            namespace: envoy-gateway-system 
-            sectionName: listener-https
-        hostnames:
-          - phpldapadmin.anykey.pl
-        rules:
-          - backendRefs:
-              - kind: Service
-                name: phpldapadmin-app
-                namespace: phpldapadmin
-                port: 80
-
-      - enabled: true
-        name: acme-http-route
-        namespace: phpldapadmin 
-        parentRefs:
-          - name: gateway-phpldapadmin
+          - name: gateway-openldap
             namespace: envoy-gateway-system
             sectionName: listener-http
         hostnames:
-          - phpldapadmin.anykey.pl
+          - openldap.anykey.pl
         rules:
            - matches:
               - path:
@@ -127,22 +109,34 @@ appExposure:
                   value: /.well-known/acme-challenge/
              backendRefs: []
 
+    # -----------------------------------------------
+    # @subsection TLSRoutes parameters
+    # -----------------------------------------------
+    #
+    # @param appExposure.gatewayApi.tlsRoute.enabled     : Enable TLSRoute resource generation.
+    # @param appExposure.gatewayApi.tlsRoute.name        : TLSRoute resource name.
+    # @param appExposure.gatewayApi.tlsRoute.namespace   : Namespace where the HTTPRoute will be created.
+    # @param appExposure.gatewayApi.tlsRoute.labels      : Labels to add to the HTTPRoute.
+    # @param appExposure.gatewayApi.tlsRoute.annotations : Annotations to add to the HTTPRoute.
+    # @param appExposure.gatewayApi.tlsRoute.parentRefs  : Parent Gateway references.
+    # @param appExposure.gatewayApi.tlsRoute.hostnames   : Hostnames matched by the HTTPRoute.
+    # @param appExposure.gatewayApi.tlsRoute.rules       : HTTPRoute routing rules.
+    tlsRoutes:
       - enabled: true
-        name: phpldapadmin-http-redirect
-        namespace: phpldapadmin 
+        name: openldap-tls-route
+        namespace: openldap 
         parentRefs:
-          - name: gateway-phpldapadmin
-            namespace: envoy-gateway-system
-            sectionName: listener-http
+          - name: gateway-openldap
+            namespace: envoy-gateway-system 
+            sectionName: listener-tls
         hostnames:
-          - phpldapadmin.anykey.pl
+          - openldap.anykey.pl
         rules:
-          - filters:
-              - type: RequestRedirect
-                requestRedirect:
-                  scheme: https
-                  statusCode: 301
-                  port: 443
+          - backendRefs:
+              - name: openldap
+                port: 636
+                kind: Service
+                namespace: openldap
 
   # ===============================================
   # @section Certificate parameters
@@ -161,9 +155,19 @@ appExposure:
   # @param appExposure.certificate.dnsNames           : DNS names covered by the certificate. 
   certificate:
     enabled: true
-    namespace: envoy-gateway-system
+    name: openldap-certificate
+    namespace: openldap
+    existingIssuer: openldap-issuer
+    existingIssuerKind: Issuer
+
+    keySize: 2048
+    keyAlgorithm: RSA
+    duration: 2160h
+    renewBefore: 360h
+
+    secretName: openldap-tls-secret
     dnsNames:
-      - phpldapadmin.anykey.pl
+      - openldap.anykey.pl
 
     # -----------------------------------------------
     # @subsection Issuer parameters
@@ -172,18 +176,24 @@ appExposure:
     # @param appExposure.certificate.issuer.enabled                          : Enable Issuer resource generation.
     # @param appExposure.certificate.issuer.name                             : Issuer resource name.
     # @param appExposure.certificate.issuer.namespace                        : Namespace where the Issuer will be created.
+    # @param appExposure.certificate.issuer.kind                             : Issuer kind. Usually Issuer or ClusterIssuer.
     # @param appExposure.certificate.issuer.acme.email                       : ACME registration email.
     # @param appExposure.certificate.issuer.acme.server                      : ACME server URL.
     # @param appExposure.certificate.issuer.acme.privateKeySecretName        : Secret name used to store the ACME account private key.
     # @param appExposure.certificate.issuer.acme.gatewayHTTPRoute.parentRefs : Gateway parent references used for HTTP-01 challenges. 
     issuer:
       enabled: true
-      namespace: envoy-gateway-system 
+      name: openldap-issuer
+      namespace: openldap
+      kind: Issuer
       acme:
+        email: openldap@anykey.pl
+        server: https://acme-v02.api.letsencrypt.org/directory
+        privateKeySecretName: letsencrypt-account-key
         gatewayHTTPRoute:
           parentRefs:
             - group: gateway.networking.k8s.io
               kind: Gateway
-              name: gateway-phpldapadmin
+              name: gateway-openldap
               namespace: envoy-gateway-system 
-
+          

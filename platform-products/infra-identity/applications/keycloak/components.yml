@@ -21,18 +21,18 @@ components:
       - type: manifests 
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD
-        path: platform-products/infra-identity/applications/keycloak/components/app/manifests
+        path: platform-products/infra-identity/applications/keycloak/components/core/manifests
 
       - type: kustomize 
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD
-        path: platform-products/infra-identity/applications/keycloak/components/app/kustomize
+        path: platform-products/infra-identity/applications/keycloak/components/core/kustomize
 
   # ------------------
-  # app-exposure
+  # exposure
   # ------------------
 
-  - name: app-exposure
+  - name: exposure
     namespace: keycloak
 
     enabled: true
@@ -53,13 +53,13 @@ components:
         targetRevision: HEAD
         path: platform-charts/wrappers/app-exposure
         valueFiles: 
-          - $values/platform-products/infra-identity/applications/keycloak/components/app-exposure/helm/values.yml
+          - $values/platform-products/infra-identity/applications/keycloak/components/exposure/helm/values.yml
 
   # ------------------
-  # app-storage
+  # storage
   # ------------------
 
-  - name: app-storage
+  - name: storage
     namespace: keycloak
 
     enabled: true
@@ -80,4 +80,4 @@ components:
         targetRevision: HEAD
         path: platform-charts/wrappers/app-storage
         valueFiles: 
-          - $values/platform-products/infra-identity/applications/keycloak/components/app-storage/helm/values.yml
+          - $values/platform-products/infra-identity/applications/keycloak/components/storage/helm/values.yml

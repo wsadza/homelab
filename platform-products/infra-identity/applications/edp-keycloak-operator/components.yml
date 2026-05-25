@@ -4,10 +4,10 @@
 components:
 
   # ------------------
-  # edp-keycloak-operator (manage clients) 
+  # core
   # ------------------
   
-  - name: app 
+  - name: core
     namespace: keycloak
 
     enabled: true
@@ -29,7 +29,7 @@ components:
         targetRevision: 1.31.0
         chart: keycloak-operator
         valueFiles: 
-          - $values/platform-products/infra-identity/applications/edp-keycloak-operator/components/app/helm/values.yml
+          - $values/platform-products/infra-identity/applications/edp-keycloak-operator/components/core/helm/values.yml
 
       # Secrets
       - type: kustomize 
