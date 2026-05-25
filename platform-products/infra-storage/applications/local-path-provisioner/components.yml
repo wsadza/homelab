@@ -7,7 +7,7 @@ components:
   # core
   # ------------------
   
-  - name: app 
+  - name: core
     namespace: kube-system
 
     enabled: true
