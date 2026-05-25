@@ -133,6 +133,26 @@ appStorage:
     #
     backupHelper:
       enabled: false
+      name: seaweedfs-s3-backup
+      namespace: seaweedfs
+      schedule: "0 2 * * *"
+    
+      sourceBucket: nextcloud
+      targetBucket: backup
+    
+      backupSourceEndpoint: "http://seaweedfs-s3.seaweedfs.svc.cluster.local:8333"
+      backupSourceSecrets:
+        name: nextcloud-object-store-secret
+        keys:
+          sourceKey: S3_ACCESS_KEY
+          secretKey: S3_SECRET_KEY
+    
+      backupTargetEndpoint: "http://192.168.1.10:8333"
+      backupTargetSecrets:
+        name: seaweedfs-backup-secrets
+        keys:
+          sourceKey: S3_ACCESS_KEY
+          secretKey: S3_SECRET_KEY
 
   # ===============================================
   # @section psql parameters

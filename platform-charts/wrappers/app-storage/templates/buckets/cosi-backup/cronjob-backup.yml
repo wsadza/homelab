@@ -1,0 +1,102 @@
+{{- $fullname := include "common.names.fullname" . }}
+{{- $baseName := default $fullname .Values.appStorage.blob.backupHelper.name }}
+{{- if .Values.appStorage.blob.backupHelper.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ printf "%s-s3-backup" $baseName | quote }}
+  namespace: {{ default (include "common.names.namespace" .) .Values.appStorage.blob.backupHelper.namespace | quote }}
+spec:
+  schedule: {{ .Values.appStorage.blob.backupHelper.schedule | quote }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: Never
+
+          containers:
+            - name: rclone
+              image: rclone/rclone:latest
+
+              env:
+                - name: SRC_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.appStorage.blob.backupHelper.backupSourceSecrets.name | quote }}
+                      key: {{ .Values.appStorage.blob..backupHelper.backupSourceSecrets.keys.sourceKey | quote }}
+                - name: SRC_SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.appStorage.blob.backupHelper.backupSourceSecrets.name | quote }}
+                      key: {{ .Values.appStorage.blob.backupHelper.backupSourceSecrets.keys.secretKey | quote }}
+
+                - name: DST_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.appStorage.blob.backupHelper.backupTargetSecrets.name | quote }}
+                      key: {{ .Values.appStorage.blob.backupHelper.backupTargetSecrets.keys.sourceKey | quote }}
+                - name: DST_SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.appStorage.blob.backupHelper.backupTargetSecrets.name | quote }}
+                      key: {{ .Values.appStorage.blob.backupHelper.backupTargetSecrets.keys.secretKey | quote }}
+
+                - name: SRC_ENDPOINT
+                  value: {{ .Values.appStorage.blob.backupHelper.backupSourceEndpoint | quote }}
+                - name: DST_ENDPOINT
+                  value: {{ .Values.appStorage.blob.backupHelper.backupTargetEndpoint | quote }}
+
+                - name: SRC_BUCKET
+                  value: {{ .Values.appStorage.blob.backupHelper.sourceBucket | quote }}
+                - name: DST_BUCKET
+                  value: {{ .Values.appStorage.blob.backupHelper.targetBucket | quote }}
+
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -eu
+
+                  mkdir -p /config/rclone
+
+                  cat > /config/rclone/rclone.conf <<EOF
+                  [src]
+                  type = s3
+                  provider = Other
+                  access_key_id = ${SRC_ACCESS_KEY}
+                  secret_access_key = ${SRC_SECRET_KEY}
+                  endpoint = ${SRC_ENDPOINT}
+                  acl = private
+                  force_path_style = true
+
+                  [dst]
+                  type = s3
+                  provider = Other
+                  access_key_id = ${DST_ACCESS_KEY}
+                  secret_access_key = ${DST_SECRET_KEY}
+                  endpoint = ${DST_ENDPOINT}
+                  acl = private
+                  force_path_style = true
+                  EOF
+
+                  DATE=$(date +%F)
+
+                  echo "Backing up ${SRC_BUCKET} to ${DST_BUCKET}/${DATE}"
+
+                  rclone copy \
+                    src:${SRC_BUCKET} \
+                    dst:${DST_BUCKET}/${DATE} \
+                    --s3-no-check-bucket \
+                    --checksum \
+                    --fast-list \
+                    --transfers 8 \
+                    --checkers 16 \
+                    --log-level INFO
+
+                  echo "Backup complete"
+{{- end }}
