@@ -74,7 +74,7 @@ appExposure:
           tls:
             mode: Terminate
             certificateRefs:
-              - name: keycloak-app-exposure-tls-certificate 
+              - name: keycloak-exposure-tls-certificate 
           allowedRoutes:
             namespaces:
               from: Selector
@@ -107,7 +107,7 @@ appExposure:
         rules:
           - backendRefs:
               - kind: Service
-                name: keycloak-app-service
+                name: keycloak-service
                 namespace: keycloak
                 port: 8080
 

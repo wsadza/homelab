@@ -1,7 +1,7 @@
 apiVersion: k8s.keycloak.org/v2alpha1
 kind: Keycloak
 metadata:
-  name: keycloak-app
+  name: keycloak
   namespace: keycloak
 spec:
   instances: 1
@@ -17,14 +17,14 @@ spec:
 
   db:
     vendor: postgres
-    host: keycloak-app-storage-cnpg-cluster-rw.keycloak.svc.cluster.local
+    host: keycloak-storage-cnpg-cluster-rw.keycloak.svc.cluster.local
     port: 5432
-    database: keycloak-app-storage
+    database: keycloak-storage
     usernameSecret:
-      name: keycloak-app-storage-cnpg-cluster-app
+      name: keycloak-storage-cnpg-cluster-app
       key: username
     passwordSecret:
-      name: keycloak-app-storage-cnpg-cluster-app
+      name: keycloak-storage-cnpg-cluster-app
       key: password
 
   bootstrapAdmin:
