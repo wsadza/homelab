@@ -12,7 +12,7 @@ apiVersion: batch/v1
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ printf "%s-s3-restore-$s" $baseName $restoreDate | quote }}
+  name: {{ printf "%s-s3-restore" $baseName | quote }}
   namespace: {{ default (include "common.names.namespace" .) .Values.appStorage.blob.backupHelper.namespace | quote }}
 spec:
   backoffLimit: 1
