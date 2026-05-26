@@ -183,7 +183,7 @@ appStorage:
           secretKey: S3_SECRET_KEY
     
       # Live SeaweedFS endpoint — where data should be restored
-      restoreTargetEndpoint: "http://seaweedfs-s3.seaweedfs.svc.cluster.local:8333"
+      restoreTargetEndpoint: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"
       restoreTargetSecrets:
         name: seaweedfs-backup-secrets
         keys:
