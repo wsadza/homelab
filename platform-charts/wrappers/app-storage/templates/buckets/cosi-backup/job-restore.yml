@@ -9,7 +9,6 @@
 {{- $baseName := default $fullname .Values.appStorage.blob.restoreHelper.name }}
 
 apiVersion: batch/v1
-apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ printf "%s-s3-restore" $baseName | quote }}

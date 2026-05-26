@@ -155,11 +155,11 @@ appStorage:
           secretKey: S3_SECRET_KEY
 
     # ===============================================
-    # @subsection backupHelper parameters
+    # @subsection restoreHelper parameters
     # ===============================================
     #
     restoreHelper:
-      enabled: true 
+      enabled: false
     
       name: seaweedfs-s3-restore
       namespace: seaweedfs
