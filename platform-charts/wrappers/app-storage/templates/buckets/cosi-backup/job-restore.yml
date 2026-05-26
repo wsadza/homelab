@@ -1,14 +1,14 @@
-{{- if .Values.restoreHelper.enabled }}
-{{- if not .Values.restoreHelper.restoreDate }}
-{{- fail "restoreHelper.restoreDate is required when restoreHelper.enabled=true" }}
+{{- if .Values.appStorage.blob.restoreHelper.enabled }}
+{{- if not .Values.appStorage.blob.restoreHelper.restoreDate }}
+{{- fail "appStorage.blob.restoreHelper.restoreDate is required when restoreHelper.enabled=true" }}
 {{- end }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Values.restoreHelper.name | quote }}
-  namespace: {{ default .Release.Namespace .Values.restoreHelper.namespace | quote }}
+  name: {{ .Values.appStorage.blob.restoreHelper.name | quote }}
+  namespace: {{ default .Release.Namespace .Values.appStorage.blob.restoreHelper.namespace | quote }}
   labels:
-    app.kubernetes.io/name: {{ .Values.restoreHelper.name | quote }}
+    app.kubernetes.io/name: {{ .Values.appStorage.blob.restoreHelper.name | quote }}
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
 spec:
   backoffLimit: 1
@@ -18,49 +18,49 @@ spec:
 
       containers:
         - name: rclone
-          image: {{ .Values.restoreHelper.image | quote }}
+          image: {{ .Values.appStorage.blob.restoreHelper.image | quote }}
           imagePullPolicy: IfNotPresent
 
           env:
             - name: SRC_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.restoreHelper.backupSourceSecrets.name | quote }}
-                  key: {{ .Values.restoreHelper.backupSourceSecrets.keys.accessKey | quote }}
+                  name: {{ .Values.appStorage.blob.restoreHelper.backupSourceSecrets.name | quote }}
+                  key: {{ .Values.appStorage.blob.restoreHelper.backupSourceSecrets.keys.accessKey | quote }}
             - name: SRC_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.restoreHelper.backupSourceSecrets.name | quote }}
-                  key: {{ .Values.restoreHelper.backupSourceSecrets.keys.secretKey | quote }}
+                  name: {{ .Values.appStorage.blob.restoreHelper.backupSourceSecrets.name | quote }}
+                  key: {{ .Values.appStorage.blob.restoreHelper.backupSourceSecrets.keys.secretKey | quote }}
 
             - name: DST_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.restoreHelper.restoreTargetSecrets.name | quote }}
-                  key: {{ .Values.restoreHelper.restoreTargetSecrets.keys.accessKey | quote }}
+                  name: {{ .Values.appStorage.blob.restoreHelper.restoreTargetSecrets.name | quote }}
+                  key: {{ .Values.appStorage.blob.restoreHelper.restoreTargetSecrets.keys.accessKey | quote }}
             - name: DST_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.restoreHelper.restoreTargetSecrets.name | quote }}
-                  key: {{ .Values.restoreHelper.restoreTargetSecrets.keys.secretKey | quote }}
+                  name: {{ .Values.appStorage.blob.restoreHelper.restoreTargetSecrets.name | quote }}
+                  key: {{ .Values.appStorage.blob.restoreHelper.restoreTargetSecrets.keys.secretKey | quote }}
 
             - name: SRC_ENDPOINT
-              value: {{ .Values.restoreHelper.backupSourceEndpoint | quote }}
+              value: {{ .Values.appStorage.blob.restoreHelper.backupSourceEndpoint | quote }}
             - name: DST_ENDPOINT
-              value: {{ .Values.restoreHelper.restoreTargetEndpoint | quote }}
+              value: {{ .Values.appStorage.blob.restoreHelper.restoreTargetEndpoint | quote }}
 
             - name: SRC_BUCKET
-              value: {{ .Values.restoreHelper.sourceBucket | quote }}
+              value: {{ .Values.appStorage.blob.restoreHelper.sourceBucket | quote }}
             - name: DST_BUCKET
-              value: {{ .Values.restoreHelper.targetBucket | quote }}
+              value: {{ .Values.appStorage.blob.restoreHelper.targetBucket | quote }}
 
             - name: RESTORE_DATE
-              value: {{ .Values.restoreHelper.restoreDate | quote }}
+              value: {{ .Values.appStorage.blob.restoreHelper.restoreDate | quote }}
 
             - name: DRY_RUN
-              value: {{ .Values.restoreHelper.dryRun | quote }}
+              value: {{ .Values.appStorage.blob.restoreHelper.dryRun | quote }}
             - name: DELETE_EXTRANEOUS
-              value: {{ .Values.restoreHelper.deleteExtraneous | quote }}
+              value: {{ .Values.appStorage.blob.restoreHelper.deleteExtraneous | quote }}
 
           command:
             - /bin/sh
