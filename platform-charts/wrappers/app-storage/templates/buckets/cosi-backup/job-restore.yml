@@ -4,6 +4,7 @@
 {{- fail "appStorage.blob.restoreHelper.restoreDate is required when restoreHelper.enabled=true" }}
 {{- end }}
 
+{{- $fullname := include "common.names.fullname" . }}
 {{- $restoreDate := .Values.appStorage.blob.restoreHelper.restoreDate }}
 {{- $baseName := default $fullname .Values.appStorage.blob.restoreHelper.name }}
 
