@@ -191,7 +191,7 @@ appStorage:
           secretKey: S3_SECRET_KEY
     
       # Safety options
-      dryRun: true
+      dryRun: false
       deleteExtraneous: false
 
   # ===============================================
