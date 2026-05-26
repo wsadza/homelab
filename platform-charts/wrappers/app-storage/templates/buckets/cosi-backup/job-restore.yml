@@ -1,15 +1,18 @@
 {{- if .Values.appStorage.blob.restoreHelper.enabled }}
+
 {{- if not .Values.appStorage.blob.restoreHelper.restoreDate }}
 {{- fail "appStorage.blob.restoreHelper.restoreDate is required when restoreHelper.enabled=true" }}
 {{- end }}
+
+{{- $restoreDate := .Values.appStorage.blob.restoreHelper.restoreDate }}
+{{- $baseName := default $fullname .Values.appStorage.blob.restoreHelper.name }}
+
+apiVersion: batch/v1
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Values.appStorage.blob.restoreHelper.name | quote }}
-  namespace: {{ default .Release.Namespace .Values.appStorage.blob.restoreHelper.namespace | quote }}
-  labels:
-    app.kubernetes.io/name: {{ .Values.appStorage.blob.restoreHelper.name | quote }}
-    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+  name: {{ printf "%s-s3-restore-$s" $baseName $restoreDate | quote }}
+  namespace: {{ default (include "common.names.namespace" .) .Values.appStorage.blob.backupHelper.namespace | quote }}
 spec:
   backoffLimit: 1
   template:
@@ -55,7 +58,7 @@ spec:
               value: {{ .Values.appStorage.blob.restoreHelper.targetBucket | quote }}
 
             - name: RESTORE_DATE
-              value: {{ .Values.appStorage.blob.restoreHelper.restoreDate | quote }}
+              value: {{ $restoreDate | quote }}
 
             - name: DRY_RUN
               value: {{ .Values.appStorage.blob.restoreHelper.dryRun | quote }}
