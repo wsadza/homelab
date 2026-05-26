@@ -137,8 +137,8 @@ appStorage:
       namespace: "" 
       schedule: "0 2 * * *"
     
-      sourceBucket: nextcloud-bucket
-      targetBucket: backup
+      sourceBucket: nextcloud
+      targetBucket: nextcloud/objects
     
       backupSourceEndpoint: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"
       backupSourceSecrets:
@@ -153,6 +153,46 @@ appStorage:
         keys:
           sourceKey: S3_ACCESS_KEY
           secretKey: S3_SECRET_KEY
+
+    # ===============================================
+    # @subsection backupHelper parameters
+    # ===============================================
+    #
+    restoreHelper:
+      enabled: true 
+    
+      name: seaweedfs-s3-restore
+      namespace: seaweedfs
+    
+      image: rclone/rclone:latest
+    
+      # Which backup folder to restore from.
+      # This should match the DATE used during backup, for example: 2026-05-26
+      restoreDate: "2026-05-14"
+    
+      # Buckets
+      sourceBucket: backup
+      targetBucket: nextcloud-bucket
+    
+      # Backup storage endpoint — where the backup lives
+      backupSourceEndpoint: "http://192.168.1.10:8333"
+      backupSourceSecrets:
+        name: seaweedfs-backup-secrets
+        keys:
+          accessKey: DST_ACCESS_KEY
+          secretKey: DST_SECRET_KEY
+    
+      # Live SeaweedFS endpoint — where data should be restored
+      restoreTargetEndpoint: "http://seaweedfs-s3.seaweedfs.svc.cluster.local:8333"
+      restoreTargetSecrets:
+        name: seaweedfs-backup-secrets
+        keys:
+          accessKey: SRC_ACCESS_KEY
+          secretKey: SRC_SECRET_KEY
+    
+      # Safety options
+      dryRun: true
+      deleteExtraneous: false
 
   # ===============================================
   # @section psql parameters

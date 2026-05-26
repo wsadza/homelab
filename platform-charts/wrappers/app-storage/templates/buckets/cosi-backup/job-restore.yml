@@ -1,0 +1,124 @@
+{{- if .Values.restoreHelper.enabled }}
+{{- if not .Values.restoreHelper.restoreDate }}
+{{- fail "restoreHelper.restoreDate is required when restoreHelper.enabled=true" }}
+{{- end }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.restoreHelper.name | quote }}
+  namespace: {{ default .Release.Namespace .Values.restoreHelper.namespace | quote }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.restoreHelper.name | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+
+      containers:
+        - name: rclone
+          image: {{ .Values.restoreHelper.image | quote }}
+          imagePullPolicy: IfNotPresent
+
+          env:
+            - name: SRC_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.restoreHelper.backupSourceSecrets.name | quote }}
+                  key: {{ .Values.restoreHelper.backupSourceSecrets.keys.accessKey | quote }}
+            - name: SRC_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.restoreHelper.backupSourceSecrets.name | quote }}
+                  key: {{ .Values.restoreHelper.backupSourceSecrets.keys.secretKey | quote }}
+
+            - name: DST_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.restoreHelper.restoreTargetSecrets.name | quote }}
+                  key: {{ .Values.restoreHelper.restoreTargetSecrets.keys.accessKey | quote }}
+            - name: DST_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.restoreHelper.restoreTargetSecrets.name | quote }}
+                  key: {{ .Values.restoreHelper.restoreTargetSecrets.keys.secretKey | quote }}
+
+            - name: SRC_ENDPOINT
+              value: {{ .Values.restoreHelper.backupSourceEndpoint | quote }}
+            - name: DST_ENDPOINT
+              value: {{ .Values.restoreHelper.restoreTargetEndpoint | quote }}
+
+            - name: SRC_BUCKET
+              value: {{ .Values.restoreHelper.sourceBucket | quote }}
+            - name: DST_BUCKET
+              value: {{ .Values.restoreHelper.targetBucket | quote }}
+
+            - name: RESTORE_DATE
+              value: {{ .Values.restoreHelper.restoreDate | quote }}
+
+            - name: DRY_RUN
+              value: {{ .Values.restoreHelper.dryRun | quote }}
+            - name: DELETE_EXTRANEOUS
+              value: {{ .Values.restoreHelper.deleteExtraneous | quote }}
+
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -eu
+
+              mkdir -p /config/rclone
+
+              cat > /config/rclone/rclone.conf <<EOF
+              [src]
+              type = s3
+              provider = Other
+              access_key_id = ${SRC_ACCESS_KEY}
+              secret_access_key = ${SRC_SECRET_KEY}
+              endpoint = ${SRC_ENDPOINT}
+              acl = private
+              force_path_style = true
+
+              [dst]
+              type = s3
+              provider = Other
+              access_key_id = ${DST_ACCESS_KEY}
+              secret_access_key = ${DST_SECRET_KEY}
+              endpoint = ${DST_ENDPOINT}
+              acl = private
+              force_path_style = true
+              EOF
+
+              echo "Preparing restore from ${SRC_BUCKET}/${RESTORE_DATE} to ${DST_BUCKET}"
+
+              RCLONE_FLAGS="
+                --s3-no-check-bucket
+                --checksum
+                --fast-list
+                --transfers 8
+                --checkers 16
+                --log-level INFO
+              "
+
+              if [ "${DRY_RUN}" = "true" ]; then
+                RCLONE_FLAGS="${RCLONE_FLAGS} --dry-run"
+                echo "Running restore in DRY-RUN mode"
+              fi
+
+              if [ "${DELETE_EXTRANEOUS}" = "true" ]; then
+                echo "Using rclone sync: files missing from backup may be deleted from target"
+                rclone sync \
+                  src:${SRC_BUCKET}/${RESTORE_DATE} \
+                  dst:${DST_BUCKET} \
+                  ${RCLONE_FLAGS}
+              else
+                echo "Using rclone copy: existing extra files on target will be preserved"
+                rclone copy \
+                  src:${SRC_BUCKET}/${RESTORE_DATE} \
+                  dst:${DST_BUCKET} \
+                  ${RCLONE_FLAGS}
+              fi
+
+              echo "Restore job complete"
+{{- end }}
