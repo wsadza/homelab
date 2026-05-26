@@ -2,3 +2,19 @@ creation_rules:
   - path_regex: .*\.sops\.ya?ml
     encrypted_regex: "^(data|stringData)$"
     age: age13znhh2uaq04wtt88l0qluzuve4k5xup97kehshexmew07kkhn4gsgq8srx 
+
+# ----------------- 
+# Generate SOPS Key
+# ----------------- 
+# - age-keygen -o age.key
+
+# ----------------- 
+# Encrypt Kubernetes Secret
+# -----------------
+# - sops encrypt -i secret.sops.yaml
+
+# ----------------- 
+# Decrypt Kubernetes Secret
+# -----------------
+# - export SOPS_AGE_KEY_FILE=/path/to/key.age
+#   sops encrypt -i secret.sops.yaml
