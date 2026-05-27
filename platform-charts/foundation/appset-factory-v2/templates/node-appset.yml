@@ -76,8 +76,7 @@ spec:
           {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}
           - {{ `{{ . }}` }}
           {{ `{{- end }}` }}
-      destination:
-        namespace: {{ `{{ dig "namespace" .name . }}` }}
+
       sources:
         - repoURL: {{ $.Values.repoURL | quote }}
           targetRevision: {{ $.Values.targetRevision | quote }}
