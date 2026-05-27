@@ -17,7 +17,7 @@ applications:
           shared-s3-creds: "true"
 
       syncPolicy:
-        automated: false
+        automated: true
 
   # ------------------
   # Something 
