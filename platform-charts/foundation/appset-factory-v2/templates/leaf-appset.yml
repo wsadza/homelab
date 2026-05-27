@@ -53,10 +53,12 @@ spec:
       syncPolicy:
         managedNamespaceMetadata:
           {{ `{{- if hasKey . "namespaceLabels" }}` }}
-            {{ `{{- with .namespaceLabels }}` }}
-            labels:
-              {{ `{{- toYaml . | nindent 10 }}` }}
+          {{ `{{- with .namespaceLabels }}` }}
+          labels:
+            {{ `{{- range $key, $value := . }}` }}
+            {{ `{{ $key }}` }}: {{ `{{ $value | toString | quote }}` }}
             {{ `{{- end }}` }}
+          {{ `{{- end }}` }}
           {{ `{{- end }}` }}
         {{ `{{- if eq (toString (dig "syncPolicy" "automated" "false" .)) "true" }}` }}
         automated:
