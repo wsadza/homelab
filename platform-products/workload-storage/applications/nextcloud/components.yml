@@ -9,6 +9,8 @@ components:
 
     - name: core
       namespace: nextcloud
+      namespaceLabels:
+        shared-s3-creds: true
 
       enabled: true
       priority: 0
