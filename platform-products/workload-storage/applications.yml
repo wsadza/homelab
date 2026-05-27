@@ -7,4 +7,10 @@ applications:
   # Nextcloud 
   # ------------------
 
-    - name: nextcloud 
+    - name: nextcloud
+      enabled: false
+      namespace:
+        autocreate: "true"
+        labels:
+          shared-s3-creds: "true"
+

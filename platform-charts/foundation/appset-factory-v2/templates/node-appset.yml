@@ -49,6 +49,35 @@ spec:
         application: "{{ `{{ .name }}` }}"
         product: {{ $.Values.node.product | quote }}
     spec:
+      syncPolicy:
+
+        {{ `{{- if eq (toString (dig "syncPolicy" "automated" "false" .)) "true" }}` }}
+        automated:
+          prune: true
+          selfHeal: true
+        {{ `{{- end }}` }}
+
+        {{ `{{- if hasKey . "namespace" }}` }}
+        managedNamespaceMetadata:
+          {{ `{{- if hasKey . "namespace.labels" }}` }}
+          {{ `{{- with .namespace.labels }}` }}
+          labels:
+            {{ `{{- range $key, $value := . }}` }}
+            {{ `{{ $key }}` }}: {{ `{{ $value | toString | quote }}` }}
+            {{ `{{- end }}` }}
+          {{ `{{- end }}` }}
+          {{ `{{- end }}` }}
+        {{ `{{- end }}` }}
+
+        syncOptions:
+          {{ `{{- if eq (toString (dig "namespace" "autocreate" "false" .)) "true" }}` }}
+            - CreateNamespace=true
+          {{ `{{- end }}` }}
+          {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}
+          - {{ `{{ . }}` }}
+          {{ `{{- end }}` }}
+      destination:
+        namespace: {{ `{{ dig "namespace" .name . }}` }}
       sources:
         - repoURL: {{ $.Values.repoURL | quote }}
           targetRevision: {{ $.Values.targetRevision | quote }}
