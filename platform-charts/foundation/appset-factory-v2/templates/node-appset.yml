@@ -48,30 +48,30 @@ spec:
       labels:
         application: "{{ `{{ .name }}` }}"
         product: {{ $.Values.node.product | quote }}
-    spec:
-      syncPolicy:
 
+    spec:
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{ `{{ dig "namespace" "name" .name . }}` }}"
+
+      syncPolicy:
         {{ `{{- if eq (toString (dig "syncPolicy" "automated" "false" .)) "true" }}` }}
         automated:
           prune: true
           selfHeal: true
         {{ `{{- end }}` }}
 
-        {{ `{{- if hasKey . "namespace" }}` }}
+        {{ `{{- with (dig "namespace" "labels" dict .) }}` }}
         managedNamespaceMetadata:
-          {{ `{{- if hasKey . "namespace.labels" }}` }}
-          {{ `{{- with .namespace.labels }}` }}
           labels:
             {{ `{{- range $key, $value := . }}` }}
             {{ `{{ $key }}` }}: {{ `{{ $value | toString | quote }}` }}
             {{ `{{- end }}` }}
-          {{ `{{- end }}` }}
-          {{ `{{- end }}` }}
         {{ `{{- end }}` }}
 
         syncOptions:
           {{ `{{- if eq (toString (dig "namespace" "autocreate" "false" .)) "true" }}` }}
-            - CreateNamespace=true
+          - CreateNamespace=true
           {{ `{{- end }}` }}
           {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}
           - {{ `{{ . }}` }}
