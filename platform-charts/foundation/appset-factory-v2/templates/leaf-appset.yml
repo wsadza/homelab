@@ -51,7 +51,7 @@ spec:
         product: {{ .Values.leaf.product | quote }}
     spec:
       syncPolicy:
-        managedNamespaceMetadata
+        managedNamespaceMetadata:
         {{ `{{- if hasKey . "namespaceLabels" }}` }}
           {{ `{{- with .namespaceLabels }}` }}
           labels:
