@@ -51,12 +51,13 @@ spec:
         product: {{ .Values.leaf.product | quote }}
     spec:
       syncPolicy:
-        {{ `{{- if hasKey . "namespaceLabels" }}` }}
-          {{ `{{- with .namespaceLabels }}` }}
-          labels:
-            {{ `{{- toYaml . | nindent 4 }}` }}
+        managedNamespaceMetadata:
+          {{ `{{- if hasKey . "namespaceLabels" }}` }}
+            {{ `{{- with .namespaceLabels }}` }}
+            labels:
+              {{ `{{- toYaml . | nindent 4 }}` }}
+            {{ `{{- end }}` }}
           {{ `{{- end }}` }}
-        {{ `{{- end }}` }}
         {{ `{{- if eq (toString (dig "syncPolicy" "automated" "false" .)) "true" }}` }}
         automated:
           prune: true
