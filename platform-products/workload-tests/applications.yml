@@ -8,6 +8,11 @@ applications:
   # ------------------
 
     - name: podinfo
+      enabled: true
+      namespace:
+        autocreate: "true"
+        labels:
+          shared-s3-creds: "true"
 
   # ------------------
   # Something 
