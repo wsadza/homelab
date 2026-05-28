@@ -67,9 +67,7 @@ spec:
         {{- end }}
 
         syncOptions:
-          {{ `{{- if eq (toString (dig "namespace" "autocreate" "false" .)) "true" }}` }}
           - CreateNamespace=true
-          {{ `{{- end }}` }}
           {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}
           - {{ `{{ . }}` }}
           {{ `{{- end }}` }}
