@@ -68,7 +68,7 @@ spec:
       labels:
         application: {{ .Values.leaf.application | quote }}
         product: {{ .Values.leaf.product | quote }}
-        test: {{ `{{ $namespace }}` }}
+        test: {{ `{{ $namespaceLabels }}` }}
         test2: "DUPA"
 
     spec:
