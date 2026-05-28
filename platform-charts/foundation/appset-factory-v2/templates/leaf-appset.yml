@@ -92,8 +92,7 @@ spec:
           {{ `{{- end }}` }}
 
       destination:
-        #namespace: "{{ `{{ $namespaceName }}` }}"
-        namespace: "DUPA"
+        namespace: "{{ `{{ $namespaceName }}` }}"
 
       sources:
         {{ `{{ $root := . }}` }}
