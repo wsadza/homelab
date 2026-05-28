@@ -8,7 +8,8 @@ components:
   # ------------------
 
     - name: core 
-      namespace: DUPA
+      namespace:
+        name: "DUPA"
 
       enabled: true
       priority: 0
