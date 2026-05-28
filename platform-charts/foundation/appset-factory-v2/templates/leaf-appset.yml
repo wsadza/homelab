@@ -68,8 +68,6 @@ spec:
       labels:
         application: {{ .Values.leaf.application | quote }}
         product: {{ .Values.leaf.product | quote }}
-        test: {{ `{{ $namespaceLabels }}` }}
-        test2: "DUPA"
 
     spec:
       syncPolicy:
