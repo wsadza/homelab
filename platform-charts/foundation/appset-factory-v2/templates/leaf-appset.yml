@@ -58,9 +58,9 @@ spec:
         application: {{ .Values.leaf.application | quote }}
         product: {{ .Values.leaf.product | quote }}
 
-    {{- `{{ $namespace := get . "namespace" }}` }}
-    {{- `{{ $namespaceName := .name }}` }}
-    {{- `{{ $namespaceLabels := dict }}` }}
+    {{ `{{ $namespace := get . "namespace" }}` }}
+    {{ `{{ $namespaceName := .name }}` }}
+    {{ `{{ $namespaceLabels := dict }}` }}
     
     {{ `{{- if kindIs "map" $namespace }}` }}
       {{ `{{- $namespaceName = get $namespace "name" | default .name }}` }}
