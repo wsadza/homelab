@@ -24,7 +24,7 @@ spec:
           - list:
               elementsYaml: |
                 {{ `{{- $items := list }}` }}
-                {{ `{{- $nodeNamespace := ` }}{{ .Values.leaf.namespace | default dict }}{{ ` }}` }}
+                {{ `{{- $nodeNamespace := ` }}{{ .Values.leaf.namespace | default dict | toJson | quote }}{{ ` | fromJson }}` }}
                 {{ `{{- range .` }}{{ .Values.leaf.listKey }}{{ ` }}` }}
                 {{ `{{- if (dig "enabled" true .) }}` }}
                 {{ `{{- if not (hasKey . "namespace") }}` }}
