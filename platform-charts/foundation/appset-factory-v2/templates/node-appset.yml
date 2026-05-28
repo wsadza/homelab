@@ -93,6 +93,9 @@ spec:
                 file: {{ $.Values.node.childFileTemplate | replace "{{ product }}" $.Values.node.product | replace "{{ application }}" "{{ .name }}" | quote }}
                 product: {{ $.Values.node.product | quote }}
                 application: {{ `{{ .name }}` | quote }}
-                namespace: 
-                  {{ `{{ toYaml .namespace }}` }}
+
+                {{ `{{- with .namespace }}` }}
+                namespace:
+                  {{ `{{- toYaml . | nindent 8 }}` }}
+                {{ `{{- end }}` }}
 {{- end }}

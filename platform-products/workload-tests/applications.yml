@@ -16,8 +16,8 @@ applications:
         labels:
           shared-s3-creds: "true"
 
-      syncPolicy:
-        automated: true
+          #syncPolicy:
+          #  automated: true
 
   # ------------------
   # Something 
