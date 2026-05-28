@@ -61,10 +61,10 @@ spec:
         {{- with (dig "namespace" "labels" dict .) }}
         managedNamespaceMetadata:
           labels:
-            {{ {{- range $key, $value := . }} }}
-            {{ {{ $key }} }}: {{ `{{ $value | toString | quote }} }}
-            {{ {{- end }} }}
-        {{ {{- end }} }}
+            {{- range $key, $value := . }}
+            {{ $key }}: {{ $value | toString | quote }}
+            {{- end }}
+        {{- end }}
 
         syncOptions:
           {{ `{{- if eq (toString (dig "namespace" "autocreate" "false" .)) "true" }}` }}
