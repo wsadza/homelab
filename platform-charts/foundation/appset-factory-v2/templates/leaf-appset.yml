@@ -49,15 +49,6 @@ spec:
         namespace: default
 
   templatePatch: |
-    metadata:
-      annotations:
-        {{ `{{- if hasKey . "priority" }}` }}
-        argocd.argoproj.io/sync-wave: "{{ `{{ .priority }}` }}"
-        {{ `{{- end }}` }}
-      labels:
-        application: {{ .Values.leaf.application | quote }}
-        product: {{ .Values.leaf.product | quote }}
-
     {{ `{{ $namespace := get . "namespace" }}` }}
     {{ `{{ $namespaceName := .name }}` }}
     {{ `{{ $namespaceLabels := dict }}` }}
@@ -68,6 +59,16 @@ spec:
     {{ `{{- else if $namespace }}` }}
       {{ `{{- $namespaceName = $namespace }}` }}
     {{ `{{- end }}` }}
+
+    metadata:
+      annotations:
+        {{ `{{- if hasKey . "priority" }}` }}
+        argocd.argoproj.io/sync-wave: "{{ `{{ .priority }}` }}"
+        {{ `{{- end }}` }}
+      labels:
+        application: {{ .Values.leaf.application | quote }}
+        product: {{ .Values.leaf.product | quote }}
+        test: {{ `{{ $namespaceName }}` }}
 
     spec:
       syncPolicy:
