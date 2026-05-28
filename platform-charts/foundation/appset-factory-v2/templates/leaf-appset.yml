@@ -66,6 +66,14 @@ spec:
           selfHeal: true
         {{ `{{- end }}` }}
 
+        {{ `{{- with (dig "namespace" "labels" dict .) }}` }}
+        managedNamespaceMetadata:
+          labels:
+            {{ `{{- range $key, $value := . }}` }}
+            {{ `{{ $key }}` }}: {{ `{{ $value | toString | quote }}` }}
+            {{ `{{- end }}` }}
+        {{ `{{- end }}` }}
+
         syncOptions:
           - CreateNamespace=true
           {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}
