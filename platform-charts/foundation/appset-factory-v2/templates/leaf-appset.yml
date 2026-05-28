@@ -58,16 +58,16 @@ spec:
         application: {{ .Values.leaf.application | quote }}
         product: {{ .Values.leaf.product | quote }}
 
-    {{- $namespace := get . "namespace" }}
-    {{- $namespaceName := .name }}
-    {{- $namespaceLabels := dict }}
+    {{- `{{ $namespace := get . "namespace" }}` }}
+    {{- `{{ $namespaceName := .name }}` }}
+    {{- `{{ $namespaceLabels := dict }}` }}
     
-    {{- if kindIs "map" $namespace }}
-      {{- $namespaceName = get $namespace "name" | default .name }}
-      {{- $namespaceLabels = get $namespace "labels" | default dict }}
-    {{- else if $namespace }}
-      {{- $namespaceName = $namespace }}
-    {{- end }}
+    {{ `{{- if kindIs "map" $namespace }}` }}
+      {{ `{{- $namespaceName = get $namespace "name" | default .name }}` }}
+      {{ `{{- $namespaceLabels = get $namespace "labels" | default dict }}` }}
+    {{ `{{- else if $namespace }}` }}
+      {{ `{{- $namespaceName = $namespace }}` }}
+    {{ `{{- end }}` }}
 
     spec:
       syncPolicy:
@@ -78,13 +78,13 @@ spec:
           selfHeal: true
         {{ `{{- end }}` }}
 
-        {{- with $namespaceLabels }}
+        {{ `{{- with $namespaceLabels }}` }}
         managedNamespaceMetadata:
           labels:
-            {{- range $key, $value := . }}
-            {{ $key }}: {{ $value | toString | quote }}
-            {{- end }}
-        {{- end }}
+            {{ `{{- range $key, $value := . }}` }}
+            {{ `{{ $key }}: {{ $value | toString | quote }}` }}
+            {{ `{{- end }}` }}
+        {{ `{{- end }}` }}
 
         syncOptions:
           - CreateNamespace=true
