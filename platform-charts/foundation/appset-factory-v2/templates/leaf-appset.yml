@@ -47,13 +47,15 @@ spec:
         namespace: default
 
   templatePatch: |
-    {{ `{{ $namespace := get . "namespace" }}` }}
-    {{ `{{ $namespaceName := .name }}` }}
-    {{ `{{ $namespaceLabels := dict }}` }}
-    
+    {{ `{{- $namespace := get . "namespace" }}` }}
+    {{ `{{- $namespaceName := .name }}` }}
+    {{ `{{- $namespaceLabels := dict }}` }}
+    {{ `{{- $namespaceAutocreate := true }}` }}
+
     {{ `{{- if kindIs "map" $namespace }}` }}
       {{ `{{- $namespaceName = get $namespace "name" | default .name }}` }}
       {{ `{{- $namespaceLabels = get $namespace "labels" | default dict }}` }}
+      {{ `{{- $namespaceAutocreate = get $namespace "autocreate" | default true }}` }}
     {{ `{{- else if $namespace }}` }}
       {{ `{{- $namespaceName = $namespace }}` }}
     {{ `{{- end }}` }}
@@ -69,7 +71,6 @@ spec:
 
     spec:
       syncPolicy:
-
         {{ `{{- if eq (toString (dig "syncPolicy" "automated" "false" .)) "true" }}` }}
         automated:
           prune: true
