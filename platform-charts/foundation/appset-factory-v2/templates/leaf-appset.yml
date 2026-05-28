@@ -68,7 +68,7 @@ spec:
       labels:
         application: {{ .Values.leaf.application | quote }}
         product: {{ .Values.leaf.product | quote }}
-        test: {{ `{{ $namespaceName }}` }}
+        test: {{ `{{ $namespace | toJson | quote }}` }}
 
     spec:
       syncPolicy:
