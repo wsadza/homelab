@@ -25,16 +25,13 @@ spec:
               elementsYaml: |
                 {{ `{{- $items := list }}` }}
                 {{ `{{- $nodeNamespace := ` }}{{ .Values.leaf.namespace | default dict }}{{ ` }}` }}
-
                 {{ `{{- range .` }}{{ .Values.leaf.listKey }}{{ ` }}` }}
                 {{ `{{- if (dig "enabled" true .) }}` }}
-
                 {{ `{{- if not (hasKey . "namespace") }}` }}
                 {{ `{{- if not (get . "namespace") }}` }}
                 {{ `{{- $_ := set . "namespace" $nodeNamespace }}` }}
                 {{ `{{- end }}` }}
                 {{ `{{- end }}` }}
-
                 {{ `{{- $items = append $items . }}` }}
                 {{ `{{- end }}` }}
                 {{ `{{- end }}` }}
