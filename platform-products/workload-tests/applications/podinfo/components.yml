@@ -10,7 +10,7 @@ components:
     - name: core 
       namespace:
         name: "DUPA"
-        namespaceAutocreate: "true"
+        autocreate: "true"
 
       enabled: true
       priority: 0
