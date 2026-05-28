@@ -95,6 +95,6 @@ spec:
                 application: {{ `{{ .name }}` | quote }}
                 {{ `{{- with .namespace }}` }}
                 namespace:
-                  {{ `{{- toYaml . | nindent 4 }}` }}
+                  {{ `{{- toYaml . | nindent 6 }}` }}
                 {{ `{{- end }}` }}
 {{- end }}
