@@ -58,10 +58,10 @@ spec:
           selfHeal: true
         {{ `{{- end }}` }}
 
-        {{- with (dig "namespace" "labels" dict .) }}
+        {{- if .Values.leaf.namespace }}
         managedNamespaceMetadata:
           labels:
-            {{- range $key, $value := . }}
+            {{- range $key, $value := .Values.leaf.namespace.labels }}
             {{ $key }}: {{ $value | toString | quote }}
             {{- end }}
         {{- end }}
@@ -75,25 +75,6 @@ spec:
           {{ `{{- end }}` }}
 
 
-        #managedNamespaceMetadata:
-        #  {{ `{{- if hasKey . "namespaceLabels" }}` }}
-        #  {{ `{{- with .namespace.labels }}` }}
-        #  labels:
-        #    {{ `{{- range $key, $value := . }}` }}
-        #    {{ `{{ $key }}` }}: {{ `{{ $value | toString | quote }}` }}
-        #    {{ `{{- end }}` }}
-        #  {{ `{{- end }}` }}
-        #  {{ `{{- end }}` }}
-        #{{ `{{- if eq (toString (dig "syncPolicy" "automated" "false" .)) "true" }}` }}
-        #automated:
-        #  prune: true
-        #  selfHeal: true
-        #{{ `{{- end }}` }}
-        #syncOptions:
-        #  - CreateNamespace=true
-        #  {{ `{{- range (dig "syncPolicy" "syncOptions" (list) .) }}` }}
-        #  - {{ `{{ . }}` }}
-        #  {{ `{{- end }}` }}
       destination:
         namespace: {{ `{{ dig "namespace" .name . }}` }}
       sources:
