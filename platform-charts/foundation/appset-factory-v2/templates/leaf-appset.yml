@@ -95,8 +95,6 @@ spec:
           {{ `{{- end }}` }}
 
 
-      destination:
-        namespace: {{ `{{ dig "namespace" .name . }}` }}
       sources:
         {{ `{{ $root := . }}` }}
         {{ `{{- range .sources }}` }}
