@@ -24,7 +24,7 @@ spec:
           - list:
               elementsYaml: |
                 {{ `{{- $items := list }}` }}
-                {{ `{{- $nodeNamespace := fromJson ` }}{{ printf "`%s`" (.Values.leaf.namespace | toJson) }}{{ ` }}` }}
+                {{ `{{- $nodeNamespace := ` }}{{ .Values.leaf.namespace | toJson | quote }}{{ ` }}` }}
                 {{ `{{- range .` }}{{ .Values.leaf.listKey }}{{ ` }}` }}
                 {{ `{{- if (dig "enabled" true .) }}` }}
 
