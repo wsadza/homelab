@@ -96,6 +96,6 @@ spec:
 
                 {{ `{{- with .namespace }}` }}
                 namespace:
-                  {{ `{{- toYaml . | nindent 8 }}` }}
+                  {{ `{{- toYaml . | nindent 6 }}` }}
                 {{ `{{- end }}` }}
 {{- end }}
