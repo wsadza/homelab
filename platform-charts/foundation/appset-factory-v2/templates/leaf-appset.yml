@@ -26,6 +26,11 @@ spec:
                 {{ `{{- $items := list }}` }}
                 {{ `{{- range .` }}{{ .Values.leaf.listKey }}{{ ` }}` }}
                 {{ `{{- if (dig "enabled" true .) }}` }}
+
+                {{ `{{- if not (hasKey . "namespace") }}` }}
+                {{ `{{- $_ := set . "namespace" $nodeNamespace }}` }}
+                {{ `{{- end }}` }}
+
                 {{ `{{- $items = append $items . }}` }}
                 {{ `{{- end }}` }}
                 {{ `{{- end }}` }}
@@ -58,13 +63,13 @@ spec:
           selfHeal: true
         {{ `{{- end }}` }}
 
-        {{- if .Values.leaf.namespace }}
+        {{ `{{- with (dig "namespace" "labels" dict .) }}` }}
         managedNamespaceMetadata:
           labels:
-            {{- range $key, $value := .Values.leaf.namespace.labels }}
-            {{ $key }}: {{ $value | toString | quote }}
-            {{- end }}
-        {{- end }}
+            {{ `{{- range $key, $value := . }}` }}
+            {{ `{{ $key }}` }}: {{ `{{ $value | toString | quote }}` }}
+            {{ `{{- end }}` }}
+        {{ `{{- end }}` }}
 
         syncOptions:
           - CreateNamespace=true
