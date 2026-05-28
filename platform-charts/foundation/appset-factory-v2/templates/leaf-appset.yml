@@ -48,12 +48,12 @@ spec:
     {{ `{{- $namespace := get . "namespace" }}` }}
     {{ `{{- $namespaceName := .name }}` }}
     {{ `{{- $namespaceLabels := dict }}` }}
-    {{ `{{- $namespaceAutocreate := true }}` }}
-
+    {{ `{{- $namespaceAutocreate := false }}` }}
+    
     {{ `{{- if kindIs "map" $namespace }}` }}
       {{ `{{- $namespaceName = get $namespace "name" | default .name }}` }}
       {{ `{{- $namespaceLabels = get $namespace "labels" | default dict }}` }}
-      {{ `{{- $namespaceAutocreate = get $namespace "autocreate" | default true }}` }}
+      {{ `{{- $namespaceAutocreate = eq (toString (get $namespace "autocreate" | default "false")) "true" }}` }}
     {{ `{{- else if $namespace }}` }}
       {{ `{{- $namespaceName = $namespace }}` }}
     {{ `{{- end }}` }}
@@ -75,11 +75,11 @@ spec:
           selfHeal: true
         {{ `{{- end }}` }}
 
-        {{ `{{- with $namespaceLabels }}` }}
+        {{ `{{- if and $namespaceAutocreate $namespaceLabels }}` }}
         managedNamespaceMetadata:
           labels:
-            {{ `{{- range $key, $value := . }}` }}
-            {{ `{{ $key }}: {{ $value | toString | quote }}` }}
+            {{ `{{- range $key, $value := $namespaceLabels }}` }}
+            {{ `{{ $key }}` }}: {{ `{{ $value | toString | quote }}` }}
             {{ `{{- end }}` }}
         {{ `{{- end }}` }}
 
