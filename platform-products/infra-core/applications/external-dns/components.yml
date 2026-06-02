@@ -8,13 +8,6 @@ components:
   # ------------------
   
   - name: core
-    namespace: external-dns
-
-    enabled: true
-    priority: 0
-
-    syncPolicy:
-      automated: false
 
     sources:
 

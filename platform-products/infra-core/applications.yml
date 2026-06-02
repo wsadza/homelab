@@ -12,12 +12,26 @@ applications:
     - name: cert-manager
       enabled: true
 
+      namespace:
+        name: cert-manager
+        autocreate: "true"
+
+      syncPolicy:
+        automated: true
+
   # ------------------
   # EnvoyGateway 
   # ------------------
 
     - name: envoy-gateway
       enabled: true 
+
+      namespace:
+        name: envoy-gateway-system
+        autocreate: "true"
+
+      syncPolicy:
+        automated: true
 
   # ------------------
   # External-DNS 
@@ -26,9 +40,25 @@ applications:
     - name: external-dns
       enabled: true 
 
+      namespace:
+        name: external-dns
+        autocreate: "true"
+
+      syncPolicy:
+        automated: true
+
   # ------------------
   # External-Secret
   # ------------------
 
     - name: external-secrets
       enabled: true
+
+      namespace:
+        name: external-secrets
+        autocreate: "true"
+
+      syncPolicy:
+        automated: false
+        syncOptions:
+          - ServerSideApply=true

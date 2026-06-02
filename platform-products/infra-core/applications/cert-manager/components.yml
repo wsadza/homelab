@@ -8,14 +8,6 @@ components:
   # ------------------
 
   - name: core
-    namespace: cert-manager 
-
-    enabled: true
-    priority: -5
-
-    syncPolicy:
-      automated: true
-
     sources:
 
       - type: values

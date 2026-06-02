@@ -8,11 +8,7 @@ components:
   # ------------------
 
   - name: crds
-    namespace: envoy-gateway-system
-
-    enabled: true
     priority: -10
-
     syncPolicy:
       automated: true
       syncOptions:
@@ -37,15 +33,7 @@ components:
   # ------------------
 
   - name: core 
-    namespace: envoy-gateway-system
-
-    enabled: true
     priority: -5
-
-    syncPolicy:
-      automated: false
-      syncOptions:
-        - ServerSideApply=true
 
     sources:
 

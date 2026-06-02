@@ -8,15 +8,6 @@ components:
   # ------------------
   
   - name: core
-    namespace: external-secrets
-
-    enabled: true
-    priority: 0
-
-    syncPolicy:
-      automated: false
-      syncOptions:
-        - ServerSideApply=true
 
     sources:
 
