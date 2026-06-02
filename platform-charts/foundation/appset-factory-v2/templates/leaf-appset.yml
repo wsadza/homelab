@@ -24,12 +24,22 @@ spec:
           - list:
               elementsYaml: |
                 {{ `{{- $items := list }}` }}
+
                 {{ `{{- $nodeNamespace := ` }}{{ .Values.leaf.namespace | default dict | toJson | quote }}{{ ` | fromJson }}` }}
+                {{ `{{- $nodeSyncPolicy := ` }}{{ .Values.leaf.syncPolicy | default dict | toJson | quote }}{{ ` | fromJson }}` }}
+
                 {{ `{{- range .` }}{{ .Values.leaf.listKey }}{{ ` }}` }}
                 {{ `{{- if (dig "enabled" true .) }}` }}
+
                 {{ `{{- if not (get . "namespace") }}` }}
                 {{ `{{- $_ := set . "namespace" $nodeNamespace }}` }}
                 {{ `{{- end }}` }}
+
+                {{ `{{- if not (get . "syncPolicy") }}` }}
+                {{ `{{- $_ := set . "syncPolicy" $nodeSyncPolicy }}` }}
+                {{ `{{- end }}` }}
+
+
                 {{ `{{- $items = append $items . }}` }}
                 {{ `{{- end }}` }}
                 {{ `{{- end }}` }}

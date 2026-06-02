@@ -8,15 +8,15 @@ components:
   # ------------------
 
     - name: core 
-      namespace:
-        name: "DUPA"
-        autocreate: "true"
+    #namespace:
+    #    name: "DUPA"
+    #    autocreate: "true"
 
       enabled: true
       priority: 0
 
-      syncPolicy:
-        automated: false
+      #  syncPolicy:
+      #  automated: false
 
       sources:
 

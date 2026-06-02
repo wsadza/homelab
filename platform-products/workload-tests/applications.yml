@@ -10,14 +10,16 @@ applications:
     - name: podinfo
       enabled: true
 
+      # -- Global Namespace 
       namespace:
         name: nextcloud
         autocreate: "true"
         labels:
           shared-s3-creds: "true"
 
-          #syncPolicy:
-          #  automated: true
+      # -- Global Sync
+      syncPolicy:
+        automated: true
 
   # ------------------
   # Something 
