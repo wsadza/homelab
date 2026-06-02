@@ -91,7 +91,7 @@ components:
   # ------------------
 
     - name: auth
-      namespace: podinfo
+      #namespace: podinfo
 
       enabled: true
       priority: 0
