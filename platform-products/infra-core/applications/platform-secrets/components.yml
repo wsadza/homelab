@@ -28,4 +28,4 @@ components:
       - type: kustomize 
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD
-        path: platform-products/infra-core/applications/external-secrets/components/core/kustomize
+        path: platform-products/infra-core/applications/platform-secrets/components/core/kustomize
