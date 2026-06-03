@@ -137,7 +137,7 @@ appStorage:
       namespace: "" 
       schedule: "0 2 * * *"
     
-      sourceBucket: nextcloud
+      sourceBucket: nextcloud-bucket
       targetBucket: buckets/nextcloud
     
       backupSourceEndpoint: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"
