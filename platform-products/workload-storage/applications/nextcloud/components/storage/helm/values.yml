@@ -54,6 +54,8 @@ appStorage:
       enabled: true
       destinationPath: "s3://nextcloud-bucket/databases"
       endpointURL: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"
+      existingSecret:
+        name: "s3-credentials"
 
     # ===============================================
     # @subsection backupschedule parameters
