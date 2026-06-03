@@ -45,6 +45,9 @@ appStorage:
       enabled: true
       backupTargetSecrets:
         name: "s3-credentials"
+        keys:
+          sourceKey: AWS_ACCESS_KEY_ID 
+          secretKey: AWS_SECRET_ACCESS_KEY
 
   # ===============================================
   # @section psql parameters
