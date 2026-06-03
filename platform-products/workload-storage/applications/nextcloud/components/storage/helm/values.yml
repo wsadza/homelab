@@ -37,6 +37,15 @@ appStorage:
     secretHelper:
       enabled: true
 
+    # ===============================================
+    # @subsection backupHelper parameters
+    # ===============================================
+    #
+    backupHelper:
+      enabled: true
+      backupTargetSecrets:
+        name: "s3-credentials"
+
   # ===============================================
   # @section psql parameters
   # ===============================================
