@@ -14,7 +14,7 @@ applications:
         name: nextcloud
         autocreate: "true"
         labels:
-          shared-s3-creds: "true"
+          shared-credentials: "true"
 
       syncPolicy:
         automated: false
