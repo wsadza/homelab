@@ -7,17 +7,10 @@ components:
   # core
   # ------------------
 
-  - name: app
-    namespace: keycloak
-
-    enabled: true
-    priority: 0
-
-    syncPolicy:
-      automated: false
-
+  - name: core
     sources:
 
+      # -- Release -----
       - type: manifests
         repoURL: https://github.com/keycloak/keycloak-k8s-resources.git
         targetRevision: 26.6.1

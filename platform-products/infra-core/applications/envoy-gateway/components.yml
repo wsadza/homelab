@@ -9,6 +9,7 @@ components:
 
   - name: crds
     priority: -10
+
     syncPolicy:
       automated: true
       syncOptions:
@@ -16,11 +17,13 @@ components:
 
     sources:
 
+      # -- Helper ------
       - type: values
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD
         ref: values
 
+      # -- Release ------
       - type: helm
         repoURL: oci://docker.io/envoyproxy/gateway-crds-helm
         targetRevision: v1.7.1
@@ -37,11 +40,13 @@ components:
 
     sources:
 
+      # -- Helper ------
       - type: values
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD
         ref: values
 
+      # -- Release ------
       - type: helm
         repoURL: oci://docker.io/envoyproxy/gateway-helm
         targetRevision: v1.7.1
@@ -50,6 +55,7 @@ components:
         valueFiles: 
           - $values/platform-products/infra-core/applications/envoy-gateway/components/core/helm/values.yml
       
+      # -- Extras ------
       - type: manifests
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD

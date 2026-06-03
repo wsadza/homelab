@@ -8,13 +8,6 @@ components:
   # ------------------
   
   - name: core
-    namespace: keycloak 
-
-    enabled: true
-    priority: 10 
-
-    syncPolicy:
-      automated: true
 
     sources:
 

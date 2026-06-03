@@ -8,22 +8,15 @@ components:
   # ------------------
   
   - name: core
-    namespace: keycloak
-
-    enabled: true
-    priority: -5
-
-    syncPolicy:
-      automated: false
-
     sources:
 
+      # -- Helper -----
       - type: values
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD
         ref: values
 
-      # Instance
+      # -- Release ----- 
       - type: helm 
         repoURL: https://epam.github.io/edp-helm-charts/stable 
         targetRevision: 1.31.0
@@ -31,7 +24,7 @@ components:
         valueFiles: 
           - $values/platform-products/infra-identity/applications/edp-keycloak-operator/components/core/helm/values.yml
 
-      # Secrets
+      # -- Secrets -----
       - type: kustomize 
         repoURL: https://github.com/wsadza/homelab.git
         targetRevision: HEAD

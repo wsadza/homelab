@@ -8,14 +8,7 @@ components:
   # ------------------
 
   - name: core
-    namespace: openldap 
-
-    enabled: true
-    priority: 0
-
-    syncPolicy:
-      automated: false
-
+    priority: -5
     sources:
 
       - type: values
@@ -40,14 +33,7 @@ components:
   # ------------------
 
   - name: exposure
-    namespace: openldap 
-
-    enabled: true
     priority: 0
-
-    syncPolicy:
-      automated: false
-
     sources:
 
       - type: values

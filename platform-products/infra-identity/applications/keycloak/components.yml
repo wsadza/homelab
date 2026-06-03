@@ -8,14 +8,7 @@ components:
   # ------------------
 
   - name: core
-    namespace: keycloak
-
-    enabled: true
     priority: 0
-
-    syncPolicy:
-      automated: false
-
     sources:
 
       - type: manifests 
@@ -33,14 +26,7 @@ components:
   # ------------------
 
   - name: exposure
-    namespace: keycloak
-
-    enabled: true
     priority: 5
-
-    syncPolicy:
-      automated: false
-
     sources:
 
       - type: values
@@ -60,14 +46,7 @@ components:
   # ------------------
 
   - name: storage
-    namespace: keycloak
-
-    enabled: true
     priority: -5
-
-    syncPolicy:
-      automated: false
-
     sources:
 
       - type: values
