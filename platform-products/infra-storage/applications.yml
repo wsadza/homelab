@@ -8,7 +8,16 @@ applications:
   # ------------------
 
     - name: cloudnative-pg 
-      enabled: true
+      enabled: true 
+
+      namespace: 
+        name: postgresql-operator
+        autocreate: "true"
+
+      syncPolicy:
+        automated: false
+        syncOptions:
+          - ServerSideApply=true
 
   # ------------------
   # Container Object Storage Interface (COSI)
@@ -17,23 +26,51 @@ applications:
     - name: cosi 
       enabled: true 
 
+      namespace: 
+        name: cosi 
+        autocreate: "true"
+
+      syncPolicy:
+        automated: true
+
   # ------------------
   # Local Path Provisioner 
   # ------------------
 
     - name: local-path-provisioner 
-      enabled: true
+      enabled: true 
+
+      namespace: 
+        name: kube-system 
+        autocreate: "true"
+
+      syncPolicy:
+        automated: true
 
   # ------------------
   # SeaWeedFS 
   # ------------------
 
     - name: seaweedfs 
-      enabled: true
+      enabled: true 
+
+      namespace: 
+        name: seaweedfs 
+        autocreate: "true"
+
+      syncPolicy:
+        automated: true
 
   # ------------------
   # SeaWeedFS-Operator
   # ------------------
 
     - name: seaweedfs-operator
-      enabled: true
+      enabled: true 
+
+      namespace: 
+        name: seaweedfs 
+        autocreate: "true"
+
+      syncPolicy:
+        automated: true

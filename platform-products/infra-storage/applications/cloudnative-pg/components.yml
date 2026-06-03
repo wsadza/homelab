@@ -8,16 +8,6 @@ components:
   # ------------------
 
   - name: core
-    namespace: postgresql-operator
-
-    enabled: true
-    priority: 0
-
-    syncPolicy:
-      automated: false
-      syncOptions:
-        - ServerSideApply=true
-
     sources:
 
       # -- core --------

@@ -8,14 +8,6 @@ components:
   # ------------------
 
   - name: core
-    namespace: cosi
-
-    enabled: true
-    priority: 0
-
-    syncPolicy:
-      automated: false
-
     sources:
 
       - type: kustomize 

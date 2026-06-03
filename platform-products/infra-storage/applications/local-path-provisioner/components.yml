@@ -8,14 +8,6 @@ components:
   # ------------------
   
   - name: core
-    namespace: kube-system
-
-    enabled: true
-    priority: 0 
-
-    syncPolicy:
-      automated: false
-
     sources:
 
       - type: manifests
