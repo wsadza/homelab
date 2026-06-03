@@ -17,10 +17,9 @@ metadata:
     {{- include "common.labels.standard" $root | nindent 4 }}
 rules:
 {{- with .rbac }}
-{{- range .rules}}
-{{- toYaml . | nindent 2 }}
+{{- range .rules }}
+  - {{- toYaml . | nindent 4 }}
 {{- end }}
----
 {{- end }}
 {{- end }}
 {{- end }}
