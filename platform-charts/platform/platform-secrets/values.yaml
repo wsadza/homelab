@@ -72,7 +72,7 @@ platformSecrets:
   secretDefaults:
 
     storeRef:
-      name: "shared-secrets"
+      name: "shared-store"
       kind: "ClusterSecretStore"
 
     refresh:
