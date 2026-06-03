@@ -1,0 +1,61 @@
+# ===============================================
+# Author: Igor Sadza
+# Purpose: Default values for the platform-secrets Helm chart
+# ===============================================
+
+# -----------------------------------------------
+# @section Common parameters
+# -----------------------------------------------
+#
+# @param nameOverride      String to partially override common.names.name
+# @param fullnameOverride  String to fully override common.names.fullname
+# @param namespaceOverride String to fully override common.names.namespace
+# @param commonLabels      Labels to add to all deployed objects
+# @param commonAnnotations Annotations to add to all deployed objects
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+commonLabels: {}
+commonAnnotations: {}
+
+# ===============================================
+# @section Platform Secrets wrapper parameters
+# ===============================================
+#
+# @param platformSecrets.enabled Enable platform secrets resource management
+#
+platformSecrets:
+  enabled: true
+
+  # -----------------------------------------------
+  # @section External Secret parameters
+  # -----------------------------------------------
+  #
+  # @param platformSecrets.secrets                       List of external secrets to create
+  # @param platformSecrets.secrets[].name                External secret name
+  # @param platformSecrets.secrets[].namespace           External secret namespace
+  # @param platformSecrets.secrets[].enabled             Enable this external secret
+  # @param platformSecrets.secrets[].storeRef            SecretStore or ClusterSecretStore reference override
+  # @param platformSecrets.secrets[].refresh             Refresh interval override
+  # @param platformSecrets.secrets[].namespaceSelectors  Namespace selectors override for ClusterExternalSecret resources
+  # @param platformSecrets.secrets[].source              Source secret configuration
+  # @param platformSecrets.secrets[].source.secretName   Source secret name
+  # @param platformSecrets.secrets[].target              Target Kubernetes Secret configuration
+  # @param platformSecrets.secrets[].target.secretName   Target Kubernetes Secret name
+  # @param platformSecrets.secrets[].data                Secret data mappings
+  #
+  secrets:
+    - name: "s3-credentials"
+      enabled: true
+
+      source:
+        secretName: "s3-credentials"
+
+      target:
+        secretName: "s3-credentials"
+
+      data:
+        - secretKey: AWS_ACCESS_KEY_ID
+          property:  AWS_ACCESS_KEY_ID
+        - secretKey: AWS_SECRET_ACCESS_KEY
+          property:  AWS_SECRET_ACCESS_KEY

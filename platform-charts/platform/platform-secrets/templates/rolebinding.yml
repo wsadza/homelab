@@ -1,0 +1,29 @@
+{{- if .Values.platformSecrets.enabled }}
+
+{{- $root := . }}
+{{- range .Values.platformSecrets.stores }}
+
+{{- if not .name }}
+{{- fail (printf "Name needs to be provided" .name) }}
+{{- end }}
+
+{{- if .enabled }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ printf "%s-role-binding" .name | quote }} 
+  namespace: {{ default (include "common.names.namespace" $root) .namespace | quote }} 
+  labels:
+    {{- include "common.labels.standard" $root | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ .serviceAccount.name | quote }} 
+    namespace: {{ .serviceAccount.namespace | quote }} 
+roleRef:
+  kind: Role
+  name: {{ printf "%s-role" .name | quote }}
+  apiGroup: rbac.authorization.k8s.io
+---
+{{- end }}
+{{- end }}
+{{- end }}

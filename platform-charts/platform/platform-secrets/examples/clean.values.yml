@@ -1,0 +1,116 @@
+# ===============================================
+# Author: Igor Sadza
+# Purpose: Default values for the platform-secrets Helm chart
+# ===============================================
+
+# -----------------------------------------------
+# @section Common parameters
+# -----------------------------------------------
+#
+# @param nameOverride      String to partially override common.names.name
+# @param fullnameOverride  String to fully override common.names.fullname
+# @param namespaceOverride String to fully override common.names.namespace
+# @param commonLabels      Labels to add to all deployed objects
+# @param commonAnnotations Annotations to add to all deployed objects
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+commonLabels: {}
+commonAnnotations: {}
+
+# ===============================================
+# @section Platform Secrets wrapper parameters
+# ===============================================
+#
+# @param platformSecrets.enabled Enable platform secrets resource management
+#
+platformSecrets:
+  enabled: true
+
+  # -----------------------------------------------
+  # @section Secret Store parameters
+  # -----------------------------------------------
+  #
+  # @param platformSecrets.stores                            List of SecretStore or ClusterSecretStore configurations
+  # @param platformSecrets.stores[].name                     Secret store name
+  # @param platformSecrets.stores[].namespace                Secret store namespace
+  # @param platformSecrets.stores[].enabled                  Enable this secret store
+  # @param platformSecrets.stores[].serviceAccount           Service account used by the secret store
+  # @param platformSecrets.stores[].serviceAccount.name      Service account name
+  # @param platformSecrets.stores[].serviceAccount.namespace Service account namespace
+  # @param platformSecrets.stores[].rbac                     RBAC rules required by the secret store service account
+  #
+  stores:
+    - name: ""
+      namespace: ""
+      enabled: true
+
+      serviceAccount:
+        name: ""
+        namespace: ""
+
+      rbac: []
+
+  # -----------------------------------------------
+  # @section Secret default parameters
+  # -----------------------------------------------
+  #
+  # @param platformSecrets.secretDefaults                                  Default values applied to generated external secrets
+  # @param platformSecrets.secretDefaults.storeRef                         Default SecretStore or ClusterSecretStore reference
+  # @param platformSecrets.secretDefaults.storeRef.name                    Default secret store reference name
+  # @param platformSecrets.secretDefaults.storeRef.kind                    Default secret store reference kind
+  # @param platformSecrets.secretDefaults.refresh                          Default refresh intervals
+  # @param platformSecrets.secretDefaults.refresh.clusterExternalSecret    Default ClusterExternalSecret refresh interval
+  # @param platformSecrets.secretDefaults.refresh.externalSecret           Default ExternalSecret refresh interval
+  # @param platformSecrets.secretDefaults.namespaceSelectors               Default namespace selectors for ClusterExternalSecret resources
+  # @param platformSecrets.secretDefaults.target                           Default target secret configuration
+  # @param platformSecrets.secretDefaults.target.creationPolicy            Default target secret creation policy
+  #
+  secretDefaults:
+
+    storeRef:
+      name: ""
+      kind: ""
+
+    refresh:
+      clusterExternalSecret: 1m
+      externalSecret: 1h
+
+    namespaceSelectors: []
+
+    target:
+      creationPolicy: Owner
+
+  # -----------------------------------------------
+  # @section External Secret parameters
+  # -----------------------------------------------
+  #
+  # @param platformSecrets.secrets                       List of external secrets to create
+  # @param platformSecrets.secrets[].name                External secret name
+  # @param platformSecrets.secrets[].namespace           External secret namespace
+  # @param platformSecrets.secrets[].enabled             Enable this external secret
+  # @param platformSecrets.secrets[].storeRef            SecretStore or ClusterSecretStore reference override
+  # @param platformSecrets.secrets[].refresh             Refresh interval override
+  # @param platformSecrets.secrets[].namespaceSelectors  Namespace selectors override for ClusterExternalSecret resources
+  # @param platformSecrets.secrets[].source              Source secret configuration
+  # @param platformSecrets.secrets[].source.secretName   Source secret name
+  # @param platformSecrets.secrets[].target              Target Kubernetes Secret configuration
+  # @param platformSecrets.secrets[].target.secretName   Target Kubernetes Secret name
+  # @param platformSecrets.secrets[].data                Secret data mappings
+  #
+  secrets:
+    - name: ""
+      namespace: ""
+      enabled: true
+
+      storeRef: []
+      refresh: []
+      namespaceSelectors: []
+
+      source:
+        secretName: ""
+
+      target:
+        secretName: ""
+
+      data: []

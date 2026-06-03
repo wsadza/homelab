@@ -1,0 +1,27 @@
+{{- if .Values.platformSecrets.enabled }}
+
+{{- $root := . }}
+{{- range .Values.platformSecrets.stores }}
+
+{{- if not .name }}
+{{- fail (printf "Name needs to be provided" .name) }}
+{{- end }}
+
+{{- if .enabled }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ printf "%s-role" .name | quote }} 
+  namespace: {{ default (include "common.names.namespace" $root) .namespace | quote }} 
+  labels:
+    {{- include "common.labels.standard" $root | nindent 4 }}
+rules:
+{{- with .rbac }}
+{{- range .rules}}
+{{- toYaml . | nindent 2 }}
+{{- end }}
+---
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

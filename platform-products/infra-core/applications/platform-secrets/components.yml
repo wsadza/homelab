@@ -1,0 +1,31 @@
+# ===============================
+# 
+# ===============================
+components:
+
+  # ------------------
+  # core
+  # ------------------
+  
+  - name: core
+
+    sources:
+
+      # -- Release -----
+      - type: values
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        ref: values
+
+      - type: helm 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-charts/platform/platform-secrets
+        valueFiles: 
+          - $values/platform-products/infra-core/applications/platform-secrets/components/core/helm/values.yml
+
+      # -- Secrets -----
+      - type: kustomize 
+        repoURL: https://github.com/wsadza/homelab.git
+        targetRevision: HEAD
+        path: platform-products/infra-core/applications/external-secrets/components/core/kustomize

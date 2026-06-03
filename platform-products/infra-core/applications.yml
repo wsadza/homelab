@@ -62,3 +62,19 @@ applications:
         automated: false
         syncOptions:
           - ServerSideApply=true
+
+  # ------------------
+  # Platform-Secrets 
+  # ------------------
+
+    - name: platform-secrets 
+      enabled: true
+
+      namespace:
+        name: external-secrets
+        autocreate: "true"
+
+      syncPolicy:
+        automated: false
+        syncOptions:
+          - ServerSideApply=true
