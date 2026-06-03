@@ -11,6 +11,7 @@ components:
       namespace: nextcloud
       namespaceLabels:
         shared-s3-creds: "true"
+        shared-credentials: "true"
 
       enabled: true
       priority: 0
