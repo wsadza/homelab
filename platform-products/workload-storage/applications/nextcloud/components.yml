@@ -8,16 +8,7 @@ components:
   # ------------------
 
     - name: core
-      namespace: nextcloud
-      namespaceLabels:
-        shared-s3-creds: "true"
-        shared-credentials: "true"
-
-      enabled: true
       priority: 0
-
-      syncPolicy:
-        automated: false
 
       sources:
 
@@ -46,14 +37,7 @@ components:
   # ------------------
 
     - name: exposure
-      namespace: nextcloud
-
-      enabled: true
       priority: -5
-
-      syncPolicy:
-        automated: false
-
       sources:
 
         - type: values
@@ -73,14 +57,7 @@ components:
   # ------------------
 
     - name: storage
-      namespace: nextcloud
-
-      enabled: true
       priority: -5
-
-      syncPolicy:
-        automated: false
-
       sources:
 
         - type: values
@@ -101,14 +78,7 @@ components:
   # ------------------
 
     - name: auth
-      namespace: nextcloud
-
-      enabled: true
       priority: -5
-
-      syncPolicy:
-        automated: false
-
       sources:
 
         - type: values
