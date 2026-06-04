@@ -1,19 +1,51 @@
-mode: root
 
+
+mode: root
 repoURL: https://github.com/wsadza/homelab.git
 targetRevision: HEAD
 
+# --------------------------
+# TOP-Generator
+# --------------------------
+
 root:
+  name: battlestation.sh
+  file: environments/dta.yml 
   listKey: products
-  name: anykey.pl 
-  file: environments/dev.yml 
+  product: ""
 
+  # Child (node)
+  childMode: node
   childChartPath: platform-charts/foundation/appset-factory
-  childMode: leaf
-  childFileTemplate: "platform-products/{{ item }}/product.yml"
-  childNameTemplate: "{{ item }}"
+  childFileTemplate: "platform-products/{{ product }}/applications.yml"
+  childNameTemplate: "{{ product }}"
 
-leaf:
-  listKey: applications 
+# --------------------------
+# MID-Generator
+# --------------------------
+
+node:
   name: ""
   file: ""
+  product: ""
+  listKey: applications
+
+  # Child (leaf)
+  childMode: leaf
+  childChartPath: platform-charts/foundation/appset-factory
+  childFileTemplate: "platform-products/{{ product }}/applications/{{ application }}/components.yml"
+  childNameTemplate: "{{ product }}-{{ application }}"
+
+# --------------------------
+# APP-GENERATOR 
+# --------------------------
+
+leaf:
+  name: ""
+  file: ""
+  product: ""
+  listKey: components
+
+  # Child (application)
+  application: ""
+  namespace: {}
