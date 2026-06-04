@@ -44,7 +44,7 @@ appStorage:
     backupHelper:
       enabled: true
       backupTargetSecrets:
-        name: "seaweed-backup-secret"
+        name: "seaweedfs-backup-target-auth"
 
   # ===============================================
   # @section psql parameters
