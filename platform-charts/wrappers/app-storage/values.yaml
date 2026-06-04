@@ -133,7 +133,7 @@ appStorage:
     #
     backupHelper:
       enabled: false
-      name: seaweedfs-s3-backup
+      name: "" 
       namespace: "" 
       schedule: "0 2 * * *"
     
