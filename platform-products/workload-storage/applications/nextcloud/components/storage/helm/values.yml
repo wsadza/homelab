@@ -43,6 +43,16 @@ appStorage:
     #
     backupHelper:
       enabled: true
+      schedule: "0 2 * * *"
+    
+      sourceBucket: nextcloud
+      targetBucket: nextcloud
+
+      backupSourceEndpoint: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"
+      backupSourceSecrets:
+        name: "nextcloud-object-store-secret"
+
+      backupTargetEndpoint: "http://192.168.1.10:8333"
       backupTargetSecrets:
         name: "seaweedfs-backup-target-auth"
 
@@ -61,7 +71,7 @@ appStorage:
     #
     objectStore:
       enabled: true
-      destinationPath: "s3://nextcloud/database/"
+      destinationPath: "s3://nextcloud-database/"
       endpointURL: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"
 
     # ===============================================

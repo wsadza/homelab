@@ -137,19 +137,19 @@ appStorage:
       namespace: "" 
       schedule: "0 2 * * *"
     
-      sourceBucket: nextcloud-bucket
-      targetBucket: buckets/nextcloud
+      sourceBucket: "" 
+      targetBucket: "" 
     
-      backupSourceEndpoint: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"
+      backupSourceEndpoint: ""
       backupSourceSecrets:
-        name: nextcloud-object-store-secret
+        name: ""
         keys:
           accessKey: S3_ACCESS_KEY
           secretKey: S3_SECRET_KEY
     
-      backupTargetEndpoint: "http://192.168.1.10:8333"
+      backupTargetEndpoint: ""
       backupTargetSecrets:
-        name: seaweedfs-backup-secret
+        name: "" 
         keys:
           accessKey: S3_ACCESS_KEY
           secretKey: S3_SECRET_KEY
