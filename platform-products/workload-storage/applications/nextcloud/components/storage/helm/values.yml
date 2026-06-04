@@ -44,10 +44,7 @@ appStorage:
     backupHelper:
       enabled: true
       backupTargetSecrets:
-        name: ""
-        keys:
-          accessKey: AWS_ACCESS_KEY_ID
-          secretKey: AWS_SECRET_ACCESS_KEY
+        name: "seaweed-backup-secret"
 
   # ===============================================
   # @section psql parameters
