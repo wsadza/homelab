@@ -149,7 +149,7 @@ appStorage:
     
       backupTargetEndpoint: "http://192.168.1.10:8333"
       backupTargetSecrets:
-        name: seaweedfs-backup-secrets
+        name: seaweedfs-backup-secret
         keys:
           accessKey: S3_ACCESS_KEY
           secretKey: S3_SECRET_KEY

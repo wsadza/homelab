@@ -34,7 +34,6 @@ platformSecrets:
   # @param platformSecrets.stores                            List of SecretStore or ClusterSecretStore configurations
   # @param platformSecrets.stores[].name                     Secret store name
   # @param platformSecrets.stores[].namespace                Secret store namespace
-  # @param platformSecrets.stores[].enabled                  Enable this secret store
   # @param platformSecrets.stores[].serviceAccount           Service account used by the secret store
   # @param platformSecrets.stores[].serviceAccount.name      Service account name
   # @param platformSecrets.stores[].serviceAccount.namespace Service account namespace
@@ -42,7 +41,6 @@ platformSecrets:
   #
   stores:
     - name: "shared-store"
-      enabled: true
 
       serviceAccount:
         name: "external-secrets"

@@ -34,7 +34,6 @@ platformSecrets:
   # @param platformSecrets.secrets                       List of external secrets to create
   # @param platformSecrets.secrets[].name                External secret name
   # @param platformSecrets.secrets[].namespace           External secret namespace
-  # @param platformSecrets.secrets[].enabled             Enable this external secret
   # @param platformSecrets.secrets[].storeRef            SecretStore or ClusterSecretStore reference override
   # @param platformSecrets.secrets[].refresh             Refresh interval override
   # @param platformSecrets.secrets[].namespaceSelectors  Namespace selectors override for ClusterExternalSecret resources
@@ -45,17 +44,7 @@ platformSecrets:
   # @param platformSecrets.secrets[].data                Secret data mappings
   #
   secrets:
-    - name: "s3-credentials"
-      enabled: true
-
-      source:
-        secretName: "s3-credentials"
-
-      target:
-        secretName: "s3-credentials"
-
+    - name: "seaweed-backup-target-auth"
       data:
-        - secretKey: AWS_ACCESS_KEY_ID
-          property:  AWS_ACCESS_KEY_ID
-        - secretKey: AWS_SECRET_ACCESS_KEY
-          property:  AWS_SECRET_ACCESS_KEY
+        - secretKey: S3_ACCESS_KEY 
+        - secretKey: S3_SECRET_KEY 

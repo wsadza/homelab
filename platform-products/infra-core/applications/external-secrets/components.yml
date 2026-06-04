@@ -8,7 +8,6 @@ components:
   # ------------------
   
   - name: core
-
     sources:
 
       # -- Release -----
@@ -16,15 +15,3 @@ components:
         repoURL: https://charts.external-secrets.io/
         targetRevision: 2.4.1 
         chart: external-secrets
-
-        ## -- Manifests -----
-        #- type: kustomize 
-        #  repoURL: https://github.com/wsadza/homelab.git
-        #  targetRevision: HEAD
-        #  path: platform-products/infra-core/applications/external-secrets/components/core/manifests
-
-        ## -- Secrets -----
-        #- type: kustomize 
-        #  repoURL: https://github.com/wsadza/homelab.git
-        #  targetRevision: HEAD
-        #  path: platform-products/infra-core/applications/external-secrets/components/core/kustomize

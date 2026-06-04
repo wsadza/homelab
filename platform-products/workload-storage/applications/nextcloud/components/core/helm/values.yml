@@ -106,7 +106,7 @@ nextcloud:
     s3:
       enabled: true
       host: seaweed-filer.seaweedfs.svc.cluster.local
-      bucket: nextcloud-bucket 
+      bucket: nextcloud/data
       port: "8333"
       ssl: false
       region: us-east-1
