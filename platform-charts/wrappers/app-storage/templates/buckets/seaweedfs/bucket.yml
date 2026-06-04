@@ -1,10 +1,8 @@
 {{- if .Values.appStorage.blob.enabled }}
-{{- $fullname := include "common.names.fullname" . }}
-{{- $baseName := default $fullname .Values.appStorage.blob.nameOverride }}
 apiVersion: seaweed.seaweedfs.com/v1
 kind: Bucket
 metadata:
-  name: {{ printf "%s-bucket" $baseName | quote }}
+  name: {{ default (include "common.names.namespace" .) .Values.appStorage.blob.name | quote }}
   namespace: {{ default (include "common.names.namespace" .) .Values.appStorage.blob.namespace  | quote }}
   labels:
     {{- include "common.labels.standard" . | nindent 4 }}
