@@ -75,6 +75,6 @@ applications:
         autocreate: "true"
 
       syncPolicy:
-        automated: false
+        automated: true
         syncOptions:
           - ServerSideApply=true
