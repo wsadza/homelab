@@ -42,7 +42,7 @@ appStorage:
     # ===============================================
     #
     restoreHelper:
-      enabled: false
+      enabled: true
 
       # Which backup folder to restore from.
       # This should match the DATE used during backup, for example: 2026-05-26
