@@ -54,7 +54,7 @@ appStorage:
 
       backupTargetEndpoint: "http://192.168.1.10:8333"
       backupTargetSecrets:
-        name: "seaweedfs-backup-target-auth"
+        name: "seaweed-backup-target-auth"
 
   # ===============================================
   # @section psql parameters
