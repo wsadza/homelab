@@ -38,6 +38,32 @@ appStorage:
       enabled: true
 
     # ===============================================
+    # @subsection restoreHelper parameters
+    # ===============================================
+    #
+    restoreHelper:
+      enabled: false
+
+      # Which backup folder to restore from.
+      # This should match the DATE used during backup, for example: 2026-05-26
+      restoreDate: ""
+
+      sourceBucket: nextcloud 
+      targetBucket: nextcloud
+
+      backupSourceEndpoint: "http://192.168.1.10:8333"
+      backupSourceSecrets:
+        name: "seaweed-backup-target-auth"
+
+      restoreTargetEndpoint: "http://seaweed-filer.seaweedfs.svc.cluster.local:8333"
+      restoreTargetSecrets:
+        name: "nextcloud-object-store-secret"
+
+      # Safety options
+      dryRun: false
+      deleteExtraneous: false
+
+    # ===============================================
     # @subsection backupHelper parameters
     # ===============================================
     #
