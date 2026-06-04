@@ -10,7 +10,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ default (printf "%s-s3-restore" include ( "common.names.fullname" .)) .Values.appStorage.blob.restoreHelper.name | quote }}
+  name: {{ default (printf "%s-s3-restore" (include "common.names.fullname" .)) .Values.appStorage.blob.restoreHelper.name | quote }}
   namespace: {{ default (include "common.names.namespace" .) .Values.appStorage.blob.backupHelper.namespace | quote }}
 spec:
   backoffLimit: 1
