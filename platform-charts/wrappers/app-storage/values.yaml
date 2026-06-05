@@ -239,7 +239,7 @@ appStorage:
     # @param appStorage.psql.bootstrap.recovery.source    : External cluster source name used when bootstrap.mode is recovery
     #
     bootstrap:
-      mode: recovery
+      mode: initdb
 
       initdb:
         database: ""
@@ -258,7 +258,7 @@ appStorage:
     # @param appStorage.psql.backup.serverName : Override active backup/WAL archive serverName; defaults to <fullname>-<generation>
     #
     backup:
-      generation: restored-20260605-v2
+      generation: initial
       serverName: ""
 
     # ===============================================
@@ -269,7 +269,7 @@ appStorage:
     # @param appStorage.psql.recovery.sourceServerName : Override recovery source serverName; defaults to <fullname>-<sourceGeneration>
     #
     recovery:
-      sourceGeneration: restored-20260605
+      sourceGeneration: initial
       sourceServerName: ""
 
     # ===============================================
