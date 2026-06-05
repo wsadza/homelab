@@ -258,7 +258,7 @@ appStorage:
     # @param appStorage.psql.backup.serverName : Override active backup/WAL archive serverName; defaults to <fullname>-<generation>
     #
     backup:
-      generation: initial
+      generation: "" 
       serverName: ""
 
     # ===============================================
@@ -269,7 +269,7 @@ appStorage:
     # @param appStorage.psql.recovery.sourceServerName : Override recovery source serverName; defaults to <fullname>-<sourceGeneration>
     #
     recovery:
-      sourceGeneration: initial
+      sourceGeneration: "" 
       sourceServerName: ""
 
     # ===============================================
