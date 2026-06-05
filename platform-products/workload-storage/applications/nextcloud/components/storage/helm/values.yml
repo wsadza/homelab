@@ -46,7 +46,7 @@ appStorage:
 
       # Which backup folder to restore from.
       # This should match the DATE used during backup, for example: 2026-05-26
-      restoreDate: "2026-06-04"
+      restoreDate: "2026-06-05"
 
       sourceBucket: nextcloud 
       targetBucket: nextcloud
