@@ -101,7 +101,7 @@ appStorage:
     # @param appStorage.psql.bootstrap.recovery.source    : External cluster source name used when bootstrap.mode is recovery
     #
     bootstrap:
-      mode: recovery
+      mode: initdb 
 
     # ===============================================
     # @subsection backup parameters
