@@ -90,6 +90,40 @@ appStorage:
     enabled: true
     storage:
       size: 50Gi
+    # ===============================================
+    # @subsection bootstrap parameters
+    # ===============================================
+    #
+    # @param appStorage.psql.bootstrap.mode               : Bootstrap mode for the cluster; allowed values are initdb or recovery
+    # @param appStorage.psql.bootstrap.initdb.database    : Initial database name; defaults to <fullname>
+    # @param appStorage.psql.bootstrap.initdb.owner       : Initial database owner; defaults to <fullname>
+    # @param appStorage.psql.bootstrap.initdb.secret.name : Secret containing database owner credentials; defaults to <fullname>-database-secret
+    # @param appStorage.psql.bootstrap.recovery.source    : External cluster source name used when bootstrap.mode is recovery
+    #
+    bootstrap:
+      mode: recovery
+
+    # ===============================================
+    # @subsection backup parameters
+    # ===============================================
+    #
+    # @param appStorage.psql.backup.generation : Active backup/WAL archive generation name; used to compute serverName when not overridden
+    # @param appStorage.psql.backup.serverName : Override active backup/WAL archive serverName; defaults to <fullname>-<generation>
+    #
+    backup:
+      generation: "2026-06-05"
+      serverName: ""
+
+    # ===============================================
+    # @subsection recovery parameters
+    # ===============================================
+    #
+    # @param appStorage.psql.recovery.sourceGeneration : Source backup/WAL archive generation used for recovery
+    # @param appStorage.psql.recovery.sourceServerName : Override recovery source serverName; defaults to <fullname>-<sourceGeneration>
+    #
+    recovery:
+      sourceGeneration: initial
+      sourceServerName: ""
 
     # ===============================================
     # @subsection objectStore parameters
