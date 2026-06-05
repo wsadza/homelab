@@ -68,7 +68,6 @@ spec:
       owner: {{ default (include "common.names.fullname" $root) .owner | quote }}
       {{- with .secret.name }}
       secret:
-        #name: {{ $initdbSecretName | quote }}
         name: {{ .name | quote }}
       {{- end }}
     {{- end }}
@@ -106,7 +105,7 @@ spec:
       isWALArchiver: {{ .isWALArchiver }}
       parameters:
         barmanObjectName: {{ default $objectStore .parameters.barmanObjectName | quote }} 
-        serverName: {{ default $recoveryServerName .parameters.serverName | quote }}
+        serverName: {{ default $backupServerName .parameters.serverName | quote }}
 {{- end }}
 {{- end }}
 {{- end }}
